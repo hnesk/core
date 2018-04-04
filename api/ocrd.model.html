@@ -1,0 +1,402 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ocrd.model package &#8212; pyocrd  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ocrd.processor package" href="ocrd.processor.html" />
+    <link rel="prev" title="ocrd.cli package" href="ocrd.cli.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ocrd-model-package">
+<h1>ocrd.model package<a class="headerlink" href="#ocrd-model-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-ocrd.model.ocrd_file">
+<span id="ocrd-model-ocrd-file-module"></span><h2>ocrd.model.ocrd_file module<a class="headerlink" href="#module-ocrd.model.ocrd_file" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ocrd.model.ocrd_file.OcrdFile">
+<em class="property">class </em><code class="descclassname">ocrd.model.ocrd_file.</code><code class="descname">OcrdFile</code><span class="sig-paren">(</span><em>el</em>, <em>instance=None</em>, <em>local_filename=None</em>, <em>workspace=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_file.html#OcrdFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_file.OcrdFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a &lt;mets:file&gt;/&lt;mets:FLocat&gt;</p>
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_file.OcrdFile.ID">
+<code class="descname">ID</code><a class="headerlink" href="#ocrd.model.ocrd_file.OcrdFile.ID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_file.OcrdFile.basename">
+<code class="descname">basename</code><a class="headerlink" href="#ocrd.model.ocrd_file.OcrdFile.basename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_file.OcrdFile.basename_without_extension">
+<code class="descname">basename_without_extension</code><a class="headerlink" href="#ocrd.model.ocrd_file.OcrdFile.basename_without_extension" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_file.OcrdFile.mimetype">
+<code class="descname">mimetype</code><a class="headerlink" href="#ocrd.model.ocrd_file.OcrdFile.mimetype" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_file.OcrdFile.url">
+<code class="descname">url</code><a class="headerlink" href="#ocrd.model.ocrd_file.OcrdFile.url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-ocrd.model.ocrd_mets">
+<span id="ocrd-model-ocrd-mets-module"></span><h2>ocrd.model.ocrd_mets module<a class="headerlink" href="#module-ocrd.model.ocrd_mets" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ocrd.model.ocrd_mets.OcrdMets">
+<em class="property">class </em><code class="descclassname">ocrd.model.ocrd_mets.</code><code class="descname">OcrdMets</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ocrd.model.ocrd_xml_base.OcrdXmlDocument" title="ocrd.model.ocrd_xml_base.OcrdXmlDocument"><code class="xref py py-class docutils literal notranslate"><span class="pre">ocrd.model.ocrd_xml_base.OcrdXmlDocument</span></code></a></p>
+<dl class="method">
+<dt id="ocrd.model.ocrd_mets.OcrdMets.add_file">
+<code class="descname">add_file</code><span class="sig-paren">(</span><em>use</em>, <em>mimetype=None</em>, <em>url=None</em>, <em>ID=None</em>, <em>local_filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.add_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.add_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ocrd.model.ocrd_mets.OcrdMets.add_file_group">
+<code class="descname">add_file_group</code><span class="sig-paren">(</span><em>use</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.add_file_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.add_file_group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_mets.OcrdMets.file_by_id">
+<code class="descname">file_by_id</code><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.file_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_mets.OcrdMets.file_groups">
+<code class="descname">file_groups</code><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.file_groups" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_mets.OcrdMets.files">
+<code class="descname">files</code><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.files" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ocrd.model.ocrd_mets.OcrdMets.files_in_group">
+<code class="descname">files_in_group</code><span class="sig-paren">(</span><em>use</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.files_in_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.files_in_group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-ocrd.model.ocrd_page">
+<span id="ocrd-model-ocrd-page-module"></span><h2>ocrd.model.ocrd_page module<a class="headerlink" href="#module-ocrd.model.ocrd_page" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ocrd.model.ocrd_page.OcrdPage">
+<em class="property">class </em><code class="descclassname">ocrd.model.ocrd_page.</code><code class="descname">OcrdPage</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_page.html#OcrdPage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ocrd.model.ocrd_xml_base.OcrdXmlDocument" title="ocrd.model.ocrd_xml_base.OcrdXmlDocument"><code class="xref py py-class docutils literal notranslate"><span class="pre">ocrd.model.ocrd_xml_base.OcrdXmlDocument</span></code></a></p>
+<dl class="method">
+<dt id="ocrd.model.ocrd_page.OcrdPage.add_reading_order_ref">
+<code class="descname">add_reading_order_ref</code><span class="sig-paren">(</span><em>region_ref</em>, <em>index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_page.html#OcrdPage.add_reading_order_ref"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage.add_reading_order_ref" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the id of a region to the ReadingOrder</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.model.ocrd_page.OcrdPage.add_textline">
+<code class="descname">add_textline</code><span class="sig-paren">(</span><em>ID=None</em>, <em>coords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_page.html#OcrdPage.add_textline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage.add_textline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a TextLine to the page.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.model.ocrd_page.OcrdPage.add_textregion">
+<code class="descname">add_textregion</code><span class="sig-paren">(</span><em>ID</em>, <em>coords</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_page.html#OcrdPage.add_textregion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage.add_textregion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a TextRegion</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="ocrd.model.ocrd_page.OcrdPage.from_file">
+<em class="property">static </em><code class="descname">from_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_page.html#OcrdPage.from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage.from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new PAGE-XML from a METS file representing a PAGE-XML or an image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.model.ocrd_page.OcrdPage.get_textline">
+<code class="descname">get_textline</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_page.html#OcrdPage.get_textline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage.get_textline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the n-th TextLine on the page.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.model.ocrd_page.OcrdPage.get_textregion">
+<code class="descname">get_textregion</code><span class="sig-paren">(</span><em>ID</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_page.html#OcrdPage.get_textregion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage.get_textregion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get TextRegion with ID.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_page.OcrdPage.imageCompression">
+<code class="descname">imageCompression</code><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage.imageCompression" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_page.OcrdPage.imageFileName">
+<code class="descname">imageFileName</code><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage.imageFileName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_page.OcrdPage.imageHeight">
+<code class="descname">imageHeight</code><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage.imageHeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_page.OcrdPage.imagePhotometricInterpretation">
+<code class="descname">imagePhotometricInterpretation</code><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage.imagePhotometricInterpretation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_page.OcrdPage.imageResolutionUnit">
+<code class="descname">imageResolutionUnit</code><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage.imageResolutionUnit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_page.OcrdPage.imageWidth">
+<code class="descname">imageWidth</code><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage.imageWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_page.OcrdPage.imageXResolution">
+<code class="descname">imageXResolution</code><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage.imageXResolution" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_page.OcrdPage.imageYResolution">
+<code class="descname">imageYResolution</code><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage.imageYResolution" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ocrd.model.ocrd_page.OcrdPage.list_textlines">
+<code class="descname">list_textlines</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_page.html#OcrdPage.list_textlines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage.list_textlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>List TextLine on page</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.model.ocrd_page.OcrdPage.list_textregions">
+<code class="descname">list_textregions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_page.html#OcrdPage.list_textregions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage.list_textregions" title="Permalink to this definition">¶</a></dt>
+<dd><p>List TextRegions as <code class="xref py py-mod docutils literal notranslate"><span class="pre">OcrdPageTextRegion</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_page.OcrdPage.page">
+<code class="descname">page</code><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage.page" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Page element</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_page.OcrdPage.pcGtsId">
+<code class="descname">pcGtsId</code><a class="headerlink" href="#ocrd.model.ocrd_page.OcrdPage.pcGtsId" title="Permalink to this definition">¶</a></dt>
+<dd><p>The pcGtsId of the root element</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-ocrd.model.ocrd_page_textline">
+<span id="ocrd-model-ocrd-page-textline-module"></span><h2>ocrd.model.ocrd_page_textline module<a class="headerlink" href="#module-ocrd.model.ocrd_page_textline" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ocrd.model.ocrd_page_textline.OcrdPageTextLine">
+<em class="property">class </em><code class="descclassname">ocrd.model.ocrd_page_textline.</code><code class="descname">OcrdPageTextLine</code><span class="sig-paren">(</span><em>el</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_page_textline.html#OcrdPageTextLine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_page_textline.OcrdPageTextLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ocrd.model.ocrd_xml_base.OcrdXmlFragment" title="ocrd.model.ocrd_xml_base.OcrdXmlFragment"><code class="xref py py-class docutils literal notranslate"><span class="pre">ocrd.model.ocrd_xml_base.OcrdXmlFragment</span></code></a></p>
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_page_textline.OcrdPageTextLine.ID">
+<code class="descname">ID</code><a class="headerlink" href="#ocrd.model.ocrd_page_textline.OcrdPageTextLine.ID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_page_textline.OcrdPageTextLine.coords">
+<code class="descname">coords</code><a class="headerlink" href="#ocrd.model.ocrd_page_textline.OcrdPageTextLine.coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the bounding box of a TextLine</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="ocrd.model.ocrd_page_textline.OcrdPageTextLine.create">
+<em class="property">static </em><code class="descname">create</code><span class="sig-paren">(</span><em>textequiv=None</em>, <em>ID=None</em>, <em>coords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_page_textline.html#OcrdPageTextLine.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_page_textline.OcrdPageTextLine.create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_page_textline.OcrdPageTextLine.textequiv">
+<code class="descname">textequiv</code><a class="headerlink" href="#ocrd.model.ocrd_page_textline.OcrdPageTextLine.textequiv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-ocrd.model.ocrd_page_textregion">
+<span id="ocrd-model-ocrd-page-textregion-module"></span><h2>ocrd.model.ocrd_page_textregion module<a class="headerlink" href="#module-ocrd.model.ocrd_page_textregion" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ocrd.model.ocrd_page_textregion.OcrdPageTextRegion">
+<em class="property">class </em><code class="descclassname">ocrd.model.ocrd_page_textregion.</code><code class="descname">OcrdPageTextRegion</code><span class="sig-paren">(</span><em>el</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_page_textregion.html#OcrdPageTextRegion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_page_textregion.OcrdPageTextRegion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ocrd.model.ocrd_xml_base.OcrdXmlFragment" title="ocrd.model.ocrd_xml_base.OcrdXmlFragment"><code class="xref py py-class docutils literal notranslate"><span class="pre">ocrd.model.ocrd_xml_base.OcrdXmlFragment</span></code></a></p>
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_page_textregion.OcrdPageTextRegion.ID">
+<code class="descname">ID</code><a class="headerlink" href="#ocrd.model.ocrd_page_textregion.OcrdPageTextRegion.ID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ocrd.model.ocrd_page_textregion.OcrdPageTextRegion.add_textline">
+<code class="descname">add_textline</code><span class="sig-paren">(</span><em>textequiv=None</em>, <em>ID=None</em>, <em>coords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_page_textregion.html#OcrdPageTextRegion.add_textline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_page_textregion.OcrdPageTextRegion.add_textline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a TextLine to the TextRegion.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_page_textregion.OcrdPageTextRegion.coords">
+<code class="descname">coords</code><a class="headerlink" href="#ocrd.model.ocrd_page_textregion.OcrdPageTextRegion.coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the bounding box of a region</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="ocrd.model.ocrd_page_textregion.OcrdPageTextRegion.create">
+<em class="property">static </em><code class="descname">create</code><span class="sig-paren">(</span><em>ID=None</em>, <em>coords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_page_textregion.html#OcrdPageTextRegion.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_page_textregion.OcrdPageTextRegion.create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ocrd.model.ocrd_page_textregion.OcrdPageTextRegion.get_textline">
+<code class="descname">get_textline</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_page_textregion.html#OcrdPageTextRegion.get_textline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_page_textregion.OcrdPageTextRegion.get_textline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the n-th TextLine on the TextRegion.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.model.ocrd_page_textregion.OcrdPageTextRegion.list_textlines">
+<code class="descname">list_textlines</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_page_textregion.html#OcrdPageTextRegion.list_textlines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_page_textregion.OcrdPageTextRegion.list_textlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>List TextLine on TextRegion.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-ocrd.model.ocrd_xml_base">
+<span id="ocrd-model-ocrd-xml-base-module"></span><h2>ocrd.model.ocrd_xml_base module<a class="headerlink" href="#module-ocrd.model.ocrd_xml_base" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ocrd.model.ocrd_xml_base.OcrdXmlDocument">
+<em class="property">class </em><code class="descclassname">ocrd.model.ocrd_xml_base.</code><code class="descname">OcrdXmlDocument</code><span class="sig-paren">(</span><em>filename=None</em>, <em>content=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_xml_base.html#OcrdXmlDocument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_xml_base.OcrdXmlDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="ocrd.model.ocrd_xml_base.OcrdXmlDocument.to_xml">
+<code class="descname">to_xml</code><span class="sig-paren">(</span><em>xmllint=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_xml_base.html#OcrdXmlDocument.to_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_xml_base.OcrdXmlDocument.to_xml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ocrd.model.ocrd_xml_base.OcrdXmlFragment">
+<em class="property">class </em><code class="descclassname">ocrd.model.ocrd_xml_base.</code><code class="descname">OcrdXmlFragment</code><span class="sig-paren">(</span><em>el</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_xml_base.html#OcrdXmlFragment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_xml_base.OcrdXmlFragment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ocrd.model.ocrd_xml_base.get_coords">
+<code class="descclassname">ocrd.model.ocrd_xml_base.</code><code class="descname">get_coords</code><span class="sig-paren">(</span><em>el</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_xml_base.html#get_coords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_xml_base.get_coords" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ocrd.model.ocrd_xml_base.set_coords">
+<code class="descclassname">ocrd.model.ocrd_xml_base.</code><code class="descname">set_coords</code><span class="sig-paren">(</span><em>el</em>, <em>box</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_xml_base.html#set_coords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_xml_base.set_coords" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-ocrd.model">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-ocrd.model" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ocrd.model package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-ocrd.model.ocrd_file">ocrd.model.ocrd_file module</a></li>
+<li><a class="reference internal" href="#module-ocrd.model.ocrd_mets">ocrd.model.ocrd_mets module</a></li>
+<li><a class="reference internal" href="#module-ocrd.model.ocrd_page">ocrd.model.ocrd_page module</a></li>
+<li><a class="reference internal" href="#module-ocrd.model.ocrd_page_textline">ocrd.model.ocrd_page_textline module</a></li>
+<li><a class="reference internal" href="#module-ocrd.model.ocrd_page_textregion">ocrd.model.ocrd_page_textregion module</a></li>
+<li><a class="reference internal" href="#module-ocrd.model.ocrd_xml_base">ocrd.model.ocrd_xml_base module</a></li>
+<li><a class="reference internal" href="#module-ocrd.model">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">ocrd</a><ul>
+  <li><a href="ocrd.html">ocrd package</a><ul>
+      <li>Previous: <a href="ocrd.cli.html" title="previous chapter">ocrd.cli package</a></li>
+      <li>Next: <a href="ocrd.processor.html" title="next chapter">ocrd.processor package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/ocrd.model.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Kay Wuerzner, Konstantin Baierer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/api/ocrd.model.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,383 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ocrd package &#8212; pyocrd  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ocrd.cli package" href="ocrd.cli.html" />
+    <link rel="prev" title="ocrd" href="modules.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ocrd-package">
+<h1>ocrd package<a class="headerlink" href="#ocrd-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ocrd.cli.html">ocrd.cli package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#ocrd-cli-merge-ocr-txt-module">ocrd.cli.merge_ocr_txt module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#module-ocrd.cli.run">ocrd.cli.run module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#module-ocrd.cli">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ocrd.model.html">ocrd.model package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.model.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.model.html#module-ocrd.model.ocrd_file">ocrd.model.ocrd_file module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.model.html#module-ocrd.model.ocrd_mets">ocrd.model.ocrd_mets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.model.html#module-ocrd.model.ocrd_page">ocrd.model.ocrd_page module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.model.html#module-ocrd.model.ocrd_page_textline">ocrd.model.ocrd_page_textline module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.model.html#module-ocrd.model.ocrd_page_textregion">ocrd.model.ocrd_page_textregion module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.model.html#module-ocrd.model.ocrd_xml_base">ocrd.model.ocrd_xml_base module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.model.html#module-ocrd.model">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ocrd.processor.html">ocrd.processor package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.processor.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ocrd.processor.characterize.html">ocrd.processor.characterize package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.characterize.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.characterize.html#module-ocrd.processor.characterize.exif">ocrd.processor.characterize.exif module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.characterize.html#module-ocrd.processor.characterize">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ocrd.processor.recognize.html">ocrd.processor.recognize package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.recognize.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.recognize.html#module-ocrd.processor.recognize.tesserocr">ocrd.processor.recognize.tesserocr module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.recognize.html#module-ocrd.processor.recognize">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ocrd.processor.segment_line.html">ocrd.processor.segment_line package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.segment_line.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.segment_line.html#module-ocrd.processor.segment_line.tesserocr">ocrd.processor.segment_line.tesserocr module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.segment_line.html#module-ocrd.processor.segment_line">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ocrd.processor.segment_region.html">ocrd.processor.segment_region package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.segment_region.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.segment_region.html#module-ocrd.processor.segment_region.tesserocr">ocrd.processor.segment_region.tesserocr module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.segment_region.html#module-ocrd.processor.segment_region">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.processor.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.processor.html#module-ocrd.processor.base">ocrd.processor.base module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.processor.html#module-ocrd.processor">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ocrd.webservice.html">ocrd.webservice package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.webservice.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.webservice.html#module-ocrd.webservice.processor">ocrd.webservice.processor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.webservice.html#module-ocrd.webservice.repository">ocrd.webservice.repository module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.webservice.html#module-ocrd.webservice">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-ocrd.constants">
+<span id="ocrd-constants-module"></span><h2>ocrd.constants module<a class="headerlink" href="#module-ocrd.constants" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-ocrd.resolver">
+<span id="ocrd-resolver-module"></span><h2>ocrd.resolver module<a class="headerlink" href="#module-ocrd.resolver" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ocrd.resolver.Resolver">
+<em class="property">class </em><code class="descclassname">ocrd.resolver.</code><code class="descname">Resolver</code><span class="sig-paren">(</span><em>cache_enabled=False</em>, <em>prefer_symlink=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Handle Uploads, Downloads, Repository access and manage temporary directories
+Optionally cache files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cache_enabled</strong> (<em>Boolean</em>) – Whether to cache files. If True, passes kwargs to ~ResolverCache.</li>
+<li><strong>prefer_symlink</strong> (<em>Boolean</em>) – If True, symlink from cached file to the workspace instead of copying to reduce I/O.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="ocrd.resolver.Resolver.create_workspace">
+<code class="descname">create_workspace</code><span class="sig-paren">(</span><em>mets_url</em>, <em>directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.create_workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.create_workspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a workspace for a processor.</p>
+<p>Sets the mets.xml file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.resolver.Resolver.download_to_directory">
+<code class="descname">download_to_directory</code><span class="sig-paren">(</span><em>directory</em>, <em>url</em>, <em>basename=None</em>, <em>overwrite=False</em>, <em>subdir=None</em>, <em>prefer_symlink=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.download_to_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.download_to_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download a file to the workspace.</p>
+<p>If basename is not given but subdir is, assume user knows what she’s doing and use last URL segment as the basename.
+If basename is not given and no subdir is given, use the alnum characters in the URL as the basename.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>directory</strong> (<em>string</em>) – Directory to download files to</li>
+<li><strong>basename</strong> (<em>string</em><em>, </em><em>None</em>) – basename part of the filename on disk.</li>
+<li><strong>url</strong> (<em>string</em>) – URL to download from</li>
+<li><strong>overwrite</strong> (<em>boolean</em>) – Whether to overwrite existing files with that name</li>
+<li><strong>subdir</strong> (<em>boolean</em><em>, </em><em>None</em>) – Subdirectory to create within the directory. Think fileGrp.</li>
+<li><strong>prefer_symlink</strong> (<em>boolean</em>) – Whether to use symlinks instead of copying. Overrides self.prefer_symlink</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Local filename</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-ocrd.resolver_cache">
+<span id="ocrd-resolver-cache-module"></span><h2>ocrd.resolver_cache module<a class="headerlink" href="#module-ocrd.resolver_cache" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ocrd.resolver_cache.ResolverCache">
+<em class="property">class </em><code class="descclassname">ocrd.resolver_cache.</code><code class="descname">ResolverCache</code><span class="sig-paren">(</span><em>cache_directory='/tmp/cache-pyocrd'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver_cache.html#ResolverCache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver_cache.ResolverCache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Cache of downloads, based on URL.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cache_directory</strong> (<em>string</em>) – Where to store cached files</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="ocrd.resolver_cache.ResolverCache.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver_cache.html#ResolverCache.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver_cache.ResolverCache.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ocrd.resolver_cache.ResolverCache.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>url</em>, <em>filename=None</em>, <em>content=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver_cache.html#ResolverCache.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver_cache.ResolverCache.put" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-ocrd.utils">
+<span id="ocrd-utils-module"></span><h2>ocrd.utils module<a class="headerlink" href="#module-ocrd.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="ocrd.utils.coordinate_string_from_xywh">
+<code class="descclassname">ocrd.utils.</code><code class="descname">coordinate_string_from_xywh</code><span class="sig-paren">(</span><em>box</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/utils.html#coordinate_string_from_xywh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.utils.coordinate_string_from_xywh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a polygon representation from a rectangle described as a dict with keys x, y, w, h.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ocrd.utils.getLogger">
+<code class="descclassname">ocrd.utils.</code><code class="descname">getLogger</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/utils.html#getLogger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.utils.getLogger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ocrd.utils.mets_file_id">
+<code class="descclassname">ocrd.utils.</code><code class="descname">mets_file_id</code><span class="sig-paren">(</span><em>grp</em>, <em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/utils.html#mets_file_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.utils.mets_file_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ocrd.utils.safe_filename">
+<code class="descclassname">ocrd.utils.</code><code class="descname">safe_filename</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/utils.html#safe_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.utils.safe_filename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ocrd.utils.xmllint_format">
+<code class="descclassname">ocrd.utils.</code><code class="descname">xmllint_format</code><span class="sig-paren">(</span><em>xml</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/utils.html#xmllint_format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.utils.xmllint_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ocrd.utils.xywh_from_coordinate_string">
+<code class="descclassname">ocrd.utils.</code><code class="descname">xywh_from_coordinate_string</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/utils.html#xywh_from_coordinate_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.utils.xywh_from_coordinate_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a numpy-compatible polygon from a page representation.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ocrd.workspace">
+<span id="ocrd-workspace-module"></span><h2>ocrd.workspace module<a class="headerlink" href="#module-ocrd.workspace" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ocrd.workspace.Workspace">
+<em class="property">class </em><code class="descclassname">ocrd.workspace.</code><code class="descname">Workspace</code><span class="sig-paren">(</span><em>resolver</em>, <em>directory</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A workspace is a temporary directory set up for a processor. It’s the
+interface to the METS/PAGE XML and delegates download and upload to the
+Resolver.</p>
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.add_file">
+<code class="descname">add_file</code><span class="sig-paren">(</span><em>use</em>, <em>basename=None</em>, <em>content=None</em>, <em>local_filename=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace.add_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.add_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an output file. Creates an <a class="reference internal" href="ocrd.model.html#ocrd.model.ocrd_file.OcrdFile" title="ocrd.model.ocrd_file.OcrdFile"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ocrd.model.ocrd_file.OcrdFile</span></code></a> to pass around and adds that to the
+OcrdMets OUTPUT section.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.download_file">
+<code class="descname">download_file</code><span class="sig-paren">(</span><em>f</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace.download_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.download_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download a <a class="reference internal" href="ocrd.model.html#ocrd.model.ocrd_file.OcrdFile" title="ocrd.model.ocrd_file.OcrdFile"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ocrd.model.ocrd_file.OcrdFile</span></code></a> to the workspace.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.download_files_in_group">
+<code class="descname">download_files_in_group</code><span class="sig-paren">(</span><em>use</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace.download_files_in_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.download_files_in_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download all  the <a class="reference internal" href="ocrd.model.html#ocrd.model.ocrd_file.OcrdFile" title="ocrd.model.ocrd_file.OcrdFile"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ocrd.model.ocrd_file.OcrdFile</span></code></a> in the file group given.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.download_url">
+<code class="descname">download_url</code><span class="sig-paren">(</span><em>url</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace.download_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.download_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download a URL to the workspace.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> (<em>string</em>) – URL to download to directory</li>
+<li><strong>**kwargs</strong> – See <a class="reference internal" href="#ocrd.resolver.Resolver" title="ocrd.resolver.Resolver"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ocrd.resolver.Resolver</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The local filename of the downloaded file</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.persist">
+<code class="descname">persist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace.persist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.persist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Persist the workspace using the resolver. Uploads the files in the
+OUTPUT group to the data repository, sets their URL accordingly.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.resolve_image_as_pil">
+<code class="descname">resolve_image_as_pil</code><span class="sig-paren">(</span><em>image_url</em>, <em>coords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace.resolve_image_as_pil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.resolve_image_as_pil" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resolve an image URL to a PIL image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>coords</strong> (<em>list</em>) – Coordinates of the bounding box to cut from the image</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Image or region in image as PIL.Image</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.save_mets">
+<code class="descname">save_mets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace.save_mets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.save_mets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write out the current state of the METS file.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-ocrd">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-ocrd" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ocrd package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-ocrd.constants">ocrd.constants module</a></li>
+<li><a class="reference internal" href="#module-ocrd.resolver">ocrd.resolver module</a></li>
+<li><a class="reference internal" href="#module-ocrd.resolver_cache">ocrd.resolver_cache module</a></li>
+<li><a class="reference internal" href="#module-ocrd.utils">ocrd.utils module</a></li>
+<li><a class="reference internal" href="#module-ocrd.workspace">ocrd.workspace module</a></li>
+<li><a class="reference internal" href="#module-ocrd">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">ocrd</a><ul>
+      <li>Previous: <a href="modules.html" title="previous chapter">ocrd</a></li>
+      <li>Next: <a href="ocrd.cli.html" title="next chapter">ocrd.cli package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/ocrd.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Kay Wuerzner, Konstantin Baierer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/api/ocrd.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
