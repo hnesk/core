@@ -35,13 +35,12 @@
 <span class="kn">from</span> <span class="nn">ocrd.model</span> <span class="k">import</span> <span class="n">OcrdPage</span>
 <span class="kn">from</span> <span class="nn">ocrd.processor.base</span> <span class="k">import</span> <span class="n">Processor</span>
 <span class="kn">from</span> <span class="nn">ocrd.utils</span> <span class="k">import</span> <span class="n">getLogger</span><span class="p">,</span> <span class="n">mets_file_id</span>
-<span class="kn">from</span> <span class="nn">ocrd.constants</span> <span class="k">import</span> <span class="n">MIMETYPE_PAGE</span>
+<span class="kn">from</span> <span class="nn">ocrd.constants</span> <span class="k">import</span> <span class="n">MIMETYPE_PAGE</span><span class="p">,</span> <span class="n">TESSDATA_PREFIX</span>
 
 <span class="kn">import</span> <span class="nn">tesserocr</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;processor.Tesseract3Recognizer&#39;</span><span class="p">)</span>
 
-<span class="n">DEFAULT_PATH</span> <span class="o">=</span> <span class="n">tesserocr</span><span class="o">.</span><span class="n">get_languages</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">DEFAULT_MODEL</span> <span class="o">=</span> <span class="n">tesserocr</span><span class="o">.</span><span class="n">get_languages</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Tesseract3Recognizer"><a class="viewcode-back" href="../../../../api/ocrd.processor.recognize.html#ocrd.processor.recognize.tesserocr.Tesseract3Recognizer">[docs]</a><span class="k">class</span> <span class="nc">Tesseract3Recognizer</span><span class="p">(</span><span class="n">Processor</span><span class="p">):</span>
@@ -50,7 +49,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Performs the (text) recognition.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="n">tesserocr</span><span class="o">.</span><span class="n">PyTessBaseAPI</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">DEFAULT_PATH</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="n">DEFAULT_MODEL</span><span class="p">)</span> <span class="k">as</span> <span class="n">tessapi</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">tesserocr</span><span class="o">.</span><span class="n">PyTessBaseAPI</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">TESSDATA_PREFIX</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="n">DEFAULT_MODEL</span><span class="p">)</span> <span class="k">as</span> <span class="n">tessapi</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Using model </span><span class="si">%s</span><span class="s2"> in </span><span class="si">%s</span><span class="s2"> for recognition&quot;</span><span class="p">,</span> <span class="n">tesserocr</span><span class="o">.</span><span class="n">get_languages</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tesserocr</span><span class="o">.</span><span class="n">get_languages</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">tessapi</span><span class="o">.</span><span class="n">SetPageSegMode</span><span class="p">(</span><span class="n">tesserocr</span><span class="o">.</span><span class="n">PSM</span><span class="o">.</span><span class="n">SINGLE_LINE</span><span class="p">)</span>
             <span class="k">for</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">input_file</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_files</span><span class="p">):</span>
