@@ -155,14 +155,13 @@ If basename is not given and no subdir is given, use the alnum characters in the
 <dt id="ocrd.resolver.Resolver.workspace_from_folder">
 <code class="descname">workspace_from_folder</code><span class="sig-paren">(</span><em>directory</em>, <em>return_mets=False</em>, <em>clobber_mets=False</em>, <em>convention='ocrd-gt'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.workspace_from_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.workspace_from_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a workspace from a folder, creating a METS file.</p>
-<p>Conventions:</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>convention</strong> – <p>Which file structure convention to adhere to.
-‘ocrd-gt’ (Default):</p>
+<li><strong>convention</strong> – <p>Which file structure convention to adhere to.</p>
+<p>’ocrd-gt’ (Default):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Subfolder</span> <span class="n">name</span> <span class="o">==&gt;</span> <span class="n">mets</span><span class="p">:</span><span class="n">fileGrp</span> <span class="nd">@USE</span>
     <span class="s1">&#39;page&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;OCR-D-OCR-PAGE&#39;</span>
     <span class="s1">&#39;alto&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;OCR-D-OCR-ALTO&#39;</span>
