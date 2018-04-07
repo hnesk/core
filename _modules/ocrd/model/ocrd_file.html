@@ -84,6 +84,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_el</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="n">ID</span><span class="p">)</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">groupId</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_el</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;GROUPID&#39;</span><span class="p">)</span>
+
+    <span class="nd">@groupId</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">groupId</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupId</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">groupId</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_el</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;GROUPID&#39;</span><span class="p">,</span> <span class="n">groupId</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">mimetype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_el</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;MIMETYPE&#39;</span><span class="p">)</span>
 

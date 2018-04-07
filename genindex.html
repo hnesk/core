@@ -38,7 +38,6 @@
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
- | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#I"><strong>I</strong></a>
@@ -58,6 +57,8 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/ocrd.html#ocrd.validator.ValidationReport.add_error">add_error() (ocrd.validator.ValidationReport method)</a>
+</li>
       <li><a href="api/ocrd.model.html#ocrd.model.ocrd_mets.OcrdMets.add_file">add_file() (ocrd.model.ocrd_mets.OcrdMets method)</a>
 
       <ul>
@@ -79,6 +80,8 @@
 </li>
       </ul></li>
       <li><a href="api/ocrd.model.html#ocrd.model.ocrd_page.OcrdPage.add_textregion">add_textregion() (ocrd.model.ocrd_page.OcrdPage method)</a>
+</li>
+      <li><a href="api/ocrd.html#ocrd.validator.ValidationReport.add_warning">add_warning() (ocrd.validator.ValidationReport method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -139,14 +142,6 @@
   </ul></td>
 </tr></table>
 
-<h2 id="E">E</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/ocrd.processor.characterize.html#ocrd.processor.characterize.exif.ExifProcessor">ExifProcessor (class in ocrd.processor.characterize.exif)</a>
-</li>
-  </ul></td>
-</tr></table>
-
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -159,6 +154,8 @@
       <li><a href="api/ocrd.model.html#ocrd.model.ocrd_mets.OcrdMets.find_files">find_files() (ocrd.model.ocrd_mets.OcrdMets method)</a>
 </li>
       <li><a href="api/ocrd.model.html#ocrd.model.ocrd_page.OcrdPage.from_file">from_file() (ocrd.model.ocrd_page.OcrdPage static method)</a>
+</li>
+      <li><a href="api/ocrd.model.html#ocrd.model.ocrd_exif.OcrdExif.from_filename">from_filename() (ocrd.model.ocrd_exif.OcrdExif static method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -181,6 +178,8 @@
       <li><a href="api/ocrd.model.html#ocrd.model.ocrd_page.OcrdPage.get_textregion">get_textregion() (ocrd.model.ocrd_page.OcrdPage method)</a>
 </li>
       <li><a href="api/ocrd.html#ocrd.utils.getLogger">getLogger() (in module ocrd.utils)</a>
+</li>
+      <li><a href="api/ocrd.model.html#ocrd.model.ocrd_file.OcrdFile.groupId">groupId (ocrd.model.ocrd_file.OcrdFile attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -215,6 +214,8 @@
       <li><a href="api/ocrd.model.html#ocrd.model.ocrd_page.OcrdPage.imageYResolution">imageYResolution (ocrd.model.ocrd_page.OcrdPage attribute)</a>
 </li>
       <li><a href="api/ocrd.processor.html#ocrd.processor.base.Processor.input_files">input_files (ocrd.processor.base.Processor attribute)</a>
+</li>
+      <li><a href="api/ocrd.html#ocrd.validator.ValidationReport.is_valid">is_valid (ocrd.validator.ValidationReport attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -260,6 +261,8 @@
 </li>
       <li><a href="api/ocrd.model.html#module-ocrd.model">ocrd.model (module)</a>
 </li>
+      <li><a href="api/ocrd.model.html#module-ocrd.model.ocrd_exif">ocrd.model.ocrd_exif (module)</a>
+</li>
       <li><a href="api/ocrd.model.html#module-ocrd.model.ocrd_file">ocrd.model.ocrd_file (module)</a>
 </li>
       <li><a href="api/ocrd.model.html#module-ocrd.model.ocrd_mets">ocrd.model.ocrd_mets (module)</a>
@@ -276,20 +279,16 @@
 </li>
       <li><a href="api/ocrd.processor.html#module-ocrd.processor.base">ocrd.processor.base (module)</a>
 </li>
-      <li><a href="api/ocrd.processor.characterize.html#module-ocrd.processor.characterize">ocrd.processor.characterize (module)</a>
-</li>
-      <li><a href="api/ocrd.processor.characterize.html#module-ocrd.processor.characterize.exif">ocrd.processor.characterize.exif (module)</a>
-</li>
       <li><a href="api/ocrd.processor.recognize.html#module-ocrd.processor.recognize">ocrd.processor.recognize (module)</a>
 </li>
       <li><a href="api/ocrd.processor.recognize.html#module-ocrd.processor.recognize.tesserocr">ocrd.processor.recognize.tesserocr (module)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/ocrd.processor.segment_line.html#module-ocrd.processor.segment_line">ocrd.processor.segment_line (module)</a>
 </li>
       <li><a href="api/ocrd.processor.segment_line.html#module-ocrd.processor.segment_line.tesserocr">ocrd.processor.segment_line.tesserocr (module)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/ocrd.processor.segment_region.html#module-ocrd.processor.segment_region">ocrd.processor.segment_region (module)</a>
 </li>
       <li><a href="api/ocrd.processor.segment_region.html#module-ocrd.processor.segment_region.tesserocr">ocrd.processor.segment_region.tesserocr (module)</a>
@@ -300,6 +299,8 @@
 </li>
       <li><a href="api/ocrd.html#module-ocrd.utils">ocrd.utils (module)</a>
 </li>
+      <li><a href="api/ocrd.html#module-ocrd.validator">ocrd.validator (module)</a>
+</li>
       <li><a href="api/ocrd.webservice.html#module-ocrd.webservice">ocrd.webservice (module)</a>
 </li>
       <li><a href="api/ocrd.webservice.html#module-ocrd.webservice.processor">ocrd.webservice.processor (module)</a>
@@ -307,6 +308,8 @@
       <li><a href="api/ocrd.webservice.html#module-ocrd.webservice.repository">ocrd.webservice.repository (module)</a>
 </li>
       <li><a href="api/ocrd.html#module-ocrd.workspace">ocrd.workspace (module)</a>
+</li>
+      <li><a href="api/ocrd.model.html#ocrd.model.ocrd_exif.OcrdExif">OcrdExif (class in ocrd.model.ocrd_exif)</a>
 </li>
       <li><a href="api/ocrd.model.html#ocrd.model.ocrd_file.OcrdFile">OcrdFile (class in ocrd.model.ocrd_file)</a>
 </li>
@@ -337,8 +340,6 @@
       <li><a href="api/ocrd.processor.html#ocrd.processor.base.Processor.process">process() (ocrd.processor.base.Processor method)</a>
 
       <ul>
-        <li><a href="api/ocrd.processor.characterize.html#ocrd.processor.characterize.exif.ExifProcessor.process">(ocrd.processor.characterize.exif.ExifProcessor method)</a>
-</li>
         <li><a href="api/ocrd.processor.recognize.html#ocrd.processor.recognize.tesserocr.Tesseract3Recognizer.process">(ocrd.processor.recognize.tesserocr.Tesseract3Recognizer method)</a>
 </li>
         <li><a href="api/ocrd.processor.segment_line.html#ocrd.processor.segment_line.tesserocr.Tesseract3LineSegmenter.process">(ocrd.processor.segment_line.tesserocr.Tesseract3LineSegmenter method)</a>
@@ -360,10 +361,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/ocrd.html#ocrd.workspace.Workspace.resolve_image_as_pil">resolve_image_as_pil() (ocrd.workspace.Workspace method)</a>
 </li>
-      <li><a href="api/ocrd.html#ocrd.resolver.Resolver">Resolver (class in ocrd.resolver)</a>
+      <li><a href="api/ocrd.html#ocrd.workspace.Workspace.resolve_image_exif">resolve_image_exif() (ocrd.workspace.Workspace method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/ocrd.html#ocrd.resolver.Resolver">Resolver (class in ocrd.resolver)</a>
+</li>
       <li><a href="api/ocrd.html#ocrd.resolver_cache.ResolverCache">ResolverCache (class in ocrd.resolver_cache)</a>
 </li>
       <li><a href="api/ocrd.processor.html#ocrd.processor.base.run_processor">run_processor() (in module ocrd.processor.base)</a>
@@ -392,19 +395,29 @@
 </li>
       <li><a href="api/ocrd.processor.recognize.html#ocrd.processor.recognize.tesserocr.Tesseract3Recognizer">Tesseract3Recognizer (class in ocrd.processor.recognize.tesserocr)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/ocrd.processor.segment_region.html#ocrd.processor.segment_region.tesserocr.Tesseract3RegionSegmenter">Tesseract3RegionSegmenter (class in ocrd.processor.segment_region.tesserocr)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/ocrd.model.html#ocrd.model.ocrd_page_textline.OcrdPageTextLine.textequiv">textequiv (ocrd.model.ocrd_page_textline.OcrdPageTextLine attribute)</a>
 </li>
-      <li><a href="api/ocrd.model.html#ocrd.model.ocrd_xml_base.OcrdXmlDocument.to_xml">to_xml() (ocrd.model.ocrd_xml_base.OcrdXmlDocument method)</a>
+      <li><a href="api/ocrd.model.html#ocrd.model.ocrd_exif.OcrdExif.to_xml">to_xml() (ocrd.model.ocrd_exif.OcrdExif method)</a>
+
+      <ul>
+        <li><a href="api/ocrd.model.html#ocrd.model.ocrd_xml_base.OcrdXmlDocument.to_xml">(ocrd.model.ocrd_xml_base.OcrdXmlDocument method)</a>
 </li>
+        <li><a href="api/ocrd.html#ocrd.validator.ValidationReport.to_xml">(ocrd.validator.ValidationReport method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/ocrd.model.html#ocrd.model.ocrd_mets.OcrdMets.unique_identifier">unique_identifier (ocrd.model.ocrd_mets.OcrdMets attribute)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/ocrd.model.html#ocrd.model.ocrd_file.OcrdFile.url">url (ocrd.model.ocrd_file.OcrdFile attribute)</a>
 </li>
@@ -414,12 +427,18 @@
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/ocrd.processor.html#ocrd.processor.base.Processor.verify">verify() (ocrd.processor.base.Processor method)</a>
-
-      <ul>
-        <li><a href="api/ocrd.processor.characterize.html#ocrd.processor.characterize.exif.ExifProcessor.verify">(ocrd.processor.characterize.exif.ExifProcessor method)</a>
+      <li><a href="api/ocrd.html#ocrd.validator.Validator.validate">validate() (ocrd.validator.Validator static method)</a>
 </li>
-      </ul></li>
+      <li><a href="api/ocrd.html#ocrd.validator.Validator.validate_all">validate_all() (ocrd.validator.Validator method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/ocrd.html#ocrd.validator.ValidationReport">ValidationReport (class in ocrd.validator)</a>
+</li>
+      <li><a href="api/ocrd.html#ocrd.validator.Validator">Validator (class in ocrd.validator)</a>
+</li>
+      <li><a href="api/ocrd.processor.html#ocrd.processor.base.Processor.verify">verify() (ocrd.processor.base.Processor method)</a>
+</li>
   </ul></td>
 </tr></table>
 

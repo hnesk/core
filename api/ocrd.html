@@ -46,6 +46,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ocrd.model.html">ocrd.model package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.model.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.model.html#module-ocrd.model.ocrd_exif">ocrd.model.ocrd_exif module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.model.html#module-ocrd.model.ocrd_file">ocrd.model.ocrd_file module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.model.html#module-ocrd.model.ocrd_mets">ocrd.model.ocrd_mets module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.model.html#module-ocrd.model.ocrd_page">ocrd.model.ocrd_page module</a></li>
@@ -57,12 +58,6 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ocrd.processor.html">ocrd.processor package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.processor.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="ocrd.processor.characterize.html">ocrd.processor.characterize package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.characterize.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.characterize.html#module-ocrd.processor.characterize.exif">ocrd.processor.characterize.exif module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.characterize.html#module-ocrd.processor.characterize">Module contents</a></li>
-</ul>
-</li>
 <li class="toctree-l3"><a class="reference internal" href="ocrd.processor.recognize.html">ocrd.processor.recognize package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="ocrd.processor.recognize.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ocrd.processor.recognize.html#module-ocrd.processor.recognize.tesserocr">ocrd.processor.recognize.tesserocr module</a></li>
@@ -224,6 +219,74 @@ If basename is not given and no subdir is given, use the alnum characters in the
 </dd></dl>
 
 </div>
+<div class="section" id="module-ocrd.validator">
+<span id="ocrd-validator-module"></span><h2>ocrd.validator module<a class="headerlink" href="#module-ocrd.validator" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ocrd.validator.ValidationReport">
+<em class="property">class </em><code class="descclassname">ocrd.validator.</code><code class="descname">ValidationReport</code><a class="reference internal" href="../_modules/ocrd/validator.html#ValidationReport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.ValidationReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Container of warnings and errors about a workspace.</p>
+<dl class="method">
+<dt id="ocrd.validator.ValidationReport.add_error">
+<code class="descname">add_error</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#ValidationReport.add_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.ValidationReport.add_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ocrd.validator.ValidationReport.add_warning">
+<code class="descname">add_warning</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#ValidationReport.add_warning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.ValidationReport.add_warning" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.validator.ValidationReport.is_valid">
+<code class="descname">is_valid</code><a class="headerlink" href="#ocrd.validator.ValidationReport.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ocrd.validator.ValidationReport.to_xml">
+<code class="descname">to_xml</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#ValidationReport.to_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.ValidationReport.to_xml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ocrd.validator.Validator">
+<em class="property">class </em><code class="descclassname">ocrd.validator.</code><code class="descname">Validator</code><span class="sig-paren">(</span><em>resolver</em>, <em>mets_url</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#Validator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.Validator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Validates an OCR-D/METS workspace against the specs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>resolver</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Resolver</span></code>) – Instance of a resolver</li>
+<li><strong>mets_url</strong> (<em>string</em>) – URL of the METS file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="ocrd.validator.Validator.validate">
+<em class="property">static </em><code class="descname">validate</code><span class="sig-paren">(</span><em>mets_url</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#Validator.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.Validator.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the workspace of a METS URL against the specs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">report (<a class="reference internal" href="#ocrd.validator.ValidationReport" title="ocrd.validator.ValidationReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValidationReport</span></code></a>) Report on the validity</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.validator.Validator.validate_all">
+<code class="descname">validate_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#Validator.validate_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.Validator.validate_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-ocrd.workspace">
 <span id="ocrd-workspace-module"></span><h2>ocrd.workspace module<a class="headerlink" href="#module-ocrd.workspace" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -236,7 +299,7 @@ Resolver.</p>
 <dl class="method">
 <dt id="ocrd.workspace.Workspace.add_file">
 <code class="descname">add_file</code><span class="sig-paren">(</span><em>use</em>, <em>basename=None</em>, <em>content=None</em>, <em>local_filename=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace.add_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.add_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add an output file. Creates an <a class="reference internal" href="ocrd.model.html#ocrd.model.ocrd_file.OcrdFile" title="ocrd.model.ocrd_file.OcrdFile"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ocrd.model.ocrd_file.OcrdFile</span></code></a> to pass around and adds that to the
+<dd><p>Add an output file. Creates an <code class="xref py py-class docutils literal notranslate"><span class="pre">OcrdFile</span></code> to pass around and adds that to the
 OcrdMets OUTPUT section.</p>
 </dd></dl>
 
@@ -297,6 +360,12 @@ OUTPUT group to the data repository, sets their URL accordingly.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="ocrd.workspace.Workspace.resolve_image_exif">
+<code class="descname">resolve_image_exif</code><span class="sig-paren">(</span><em>image_url</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace.resolve_image_exif"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.resolve_image_exif" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the EXIF metadata about an image URL as <code class="xref py py-class docutils literal notranslate"><span class="pre">OcrdExif</span></code></p>
+</dd></dl>
+
+<dl class="method">
 <dt id="ocrd.workspace.Workspace.save_mets">
 <code class="descname">save_mets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace.save_mets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.save_mets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write out the current state of the METS file.</p>
@@ -325,6 +394,7 @@ OUTPUT group to the data repository, sets their URL accordingly.</p>
 <li><a class="reference internal" href="#module-ocrd.resolver">ocrd.resolver module</a></li>
 <li><a class="reference internal" href="#module-ocrd.resolver_cache">ocrd.resolver_cache module</a></li>
 <li><a class="reference internal" href="#module-ocrd.utils">ocrd.utils module</a></li>
+<li><a class="reference internal" href="#module-ocrd.validator">ocrd.validator module</a></li>
 <li><a class="reference internal" href="#module-ocrd.workspace">ocrd.workspace module</a></li>
 <li><a class="reference internal" href="#module-ocrd">Module contents</a></li>
 </ul>

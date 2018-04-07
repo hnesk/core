@@ -36,6 +36,26 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-ocrd.model.ocrd_exif">
+<span id="ocrd-model-ocrd-exif-module"></span><h2>ocrd.model.ocrd_exif module<a class="headerlink" href="#module-ocrd.model.ocrd_exif" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ocrd.model.ocrd_exif.OcrdExif">
+<em class="property">class </em><code class="descclassname">ocrd.model.ocrd_exif.</code><code class="descname">OcrdExif</code><span class="sig-paren">(</span><em>props</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_exif.html#OcrdExif"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_exif.OcrdExif" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents technical image metadata</p>
+<dl class="staticmethod">
+<dt id="ocrd.model.ocrd_exif.OcrdExif.from_filename">
+<em class="property">static </em><code class="descname">from_filename</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_exif.html#OcrdExif.from_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_exif.OcrdExif.from_filename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ocrd.model.ocrd_exif.OcrdExif.to_xml">
+<code class="descname">to_xml</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_exif.html#OcrdExif.to_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_exif.OcrdExif.to_xml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-ocrd.model.ocrd_file">
 <span id="ocrd-model-ocrd-file-module"></span><h2>ocrd.model.ocrd_file module<a class="headerlink" href="#module-ocrd.model.ocrd_file" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -56,6 +76,11 @@
 <dl class="attribute">
 <dt id="ocrd.model.ocrd_file.OcrdFile.basename_without_extension">
 <code class="descname">basename_without_extension</code><a class="headerlink" href="#ocrd.model.ocrd_file.OcrdFile.basename_without_extension" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_file.OcrdFile.groupId">
+<code class="descname">groupId</code><a class="headerlink" href="#ocrd.model.ocrd_file.OcrdFile.groupId" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -99,7 +124,7 @@
 
 <dl class="method">
 <dt id="ocrd.model.ocrd_mets.OcrdMets.find_files">
-<code class="descname">find_files</code><span class="sig-paren">(</span><em>fileGrp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.find_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.find_files" title="Permalink to this definition">¶</a></dt>
+<code class="descname">find_files</code><span class="sig-paren">(</span><em>fileGrp=None</em>, <em>groupId=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.find_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.find_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>List files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -112,6 +137,11 @@
 </tbody>
 </table>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_mets.OcrdMets.unique_identifier">
+<code class="descname">unique_identifier</code><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.unique_identifier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -343,6 +373,7 @@
   <ul>
 <li><a class="reference internal" href="#">ocrd.model package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-ocrd.model.ocrd_exif">ocrd.model.ocrd_exif module</a></li>
 <li><a class="reference internal" href="#module-ocrd.model.ocrd_file">ocrd.model.ocrd_file module</a></li>
 <li><a class="reference internal" href="#module-ocrd.model.ocrd_mets">ocrd.model.ocrd_mets module</a></li>
 <li><a class="reference internal" href="#module-ocrd.model.ocrd_page">ocrd.model.ocrd_page module</a></li>

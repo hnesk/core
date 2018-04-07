@@ -36,7 +36,7 @@
 <span class="kn">import</span> <span class="nn">PIL</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">ocrd.model</span> <span class="k">import</span> <span class="n">OcrdMets</span>
+<span class="kn">from</span> <span class="nn">ocrd.model</span> <span class="k">import</span> <span class="n">OcrdMets</span><span class="p">,</span> <span class="n">OcrdExif</span>
 <span class="kn">from</span> <span class="nn">ocrd.utils</span> <span class="k">import</span> <span class="n">getLogger</span>
 <span class="n">log</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;ocrd.workspace&#39;</span><span class="p">)</span>
 
@@ -58,7 +58,7 @@
         <span class="k">return</span> <span class="s1">&#39;Workspace[directory=</span><span class="si">%s</span><span class="s1">, file_groups=</span><span class="si">%s</span><span class="s1">, files=</span><span class="si">%s</span><span class="s1">]&#39;</span> <span class="o">%</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mets</span><span class="o">.</span><span class="n">file_groups</span><span class="p">,</span>
-            <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mets</span><span class="o">.</span><span class="n">files</span><span class="p">],</span>
+            <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mets</span><span class="o">.</span><span class="n">find_files</span><span class="p">()],</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="Workspace.download_url"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.workspace.Workspace.download_url">[docs]</a>    <span class="k">def</span> <span class="nf">download_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -93,7 +93,7 @@
 
 <div class="viewcode-block" id="Workspace.add_file"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.workspace.Workspace.add_file">[docs]</a>    <span class="k">def</span> <span class="nf">add_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">local_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add an output file. Creates an :py:mod:`ocrd.model.ocrd_file.OcrdFile` to pass around and adds that to the</span>
+<span class="sd">        Add an output file. Creates an :class:`OcrdFile` to pass around and adds that to the</span>
 <span class="sd">        OcrdMets OUTPUT section.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;outputfile use=</span><span class="si">%s</span><span class="s1"> basename=</span><span class="si">%s</span><span class="s1"> local_filename=</span><span class="si">%s</span><span class="s1"> content=</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">use</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">local_filename</span><span class="p">,</span> <span class="n">content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
@@ -129,6 +129,16 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mets_filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mets</span><span class="o">.</span><span class="n">to_xml</span><span class="p">(</span><span class="n">xmllint</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Workspace.resolve_image_exif"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.workspace.Workspace.resolve_image_exif">[docs]</a>    <span class="k">def</span> <span class="nf">resolve_image_exif</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_url</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the EXIF metadata about an image URL as :class:`OcrdExif`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">image_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">download_url</span><span class="p">(</span><span class="n">image_url</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">image_url</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_cache</span><span class="p">[</span><span class="s1">&#39;exif&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image_cache</span><span class="p">[</span><span class="s1">&#39;exif&#39;</span><span class="p">][</span><span class="n">image_url</span><span class="p">]</span> <span class="o">=</span> <span class="n">OcrdExif</span><span class="o">.</span><span class="n">from_filename</span><span class="p">(</span><span class="n">image_filename</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_cache</span><span class="p">[</span><span class="s1">&#39;exif&#39;</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Workspace.resolve_image_as_pil"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.workspace.Workspace.resolve_image_as_pil">[docs]</a>    <span class="k">def</span> <span class="nf">resolve_image_as_pil</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_url</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

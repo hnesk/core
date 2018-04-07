@@ -34,7 +34,6 @@
 <span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">request</span>
 
 <span class="kn">from</span> <span class="nn">ocrd.processor.base</span> <span class="k">import</span> <span class="n">run_processor</span>
-<span class="kn">from</span> <span class="nn">ocrd.processor.characterize.exif</span> <span class="k">import</span> <span class="n">ExifProcessor</span>
 <span class="kn">from</span> <span class="nn">ocrd.processor.segment_line.tesserocr</span> <span class="k">import</span> <span class="n">Tesseract3LineSegmenter</span>
 <span class="kn">from</span> <span class="nn">ocrd.processor.segment_region.tesserocr</span> <span class="k">import</span> <span class="n">Tesseract3RegionSegmenter</span>
 <span class="kn">from</span> <span class="nn">ocrd.resolver</span> <span class="k">import</span> <span class="n">Resolver</span>
@@ -43,11 +42,6 @@
 
 <div class="viewcode-block" id="create"><a class="viewcode-back" href="../../../api/ocrd.webservice.html#ocrd.webservice.processor.create">[docs]</a><span class="k">def</span> <span class="nf">create</span><span class="p">():</span>
     <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-
-    <span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/processor/characterize/exif&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PUT&#39;</span><span class="p">])</span>
-    <span class="k">def</span> <span class="nf">_characterize_exif</span><span class="p">():</span>
-        <span class="n">run_processor</span><span class="p">(</span><span class="n">ExifProcessor</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;mets_url&#39;</span><span class="p">],</span> <span class="n">resolver</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s1">&#39;DONE&#39;</span><span class="p">,</span> <span class="mi">200</span>
 
     <span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/processor/segment_line/tesserocr&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PUT&#39;</span><span class="p">])</span>
     <span class="k">def</span> <span class="nf">_segment_line_tesserocr</span><span class="p">():</span>
