@@ -120,11 +120,9 @@ Optionally cache files.</p>
 </tbody>
 </table>
 <dl class="method">
-<dt id="ocrd.resolver.Resolver.create_workspace">
-<code class="descname">create_workspace</code><span class="sig-paren">(</span><em>mets_url</em>, <em>directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.create_workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.create_workspace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a workspace for a processor.</p>
-<p>Sets the mets.xml file</p>
-</dd></dl>
+<dt id="ocrd.resolver.Resolver.add_files_to_mets">
+<code class="descname">add_files_to_mets</code><span class="sig-paren">(</span><em>convention</em>, <em>mets</em>, <em>directory</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.add_files_to_mets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.add_files_to_mets" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="ocrd.resolver.Resolver.download_to_directory">
@@ -151,6 +149,48 @@ If basename is not given and no subdir is given, use the alnum characters in the
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.resolver.Resolver.workspace_from_folder">
+<code class="descname">workspace_from_folder</code><span class="sig-paren">(</span><em>directory</em>, <em>return_mets=False</em>, <em>clobber_mets=False</em>, <em>convention='ocrd-gt'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.workspace_from_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.workspace_from_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a workspace from a folder, creating a METS file.</p>
+<p>Conventions:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>convention</strong> – <p>Which file structure convention to adhere to.
+‘ocrd-gt’ (Default):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Subfolder</span> <span class="n">name</span> <span class="o">==&gt;</span> <span class="n">mets</span><span class="p">:</span><span class="n">fileGrp</span> <span class="nd">@USE</span>
+    <span class="s1">&#39;page&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;OCR-D-OCR-PAGE&#39;</span>
+    <span class="s1">&#39;alto&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;OCR-D-OCR-ALTO&#39;</span>
+    <span class="s1">&#39;tei&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;OCR-D-OCR-TEI&#39;</span>
+<span class="n">fileGrp</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">upper</span><span class="p">(</span><span class="n">Basename</span> <span class="n">of</span> <span class="n">file</span> <span class="n">without</span> <span class="n">extension</span><span class="p">)</span> <span class="o">==</span> <span class="n">mets</span><span class="p">:</span><span class="n">file</span> <span class="nd">@ID</span>
+<span class="n">File</span> <span class="ow">in</span> <span class="n">root</span> <span class="n">folder</span> <span class="o">==</span> <span class="n">mets</span><span class="p">:</span><span class="n">fileGrp</span> <span class="nd">@USE</span> <span class="o">==</span> <span class="s1">&#39;OCR-D-IMG&#39;</span>
+<span class="n">Extension</span> <span class="o">==&gt;</span> <span class="n">mets</span><span class="o">.</span><span class="n">file</span> <span class="nd">@MIMETYPE</span>
+    <span class="o">.</span><span class="n">tif</span> <span class="o">=&gt;</span> <span class="n">image</span><span class="o">/</span><span class="n">tif</span>
+    <span class="o">.</span><span class="n">png</span> <span class="o">=&gt;</span> <span class="n">image</span><span class="o">/</span><span class="n">png</span>
+    <span class="o">.</span><span class="n">jpg</span> <span class="o">=&gt;</span> <span class="n">image</span><span class="o">/</span><span class="n">jpg</span>
+    <span class="o">.</span><span class="n">xml</span> <span class="o">=&gt;</span> <span class="n">image</span><span class="o">/</span><span class="n">xml</span>
+</pre></div>
+</div>
+</li>
+<li><strong>clobber_mets</strong> (<em>boolean</em>) – Whether to overwrite existing mets.xml. Default: False.</li>
+<li><strong>return_mets</strong> (<em>boolean</em>) – Do not create the actual mets.xml file but return the <code class="xref py py-class docutils literal notranslate"><span class="pre">OcrdMets</span></code>. Default: False.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.resolver.Resolver.workspace_from_url">
+<code class="descname">workspace_from_url</code><span class="sig-paren">(</span><em>mets_url</em>, <em>directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.workspace_from_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.workspace_from_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a workspace from a METS by URL.</p>
+<p>Sets the mets.xml file</p>
 </dd></dl>
 
 </dd></dl>
@@ -265,9 +305,14 @@ If basename is not given and no subdir is given, use the alnum characters in the
 </tr>
 </tbody>
 </table>
-<dl class="staticmethod">
+<dl class="method">
 <dt id="ocrd.validator.Validator.validate">
-<em class="property">static </em><code class="descname">validate</code><span class="sig-paren">(</span><em>mets_url</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#Validator.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.Validator.validate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">validate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#Validator.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.Validator.validate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="ocrd.validator.Validator.validate_url">
+<em class="property">static </em><code class="descname">validate_url</code><span class="sig-paren">(</span><em>mets_url</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#Validator.validate_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.Validator.validate_url" title="Permalink to this definition">¶</a></dt>
 <dd><p>Validates the workspace of a METS URL against the specs</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -278,11 +323,6 @@ If basename is not given and no subdir is given, use the alnum characters in the
 </tbody>
 </table>
 </dd></dl>
-
-<dl class="method">
-<dt id="ocrd.validator.Validator.validate_all">
-<code class="descname">validate_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#Validator.validate_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.Validator.validate_all" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -363,6 +403,18 @@ OUTPUT group to the data repository, sets their URL accordingly.</p>
 <dt id="ocrd.workspace.Workspace.resolve_image_exif">
 <code class="descname">resolve_image_exif</code><span class="sig-paren">(</span><em>image_url</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace.resolve_image_exif"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.resolve_image_exif" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the EXIF metadata about an image URL as <code class="xref py py-class docutils literal notranslate"><span class="pre">OcrdExif</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image_url</strong> (<em>string</em>) – URL of image</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Return</dt>
+<dd><code class="xref py py-class docutils literal notranslate"><span class="pre">OcrdExif</span></code></dd>
+</dl>
 </dd></dl>
 
 <dl class="method">

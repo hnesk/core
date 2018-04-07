@@ -60,10 +60,9 @@
 
 <div class="viewcode-block" id="ValidationReport.to_xml"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.validator.ValidationReport.to_xml">[docs]</a>    <span class="k">def</span> <span class="nf">to_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">body</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">for</span> <span class="n">warning</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="p">:</span>
-            <span class="n">body</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  &lt;warning&gt;</span><span class="si">%s</span><span class="s1">&lt;/warning&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">warning</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span>
-            <span class="n">body</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  &lt;error&gt;</span><span class="si">%s</span><span class="s1">&lt;/error&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">error</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;warning&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="s1">&#39;s&#39;</span><span class="p">]:</span>
+                <span class="n">body</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  &lt;</span><span class="si">%s</span><span class="s1">&gt;</span><span class="si">%s</span><span class="s1">&lt;/</span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;&lt;report valid=&quot;</span><span class="si">%s</span><span class="s1">&quot;&gt;</span><span class="si">%s</span><span class="se">\n</span><span class="s1">&lt;/report&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_valid</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ValidationReport.add_warning"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.validator.ValidationReport.add_warning">[docs]</a>    <span class="k">def</span> <span class="nf">add_warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
@@ -85,11 +84,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">resolver</span> <span class="o">=</span> <span class="n">resolver</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mets_url</span> <span class="o">=</span> <span class="n">mets_url</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">report</span> <span class="o">=</span> <span class="n">ValidationReport</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolver</span><span class="o">.</span><span class="n">create_workspace</span><span class="p">(</span><span class="n">mets_url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolver</span><span class="o">.</span><span class="n">workspace_from_url</span><span class="p">(</span><span class="n">mets_url</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">mets</span>
 
-<div class="viewcode-block" id="Validator.validate"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.validator.Validator.validate">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="n">resolver</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">):</span>
+<div class="viewcode-block" id="Validator.validate_url"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.validator.Validator.validate_url">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">validate_url</span><span class="p">(</span><span class="n">resolver</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Validates the workspace of a METS URL against the specs</span>
 
@@ -97,17 +96,26 @@
 <span class="sd">            report (:class:`ValidationReport`) Report on the validity</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">validator</span> <span class="o">=</span> <span class="n">Validator</span><span class="p">(</span><span class="n">resolver</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">)</span>
-        <span class="n">validator</span><span class="o">.</span><span class="n">validate_all</span><span class="p">()</span>
+        <span class="n">validator</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">validator</span><span class="o">.</span><span class="n">report</span></div>
 
-<div class="viewcode-block" id="Validator.validate_all"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.validator.Validator.validate_all">[docs]</a>    <span class="k">def</span> <span class="nf">validate_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Validator.validate"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.validator.Validator.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_mets_unique_identifier</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_mets_file_group_names</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_mets_files</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_mets_files</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_pixel_density</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">_validate_mets_unique_identifier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mets</span><span class="o">.</span><span class="n">unique_identifier</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">add_error</span><span class="p">(</span><span class="s2">&quot;METS has no unique identifier&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_validate_pixel_density</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mets</span><span class="o">.</span><span class="n">find_files</span><span class="p">(</span><span class="n">mimetype</span><span class="o">=</span><span class="s1">&#39;image/tif&#39;</span><span class="p">):</span>
+            <span class="n">exif</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">resolve_image_exif</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;xResolution&#39;</span><span class="p">,</span> <span class="s1">&#39;yResolution&#39;</span><span class="p">]:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">exif</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">72</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">add_error</span><span class="p">(</span><span class="s2">&quot;Image </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2"> pixels per </span><span class="si">%s</span><span class="s2">) is too low&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">exif</span><span class="o">.</span><span class="n">resolutionUnit</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">_validate_mets_file_group_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">fileGrp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mets</span><span class="o">.</span><span class="n">file_groups</span><span class="p">:</span>

@@ -104,12 +104,12 @@
 <dd><p>Bases: <a class="reference internal" href="#ocrd.model.ocrd_xml_base.OcrdXmlDocument" title="ocrd.model.ocrd_xml_base.OcrdXmlDocument"><code class="xref py py-class docutils literal notranslate"><span class="pre">ocrd.model.ocrd_xml_base.OcrdXmlDocument</span></code></a></p>
 <dl class="method">
 <dt id="ocrd.model.ocrd_mets.OcrdMets.add_file">
-<code class="descname">add_file</code><span class="sig-paren">(</span><em>use</em>, <em>mimetype=None</em>, <em>url=None</em>, <em>ID=None</em>, <em>local_filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.add_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.add_file" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_file</code><span class="sig-paren">(</span><em>fileGrp</em>, <em>mimetype=None</em>, <em>url=None</em>, <em>ID=None</em>, <em>local_filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.add_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.add_file" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="ocrd.model.ocrd_mets.OcrdMets.add_file_group">
-<code class="descname">add_file_group</code><span class="sig-paren">(</span><em>use</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.add_file_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.add_file_group" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_file_group</code><span class="sig-paren">(</span><em>fileGrp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.add_file_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.add_file_group" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -124,15 +124,21 @@
 
 <dl class="method">
 <dt id="ocrd.model.ocrd_mets.OcrdMets.find_files">
-<code class="descname">find_files</code><span class="sig-paren">(</span><em>fileGrp=None</em>, <em>groupId=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.find_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.find_files" title="Permalink to this definition">¶</a></dt>
+<code class="descname">find_files</code><span class="sig-paren">(</span><em>fileGrp=None</em>, <em>groupId=None</em>, <em>mimetype=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.find_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.find_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>List files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fileGrp</strong> (<em>string</em>) – USE of the fileGrp to list files of</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fileGrp</strong> (<em>string</em>) – USE of the fileGrp to list files of</li>
+<li><strong>groupId</strong> (<em>string</em>) – GROUPID of matching files</li>
+<li><strong>mimetype</strong> (<em>string</em>) – MIMETYPE of matching files</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of files.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of files.</p>
+</td>
 </tr>
 </tbody>
 </table>

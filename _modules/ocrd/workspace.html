@@ -52,7 +52,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mets_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s1">&#39;mets.xml&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mets</span> <span class="o">=</span> <span class="n">OcrdMets</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mets_filename</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">image_cache</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pil&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;cv2&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_cache</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;pil&#39;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s1">&#39;cv2&#39;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s1">&#39;exif&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;Workspace[directory=</span><span class="si">%s</span><span class="s1">, file_groups=</span><span class="si">%s</span><span class="s1">, files=</span><span class="si">%s</span><span class="s1">]&#39;</span> <span class="o">%</span> <span class="p">(</span>
@@ -133,12 +137,18 @@
 <div class="viewcode-block" id="Workspace.resolve_image_exif"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.workspace.Workspace.resolve_image_exif">[docs]</a>    <span class="k">def</span> <span class="nf">resolve_image_exif</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_url</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the EXIF metadata about an image URL as :class:`OcrdExif`</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            image_url (string) : URL of image</span>
+
+<span class="sd">        Return</span>
+<span class="sd">            :class:`OcrdExif`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">image_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">download_url</span><span class="p">(</span><span class="n">image_url</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">image_url</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_cache</span><span class="p">[</span><span class="s1">&#39;exif&#39;</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">image_cache</span><span class="p">[</span><span class="s1">&#39;exif&#39;</span><span class="p">][</span><span class="n">image_url</span><span class="p">]</span> <span class="o">=</span> <span class="n">OcrdExif</span><span class="o">.</span><span class="n">from_filename</span><span class="p">(</span><span class="n">image_filename</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_cache</span><span class="p">[</span><span class="s1">&#39;exif&#39;</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_cache</span><span class="p">[</span><span class="s1">&#39;exif&#39;</span><span class="p">][</span><span class="n">image_url</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Workspace.resolve_image_as_pil"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.workspace.Workspace.resolve_image_as_pil">[docs]</a>    <span class="k">def</span> <span class="nf">resolve_image_as_pil</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_url</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

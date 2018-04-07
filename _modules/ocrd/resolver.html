@@ -35,13 +35,23 @@
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 
+<span class="kn">from</span> <span class="nn">ocrd.constants</span> <span class="k">import</span> <span class="n">METS_XML_EMPTY</span>
 <span class="kn">from</span> <span class="nn">ocrd.utils</span> <span class="k">import</span> <span class="n">getLogger</span><span class="p">,</span> <span class="n">safe_filename</span>
 <span class="kn">from</span> <span class="nn">ocrd.resolver_cache</span> <span class="k">import</span> <span class="n">ResolverCache</span>
 <span class="kn">from</span> <span class="nn">ocrd.workspace</span> <span class="k">import</span> <span class="n">Workspace</span>
+<span class="kn">from</span> <span class="nn">ocrd.model</span> <span class="k">import</span> <span class="n">OcrdMets</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;ocrd.resolver&#39;</span><span class="p">)</span>
 <span class="n">PREFIX</span> <span class="o">=</span> <span class="s1">&#39;pyocrd-&#39;</span>
 <span class="n">tempfile</span><span class="o">.</span><span class="n">tempdir</span> <span class="o">=</span> <span class="s1">&#39;/tmp&#39;</span>
+<span class="n">EXT_TO_MIME</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;.tif&#39;</span><span class="p">:</span> <span class="s1">&#39;image/tiff&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;.tiff&#39;</span><span class="p">:</span> <span class="s1">&#39;image/tiff&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;.png&#39;</span><span class="p">:</span> <span class="s1">&#39;image/png&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;.jpg&#39;</span><span class="p">:</span> <span class="s1">&#39;image/jpg&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;.jpeg&#39;</span><span class="p">:</span> <span class="s1">&#39;image/jpg&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;.xml&#39;</span><span class="p">:</span> <span class="s1">&#39;text/xml&#39;</span>
+<span class="p">}</span>
 
 <div class="viewcode-block" id="Resolver"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver">[docs]</a><span class="k">class</span> <span class="nc">Resolver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -130,9 +140,9 @@
 
         <span class="k">return</span> <span class="n">outfilename</span></div>
 
-<div class="viewcode-block" id="Resolver.create_workspace"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.create_workspace">[docs]</a>    <span class="k">def</span> <span class="nf">create_workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Resolver.workspace_from_url"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.workspace_from_url">[docs]</a>    <span class="k">def</span> <span class="nf">workspace_from_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create a workspace for a processor.</span>
+<span class="sd">        Create a workspace from a METS by URL.</span>
 
 <span class="sd">        Sets the mets.xml file</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -140,7 +150,81 @@
             <span class="n">directory</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">PREFIX</span><span class="p">)</span>
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Creating workspace &#39;</span><span class="si">%s</span><span class="s2">&#39; for METS @ &lt;</span><span class="si">%s</span><span class="s2">&gt;&quot;</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">download_to_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;mets.xml&#39;</span><span class="p">,</span> <span class="n">prefer_symlink</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">Workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Resolver.workspace_from_folder"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.workspace_from_folder">[docs]</a>    <span class="k">def</span> <span class="nf">workspace_from_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">return_mets</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">clobber_mets</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convention</span><span class="o">=</span><span class="s1">&#39;ocrd-gt&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a workspace from a folder, creating a METS file.</span>
+
+<span class="sd">        Conventions:</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            convention: Which file structure convention to adhere to.</span>
+<span class="sd">                &#39;ocrd-gt&#39; (Default)::</span>
+
+<span class="sd">                    Subfolder name ==&gt; mets:fileGrp @USE</span>
+<span class="sd">                        &#39;page&#39; =&gt; &#39;OCR-D-OCR-PAGE&#39;</span>
+<span class="sd">                        &#39;alto&#39; =&gt; &#39;OCR-D-OCR-ALTO&#39;</span>
+<span class="sd">                        &#39;tei&#39; =&gt; &#39;OCR-D-OCR-TEI&#39;</span>
+<span class="sd">                    fileGrp + &#39;_&#39; + upper(Basename of file without extension) == mets:file @ID</span>
+<span class="sd">                    File in root folder == mets:fileGrp @USE == &#39;OCR-D-IMG&#39;</span>
+<span class="sd">                    Extension ==&gt; mets.file @MIMETYPE</span>
+<span class="sd">                        .tif =&gt; image/tif</span>
+<span class="sd">                        .png =&gt; image/png</span>
+<span class="sd">                        .jpg =&gt; image/jpg</span>
+<span class="sd">                        .xml =&gt; image/xml</span>
+
+<span class="sd">            clobber_mets (boolean) : Whether to overwrite existing mets.xml. Default: False.</span>
+<span class="sd">            return_mets (boolean) : Do not create the actual mets.xml file but return the :class:`OcrdMets`. Default: False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Must pass directory&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Directory does not exist or is not a directory: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">directory</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">clobber_mets</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s1">&#39;mets.xml&#39;</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Not clobbering existing mets.xml in &#39;</span><span class="si">%s</span><span class="s2">&#39;.&quot;</span> <span class="o">%</span> <span class="n">directory</span><span class="p">)</span>
+
+        <span class="n">mets</span> <span class="o">=</span> <span class="n">OcrdMets</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">METS_XML_EMPTY</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+        <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_files_to_mets</span><span class="p">(</span><span class="n">convention</span><span class="p">,</span> <span class="n">mets</span><span class="p">,</span> <span class="n">directory</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">return_mets</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">mets</span>
+
+        <span class="c1">#  print(mets.to_xml(xmllint=True).decode(&#39;utf-8&#39;))</span>
+        <span class="n">mets_fpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s1">&#39;mets.xml&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">mets_fpath</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fmets</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Writing </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">mets_fpath</span><span class="p">)</span>
+            <span class="n">fmets</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">mets</span><span class="o">.</span><span class="n">to_xml</span><span class="p">(</span><span class="n">xmllint</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">Workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Resolver.add_files_to_mets"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.add_files_to_mets">[docs]</a>    <span class="k">def</span> <span class="nf">add_files_to_mets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">convention</span><span class="p">,</span> <span class="n">mets</span><span class="p">,</span> <span class="n">directory</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">convention</span> <span class="o">==</span> <span class="s1">&#39;ocrd-gt&#39;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+                <span class="n">dirname</span> <span class="o">=</span> <span class="n">root</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">directory</span><span class="p">):]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">dirname</span><span class="p">:</span>
+                    <span class="n">fileGrp</span> <span class="o">=</span> <span class="s1">&#39;OCR-D-IMG&#39;</span>
+                <span class="k">elif</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">dirname</span><span class="p">:</span>
+                    <span class="k">del</span> <span class="n">dirs</span><span class="p">[:]</span>
+                    <span class="n">fileGrp</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">EXT_TO_MIME</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">ext</span><span class="p">):</span>
+                            <span class="n">mimetype</span> <span class="o">=</span> <span class="n">EXT_TO_MIME</span><span class="p">[</span><span class="n">ext</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">dirname</span> <span class="o">==</span> <span class="s1">&#39;/alto&#39;</span><span class="p">:</span>
+                        <span class="n">mimetype</span> <span class="o">=</span> <span class="s1">&#39;application/alto+xml&#39;</span>
+                        <span class="n">fileGrp</span> <span class="o">=</span> <span class="s1">&#39;OCR-D-OCR-ALTO&#39;</span>
+                    <span class="k">elif</span> <span class="n">dirname</span> <span class="o">==</span> <span class="s1">&#39;/page&#39;</span><span class="p">:</span>
+                        <span class="n">fileGrp</span> <span class="o">=</span> <span class="s1">&#39;OCR-D-OCR-PAGE&#39;</span>
+                    <span class="n">ID</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">fileGrp</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)])</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                    <span class="n">local_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+                    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;file://&#39;</span> <span class="o">+</span> <span class="n">local_filename</span>
+                    <span class="n">mets</span><span class="o">.</span><span class="n">add_file</span><span class="p">(</span><span class="n">fileGrp</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="n">mimetype</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">local_filename</span><span class="o">=</span><span class="n">local_filename</span><span class="p">,</span> <span class="n">ID</span><span class="o">=</span><span class="n">ID</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
