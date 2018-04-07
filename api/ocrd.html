@@ -40,7 +40,7 @@
 <li class="toctree-l1"><a class="reference internal" href="ocrd.cli.html">ocrd.cli package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#ocrd-cli-merge-ocr-txt-module">ocrd.cli.merge_ocr_txt module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#module-ocrd.cli.run">ocrd.cli.run module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#ocrd-cli-run-module">ocrd.cli.run module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#module-ocrd.cli">Module contents</a></li>
 </ul>
 </li>
@@ -57,27 +57,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ocrd.processor.html">ocrd.processor package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ocrd.processor.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="ocrd.processor.recognize.html">ocrd.processor.recognize package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.recognize.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.recognize.html#module-ocrd.processor.recognize.tesserocr">ocrd.processor.recognize.tesserocr module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.recognize.html#module-ocrd.processor.recognize">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="ocrd.processor.segment_line.html">ocrd.processor.segment_line package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.segment_line.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.segment_line.html#module-ocrd.processor.segment_line.tesserocr">ocrd.processor.segment_line.tesserocr module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.segment_line.html#module-ocrd.processor.segment_line">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="ocrd.processor.segment_region.html">ocrd.processor.segment_region package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.segment_region.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.segment_region.html#module-ocrd.processor.segment_region.tesserocr">ocrd.processor.segment_region.tesserocr module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ocrd.processor.segment_region.html#module-ocrd.processor.segment_region">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.processor.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.processor.html#module-ocrd.processor.base">ocrd.processor.base module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.processor.html#module-ocrd.processor">Module contents</a></li>
@@ -85,7 +64,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ocrd.webservice.html">ocrd.webservice package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.webservice.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ocrd.webservice.html#module-ocrd.webservice.processor">ocrd.webservice.processor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.webservice.html#ocrd-webservice-processor-module">ocrd.webservice.processor module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.webservice.html#module-ocrd.webservice.repository">ocrd.webservice.repository module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.webservice.html#module-ocrd.webservice">Module contents</a></li>
 </ul>
@@ -98,6 +77,29 @@
 </div>
 <div class="section" id="module-ocrd.constants">
 <span id="ocrd-constants-module"></span><h2>ocrd.constants module<a class="headerlink" href="#module-ocrd.constants" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-ocrd.decorators">
+<span id="ocrd-decorators-module"></span><h2>ocrd.decorators module<a class="headerlink" href="#module-ocrd.decorators" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="ocrd.decorators.ocrd_cli_options">
+<code class="descclassname">ocrd.decorators.</code><code class="descname">ocrd_cli_options</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/decorators.html#ocrd_cli_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.decorators.ocrd_cli_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implement MP CLI.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ocrd_click_cli</span> <span class="kn">from</span> <span class="nn">ocrd.utils</span>
+
+<span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="nd">@ocrd_click_cli</span>
+<span class="k">def</span> <span class="nf">cli</span><span class="p">(</span><span class="n">mets_url</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">mets_url</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ocrd.decorators.ocrd_cli_wrap_processor">
+<code class="descclassname">ocrd.decorators.</code><code class="descname">ocrd_cli_wrap_processor</code><span class="sig-paren">(</span><em>processor</em>, <em>mets_url=None</em>, <em>cache_enabled=True</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/decorators.html#ocrd_cli_wrap_processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.decorators.ocrd_cli_wrap_processor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 <div class="section" id="module-ocrd.resolver">
 <span id="ocrd-resolver-module"></span><h2>ocrd.resolver module<a class="headerlink" href="#module-ocrd.resolver" title="Permalink to this headline">¶</a></h2>
@@ -151,7 +153,7 @@ Optionally cache files.</p>
 <dl class="method">
 <dt id="ocrd.resolver.Resolver.download_to_directory">
 <code class="descname">download_to_directory</code><span class="sig-paren">(</span><em>directory</em>, <em>url</em>, <em>basename=None</em>, <em>overwrite=False</em>, <em>subdir=None</em>, <em>prefer_symlink=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.download_to_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.download_to_directory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Download a file to a directory.</p>
+<dd><p>Download a file to the workspace.</p>
 <p>If basename is not given but subdir is, assume user knows what she’s doing and use last URL segment as the basename.
 If basename is not given and no subdir is given, use the alnum characters in the URL as the basename.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -177,7 +179,7 @@ If basename is not given and no subdir is given, use the alnum characters in the
 
 <dl class="method">
 <dt id="ocrd.resolver.Resolver.pack_workspace">
-<code class="descname">pack_workspace</code><span class="sig-paren">(</span><em>workspace</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.pack_workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.pack_workspace" title="Permalink to this definition">¶</a></dt>
+<code class="descname">pack_workspace</code><span class="sig-paren">(</span><em>workspace</em>, <em>zpath=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.pack_workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.pack_workspace" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -188,10 +190,32 @@ If basename is not given and no subdir is given, use the alnum characters in the
 </table>
 <p>Pack a workspace as OCRD-ZIP.</p>
 <ol class="arabic simple">
+<li>Create a subfolder for every <a class="reference external" href="mailto:fileGrp&#37;&#52;&#48;USE">fileGrp<span>&#64;</span>USE</a></li>
 <li>Download all files without local_filename</li>
-<li>Replace url of all files with relative <a class="reference external" href="file://-URL">file://-URL</a> in METS and PAGE</li>
-<li>ZIP folder and store in /tmp</li>
 </ol>
+<p>3. Create a directory DIR
+3. Copy every mets:file to DIR/mets:fileGrp&#64;USE/mets:file&#64;ID
+4. Replace url of every file with <code class="docutils literal notranslate"><span class="pre">file://</span></code> URL relative to DIR
+5. Save mets.xml to DIR
+6. ZIP mets.xml and <a class="reference external" href="mailto:fileGrp&#37;&#52;&#48;USE-subfolders">fileGrp<span>&#64;</span>USE-subfolders</a> and store in workspace.zip</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>workspace</strong> (<em>string</em>) – Workspace to pack as OCRD-ZIP</li>
+<li><strong>zpath</strong> (<em>string</em>) – Path to ZIP file to savce</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Path to OCRD-ZIP file</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">zip_filename (string)</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -206,6 +230,17 @@ If basename is not given and no subdir is given, use the alnum characters in the
 </tbody>
 </table>
 <p>Unpack an OCRD-ZIP to a local workspace.</p>
+<p>1. Create directory
+3. Unpack zipfile into it
+4. Initiate workspace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>zip_filename</strong> (<em>string</em>) – Path to OCRD-ZIP file</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -372,11 +407,23 @@ If basename is not given and no subdir is given, use the alnum characters in the
 <span id="ocrd-workspace-module"></span><h2>ocrd.workspace module<a class="headerlink" href="#module-ocrd.workspace" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="ocrd.workspace.Workspace">
-<em class="property">class </em><code class="descclassname">ocrd.workspace.</code><code class="descname">Workspace</code><span class="sig-paren">(</span><em>resolver</em>, <em>directory</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ocrd.workspace.</code><code class="descname">Workspace</code><span class="sig-paren">(</span><em>resolver</em>, <em>directory</em>, <em>mets=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A workspace is a temporary directory set up for a processor. It’s the
 interface to the METS/PAGE XML and delegates download and upload to the
 Resolver.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>directory</strong> (<em>string</em>) – Foldert to work in</li>
+<li><strong>mets</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">OcrdMets</span></code>) – OcrdMets representing this workspace. Loaded from ‘mets.xml’ if <code class="docutils literal notranslate"><span class="pre">None</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ocrd.workspace.Workspace.add_file">
 <code class="descname">add_file</code><span class="sig-paren">(</span><em>use</em>, <em>basename=None</em>, <em>content=None</em>, <em>local_filename=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace.add_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.add_file" title="Permalink to this definition">¶</a></dt>
@@ -415,6 +462,12 @@ OcrdMets OUTPUT section.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.move_file">
+<code class="descname">move_file</code><span class="sig-paren">(</span><em>fobj</em>, <em>dst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace.move_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.move_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move a fobj within the workspace</p>
 </dd></dl>
 
 <dl class="method">
@@ -484,6 +537,7 @@ OUTPUT group to the data repository, sets their URL accordingly.</p>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-ocrd.constants">ocrd.constants module</a></li>
+<li><a class="reference internal" href="#module-ocrd.decorators">ocrd.decorators module</a></li>
 <li><a class="reference internal" href="#module-ocrd.resolver">ocrd.resolver module</a></li>
 <li><a class="reference internal" href="#module-ocrd.resolver_cache">ocrd.resolver_cache module</a></li>
 <li><a class="reference internal" href="#module-ocrd.utils">ocrd.utils module</a></li>

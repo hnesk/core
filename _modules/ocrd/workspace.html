@@ -31,6 +31,7 @@
             
   <h1>Source code for ocrd.workspace</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
 
 <span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">PIL</span>
@@ -45,13 +46,21 @@
 <span class="sd">    A workspace is a temporary directory set up for a processor. It&#39;s the</span>
 <span class="sd">    interface to the METS/PAGE XML and delegates download and upload to the</span>
 <span class="sd">    Resolver.</span>
+
+<span class="sd">    Args:</span>
+
+<span class="sd">        directory (string) : Foldert to work in</span>
+<span class="sd">        mets (:class:`OcrdMets`) : OcrdMets representing this workspace. Loaded from &#39;mets.xml&#39; if ``None``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolver</span><span class="p">,</span> <span class="n">directory</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolver</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">mets</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">resolver</span> <span class="o">=</span> <span class="n">resolver</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mets_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s1">&#39;mets.xml&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mets</span> <span class="o">=</span> <span class="n">OcrdMets</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mets_filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mets</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mets</span> <span class="o">=</span> <span class="n">OcrdMets</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mets_filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mets</span> <span class="o">=</span> <span class="n">mets</span>
+        <span class="c1">#  print(mets.to_xml(xmllint=True).decode(&#39;utf-8&#39;))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image_cache</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;pil&#39;</span><span class="p">:</span> <span class="p">{},</span>
             <span class="s1">&#39;cv2&#39;</span><span class="p">:</span> <span class="p">{},</span>
@@ -76,12 +85,14 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            The local filename of the downloaded file</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolver</span><span class="o">.</span><span class="n">download_to_directory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Workspace.download_file"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.workspace.Workspace.download_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Download a :py:mod:`ocrd.model.ocrd_file.OcrdFile` to the workspace.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">local_filename</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Alrady downloaded: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">local_filename</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -119,13 +130,19 @@
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Workspace.move_file"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.workspace.Workspace.move_file">[docs]</a>    <span class="k">def</span> <span class="nf">move_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fobj</span><span class="p">,</span> <span class="n">dst</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Move a fobj within the workspace</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">fobj</span><span class="o">.</span><span class="n">local_filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">dst</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="Workspace.persist"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.workspace.Workspace.persist">[docs]</a>    <span class="k">def</span> <span class="nf">persist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Persist the workspace using the resolver. Uploads the files in the</span>
 <span class="sd">        OUTPUT group to the data repository, sets their URL accordingly.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">save_mets</span><span class="p">()</span></div>
-        <span class="c1"># TODO: persist file:// urls</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_mets</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;NIH&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Workspace.save_mets"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.workspace.Workspace.save_mets">[docs]</a>    <span class="k">def</span> <span class="nf">save_mets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

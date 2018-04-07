@@ -37,12 +37,14 @@
 
 <div class="viewcode-block" id="OcrdMets"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_mets.OcrdMets">[docs]</a><span class="k">class</span> <span class="nc">OcrdMets</span><span class="p">(</span><span class="n">OcrdXmlDocument</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_by_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">OcrdMets</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_file_by_id</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">file_by_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">file_by_id</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_by_id</span> <span class="o">=</span> <span class="n">file_by_id</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;OcrdMets[fileGrps=</span><span class="si">%s</span><span class="s1">,files=</span><span class="si">%s</span><span class="s1">]&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_groups</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_by_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;OcrdMets[fileGrps=</span><span class="si">%s</span><span class="s1">,files=</span><span class="si">%s</span><span class="s1">]&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_groups</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_files</span><span class="p">())</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">unique_identifier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -50,10 +52,6 @@
             <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;.//mods:identifier[@type=&quot;</span><span class="si">%s</span><span class="s1">&quot;]&#39;</span> <span class="o">%</span> <span class="n">t</span><span class="p">,</span> <span class="n">NS</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">found</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">found</span><span class="o">.</span><span class="n">text</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">file_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_by_id</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">file_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
