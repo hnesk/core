@@ -35,23 +35,14 @@
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 
-<span class="kn">from</span> <span class="nn">ocrd.constants</span> <span class="k">import</span> <span class="n">METS_XML_EMPTY</span>
+<span class="kn">from</span> <span class="nn">ocrd.constants</span> <span class="k">import</span> <span class="n">METS_XML_EMPTY</span><span class="p">,</span> <span class="n">TMP_PREFIX</span><span class="p">,</span> <span class="n">EXT_TO_MIME</span>
 <span class="kn">from</span> <span class="nn">ocrd.utils</span> <span class="k">import</span> <span class="n">getLogger</span><span class="p">,</span> <span class="n">safe_filename</span>
 <span class="kn">from</span> <span class="nn">ocrd.resolver_cache</span> <span class="k">import</span> <span class="n">ResolverCache</span>
 <span class="kn">from</span> <span class="nn">ocrd.workspace</span> <span class="k">import</span> <span class="n">Workspace</span>
 <span class="kn">from</span> <span class="nn">ocrd.model</span> <span class="k">import</span> <span class="n">OcrdMets</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;ocrd.resolver&#39;</span><span class="p">)</span>
-<span class="n">PREFIX</span> <span class="o">=</span> <span class="s1">&#39;pyocrd-&#39;</span>
 <span class="n">tempfile</span><span class="o">.</span><span class="n">tempdir</span> <span class="o">=</span> <span class="s1">&#39;/tmp&#39;</span>
-<span class="n">EXT_TO_MIME</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;.tif&#39;</span><span class="p">:</span> <span class="s1">&#39;image/tiff&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;.tiff&#39;</span><span class="p">:</span> <span class="s1">&#39;image/tiff&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;.png&#39;</span><span class="p">:</span> <span class="s1">&#39;image/png&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;.jpg&#39;</span><span class="p">:</span> <span class="s1">&#39;image/jpg&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;.jpeg&#39;</span><span class="p">:</span> <span class="s1">&#39;image/jpg&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;.xml&#39;</span><span class="p">:</span> <span class="s1">&#39;text/xml&#39;</span>
-<span class="p">}</span>
 
 <div class="viewcode-block" id="Resolver"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver">[docs]</a><span class="k">class</span> <span class="nc">Resolver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -80,9 +71,26 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">copyfile</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
 
+<div class="viewcode-block" id="Resolver.pack_workspace"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.pack_workspace">[docs]</a>    <span class="k">def</span> <span class="nf">pack_workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workspace</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :TODO:</span>
+<span class="sd">        Pack a workspace as OCRD-ZIP.</span>
+
+<span class="sd">        1. Download all files without local_filename</span>
+<span class="sd">        2. Replace url of all files with relative file://-URL in METS and PAGE</span>
+<span class="sd">        3. ZIP folder and store in /tmp</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="Resolver.unpack_workspace_from_filename"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.unpack_workspace_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">unpack_workspace_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zip_filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :TODO:</span>
+<span class="sd">        Unpack an OCRD-ZIP to a local workspace.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
 <div class="viewcode-block" id="Resolver.download_to_directory"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.download_to_directory">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">subdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefer_symlink</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Download a file to the workspace.</span>
+<span class="sd">        Download a file to a directory.</span>
 
 <span class="sd">        If basename is not given but subdir is, assume user knows what she&#39;s doing and use last URL segment as the basename.</span>
 <span class="sd">        If basename is not given and no subdir is given, use the alnum characters in the URL as the basename.</span>
@@ -147,7 +155,7 @@
 <span class="sd">        Sets the mets.xml file</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">directory</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">PREFIX</span><span class="p">)</span>
+            <span class="n">directory</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">TMP_PREFIX</span><span class="p">)</span>
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Creating workspace &#39;</span><span class="si">%s</span><span class="s2">&#39; for METS @ &lt;</span><span class="si">%s</span><span class="s2">&gt;&quot;</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">download_to_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;mets.xml&#39;</span><span class="p">,</span> <span class="n">prefer_symlink</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">)</span></div>
@@ -157,22 +165,7 @@
 <span class="sd">        Create a workspace from a folder, creating a METS file.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            convention: Which file structure convention to adhere to.</span>
-
-<span class="sd">                &#39;ocrd-gt&#39; (Default)::</span>
-
-<span class="sd">                    Subfolder name ==&gt; mets:fileGrp @USE</span>
-<span class="sd">                        &#39;page&#39; =&gt; &#39;OCR-D-OCR-PAGE&#39;</span>
-<span class="sd">                        &#39;alto&#39; =&gt; &#39;OCR-D-OCR-ALTO&#39;</span>
-<span class="sd">                        &#39;tei&#39; =&gt; &#39;OCR-D-OCR-TEI&#39;</span>
-<span class="sd">                    fileGrp + &#39;_&#39; + upper(Basename of file without extension) == mets:file @ID</span>
-<span class="sd">                    File in root folder == mets:fileGrp @USE == &#39;OCR-D-IMG&#39;</span>
-<span class="sd">                    Extension ==&gt; mets.file @MIMETYPE</span>
-<span class="sd">                        .tif =&gt; image/tif</span>
-<span class="sd">                        .png =&gt; image/png</span>
-<span class="sd">                        .jpg =&gt; image/jpg</span>
-<span class="sd">                        .xml =&gt; image/xml</span>
-
+<span class="sd">            convention: See add_files_to_mets</span>
 <span class="sd">            clobber_mets (boolean) : Whether to overwrite existing mets.xml. Default: False.</span>
 <span class="sd">            return_mets (boolean) : Do not create the actual mets.xml file but return the :class:`OcrdMets`. Default: False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -203,6 +196,27 @@
         <span class="k">return</span> <span class="n">Workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Resolver.add_files_to_mets"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.add_files_to_mets">[docs]</a>    <span class="k">def</span> <span class="nf">add_files_to_mets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">convention</span><span class="p">,</span> <span class="n">mets</span><span class="p">,</span> <span class="n">directory</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add files from folder to METS, accoding to a file structure convention.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            convention (string) : Which file structure convention to adhere to.</span>
+
+<span class="sd">                &#39;ocrd-gt&#39; (Default)::</span>
+
+<span class="sd">                    Subfolder name ==&gt; mets:fileGrp @USE</span>
+<span class="sd">                        &#39;page&#39; =&gt; &#39;OCR-D-OCR-PAGE&#39;</span>
+<span class="sd">                        &#39;alto&#39; =&gt; &#39;OCR-D-OCR-ALTO&#39;</span>
+<span class="sd">                        &#39;tei&#39; =&gt; &#39;OCR-D-OCR-TEI&#39;</span>
+<span class="sd">                    fileGrp + &#39;_&#39; + upper(Basename of file without extension) == mets:file @ID</span>
+<span class="sd">                    File in root folder == mets:fileGrp @USE == &#39;OCR-D-IMG&#39;</span>
+<span class="sd">                    Extension ==&gt; mets.file @MIMETYPE</span>
+<span class="sd">                        .tif =&gt; image/tif</span>
+<span class="sd">                        .png =&gt; image/png</span>
+<span class="sd">                        .jpg =&gt; image/jpg</span>
+<span class="sd">                        .xml =&gt; image/xml</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">convention</span> <span class="o">==</span> <span class="s1">&#39;ocrd-gt&#39;</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
                 <span class="n">dirname</span> <span class="o">=</span> <span class="n">root</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">directory</span><span class="p">):]</span>

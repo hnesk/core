@@ -122,12 +122,36 @@ Optionally cache files.</p>
 <dl class="method">
 <dt id="ocrd.resolver.Resolver.add_files_to_mets">
 <code class="descname">add_files_to_mets</code><span class="sig-paren">(</span><em>convention</em>, <em>mets</em>, <em>directory</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.add_files_to_mets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.add_files_to_mets" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Add files from folder to METS, accoding to a file structure convention.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>convention</strong> (<em>string</em>) – <p>Which file structure convention to adhere to.</p>
+<p>’ocrd-gt’ (Default):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Subfolder</span> <span class="n">name</span> <span class="o">==&gt;</span> <span class="n">mets</span><span class="p">:</span><span class="n">fileGrp</span> <span class="nd">@USE</span>
+    <span class="s1">&#39;page&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;OCR-D-OCR-PAGE&#39;</span>
+    <span class="s1">&#39;alto&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;OCR-D-OCR-ALTO&#39;</span>
+    <span class="s1">&#39;tei&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;OCR-D-OCR-TEI&#39;</span>
+<span class="n">fileGrp</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">upper</span><span class="p">(</span><span class="n">Basename</span> <span class="n">of</span> <span class="n">file</span> <span class="n">without</span> <span class="n">extension</span><span class="p">)</span> <span class="o">==</span> <span class="n">mets</span><span class="p">:</span><span class="n">file</span> <span class="nd">@ID</span>
+<span class="n">File</span> <span class="ow">in</span> <span class="n">root</span> <span class="n">folder</span> <span class="o">==</span> <span class="n">mets</span><span class="p">:</span><span class="n">fileGrp</span> <span class="nd">@USE</span> <span class="o">==</span> <span class="s1">&#39;OCR-D-IMG&#39;</span>
+<span class="n">Extension</span> <span class="o">==&gt;</span> <span class="n">mets</span><span class="o">.</span><span class="n">file</span> <span class="nd">@MIMETYPE</span>
+    <span class="o">.</span><span class="n">tif</span> <span class="o">=&gt;</span> <span class="n">image</span><span class="o">/</span><span class="n">tif</span>
+    <span class="o">.</span><span class="n">png</span> <span class="o">=&gt;</span> <span class="n">image</span><span class="o">/</span><span class="n">png</span>
+    <span class="o">.</span><span class="n">jpg</span> <span class="o">=&gt;</span> <span class="n">image</span><span class="o">/</span><span class="n">jpg</span>
+    <span class="o">.</span><span class="n">xml</span> <span class="o">=&gt;</span> <span class="n">image</span><span class="o">/</span><span class="n">xml</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="ocrd.resolver.Resolver.download_to_directory">
 <code class="descname">download_to_directory</code><span class="sig-paren">(</span><em>directory</em>, <em>url</em>, <em>basename=None</em>, <em>overwrite=False</em>, <em>subdir=None</em>, <em>prefer_symlink=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.download_to_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.download_to_directory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Download a file to the workspace.</p>
+<dd><p>Download a file to a directory.</p>
 <p>If basename is not given but subdir is, assume user knows what she’s doing and use last URL segment as the basename.
 If basename is not given and no subdir is given, use the alnum characters in the URL as the basename.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -152,6 +176,39 @@ If basename is not given and no subdir is given, use the alnum characters in the
 </dd></dl>
 
 <dl class="method">
+<dt id="ocrd.resolver.Resolver.pack_workspace">
+<code class="descname">pack_workspace</code><span class="sig-paren">(</span><em>workspace</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.pack_workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.pack_workspace" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">TODO:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<p>Pack a workspace as OCRD-ZIP.</p>
+<ol class="arabic simple">
+<li>Download all files without local_filename</li>
+<li>Replace url of all files with relative <a class="reference external" href="file://-URL">file://-URL</a> in METS and PAGE</li>
+<li>ZIP folder and store in /tmp</li>
+</ol>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.resolver.Resolver.unpack_workspace_from_filename">
+<code class="descname">unpack_workspace_from_filename</code><span class="sig-paren">(</span><em>zip_filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.unpack_workspace_from_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.unpack_workspace_from_filename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">TODO:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<p>Unpack an OCRD-ZIP to a local workspace.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="ocrd.resolver.Resolver.workspace_from_folder">
 <code class="descname">workspace_from_folder</code><span class="sig-paren">(</span><em>directory</em>, <em>return_mets=False</em>, <em>clobber_mets=False</em>, <em>convention='ocrd-gt'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.workspace_from_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.workspace_from_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a workspace from a folder, creating a METS file.</p>
@@ -160,22 +217,7 @@ If basename is not given and no subdir is given, use the alnum characters in the
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>convention</strong> – <p>Which file structure convention to adhere to.</p>
-<p>’ocrd-gt’ (Default):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Subfolder</span> <span class="n">name</span> <span class="o">==&gt;</span> <span class="n">mets</span><span class="p">:</span><span class="n">fileGrp</span> <span class="nd">@USE</span>
-    <span class="s1">&#39;page&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;OCR-D-OCR-PAGE&#39;</span>
-    <span class="s1">&#39;alto&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;OCR-D-OCR-ALTO&#39;</span>
-    <span class="s1">&#39;tei&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;OCR-D-OCR-TEI&#39;</span>
-<span class="n">fileGrp</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">upper</span><span class="p">(</span><span class="n">Basename</span> <span class="n">of</span> <span class="n">file</span> <span class="n">without</span> <span class="n">extension</span><span class="p">)</span> <span class="o">==</span> <span class="n">mets</span><span class="p">:</span><span class="n">file</span> <span class="nd">@ID</span>
-<span class="n">File</span> <span class="ow">in</span> <span class="n">root</span> <span class="n">folder</span> <span class="o">==</span> <span class="n">mets</span><span class="p">:</span><span class="n">fileGrp</span> <span class="nd">@USE</span> <span class="o">==</span> <span class="s1">&#39;OCR-D-IMG&#39;</span>
-<span class="n">Extension</span> <span class="o">==&gt;</span> <span class="n">mets</span><span class="o">.</span><span class="n">file</span> <span class="nd">@MIMETYPE</span>
-    <span class="o">.</span><span class="n">tif</span> <span class="o">=&gt;</span> <span class="n">image</span><span class="o">/</span><span class="n">tif</span>
-    <span class="o">.</span><span class="n">png</span> <span class="o">=&gt;</span> <span class="n">image</span><span class="o">/</span><span class="n">png</span>
-    <span class="o">.</span><span class="n">jpg</span> <span class="o">=&gt;</span> <span class="n">image</span><span class="o">/</span><span class="n">jpg</span>
-    <span class="o">.</span><span class="n">xml</span> <span class="o">=&gt;</span> <span class="n">image</span><span class="o">/</span><span class="n">xml</span>
-</pre></div>
-</div>
-</li>
+<li><strong>convention</strong> – See add_files_to_mets</li>
 <li><strong>clobber_mets</strong> (<em>boolean</em>) – Whether to overwrite existing mets.xml. Default: False.</li>
 <li><strong>return_mets</strong> (<em>boolean</em>) – Do not create the actual mets.xml file but return the <code class="xref py py-class docutils literal notranslate"><span class="pre">OcrdMets</span></code>. Default: False.</li>
 </ul>
