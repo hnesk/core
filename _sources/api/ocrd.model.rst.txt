@@ -60,14 +60,6 @@ ocrd.model.ocrd\_swagger module
     :undoc-members:
     :show-inheritance:
 
-ocrd.model.ocrd\_tool module
-----------------------------
-
-.. automodule:: ocrd.model.ocrd_tool
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 ocrd.model.ocrd\_xml\_base module
 ---------------------------------
 
