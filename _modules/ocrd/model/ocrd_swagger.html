@@ -1,0 +1,153 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ocrd.model.ocrd_swagger &#8212; pyocrd  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for ocrd.model.ocrd_swagger</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">codecs</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">ocrd.constants</span> <span class="k">import</span> <span class="n">OCRD_TOOL_SCHEMA</span><span class="p">,</span> <span class="n">SWAGGER_TEMPLATE</span>
+
+<span class="n">PARAM_METS_URL</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;mets_url&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;in&quot;</span><span class="p">:</span> <span class="s2">&quot;formData&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;XML holding all information of the digitized document. All references of the images are available via fileGrp section (ID=</span><span class="se">\&quot;</span><span class="s2">OCR-D-IMG</span><span class="se">\&quot;</span><span class="s2">) inside the METS document.&quot;</span>
+    <span class="p">}</span>
+
+<span class="n">PARAM_PARAMETER_JSON</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;parameter_json&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;in&quot;</span><span class="p">:</span> <span class="s2">&quot;formData&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Parameter in JSON&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+
+<span class="n">OP_GET_OCRD_TOOL_JSON</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Get ocrd-tool.json&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;produces&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;application/json&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;responses&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;200&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Got ocrd-tool.json&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="n">OCRD_TOOL_SCHEMA</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="n">HEADER_LOCATION_METS_URL</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;uri&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;URL of the resulting METS&quot;</span>
+<span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">_clone</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+
+<div class="viewcode-block" id="OcrdSwagger"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_swagger.OcrdSwagger">[docs]</a><span class="k">class</span> <span class="nc">OcrdSwagger</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representing a Swagger OAI 2 schema.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="OcrdSwagger.from_ocrd_tools"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_swagger.OcrdSwagger.from_ocrd_tools">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_ocrd_tools</span><span class="p">(</span><span class="n">swagger_template</span><span class="p">,</span> <span class="o">*</span><span class="n">ocrd_tool</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">swagger_template</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">swagger_template</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">swagger</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">swagger</span> <span class="o">=</span> <span class="n">_clone</span><span class="p">(</span><span class="n">SWAGGER_TEMPLATE</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ocrd_tool_file</span> <span class="ow">in</span> <span class="n">ocrd_tool</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">ocrd_tool_file</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">ocrd_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="n">ocrd_json</span><span class="p">[</span><span class="s1">&#39;tools&#39;</span><span class="p">]:</span>
+                    <span class="n">p</span> <span class="o">=</span> <span class="s2">&quot;/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tool</span><span class="p">[</span><span class="s1">&#39;step&#39;</span><span class="p">],</span> <span class="n">tool</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;ocrd_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+                    <span class="n">swagger</span><span class="p">[</span><span class="s1">&#39;paths&#39;</span><span class="p">][</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s2">&quot;post&quot;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">tool</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">],</span>
+                            <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">[</span>
+                                <span class="n">_clone</span><span class="p">(</span><span class="n">PARAM_METS_URL</span><span class="p">),</span>
+                                <span class="n">_clone</span><span class="p">(</span><span class="n">PARAM_PARAMETER_JSON</span><span class="p">),</span>
+                            <span class="p">],</span>
+                            <span class="s2">&quot;responses&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s2">&quot;201&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Successfully ran &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">tool</span><span class="p">[</span><span class="s1">&#39;binary&#39;</span><span class="p">],</span>
+                                    <span class="s2">&quot;headers&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                        <span class="s2">&quot;Location&quot;</span><span class="p">:</span> <span class="n">_clone</span><span class="p">(</span><span class="n">HEADER_LOCATION_METS_URL</span><span class="p">),</span>
+                                    <span class="p">},</span>
+                                    <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{},</span>
+                                <span class="p">}</span>
+                            <span class="p">}</span>
+                        <span class="p">},</span>
+                        <span class="s2">&quot;get&quot;</span><span class="p">:</span> <span class="n">_clone</span><span class="p">(</span><span class="n">OP_GET_OCRD_TOOL_JSON</span><span class="p">)</span>
+                    <span class="p">}</span>
+        <span class="k">return</span> <span class="n">swagger</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Kay Wuerzner, Konstantin Baierer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

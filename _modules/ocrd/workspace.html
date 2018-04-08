@@ -74,6 +74,12 @@
             <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mets</span><span class="o">.</span><span class="n">find_files</span><span class="p">()],</span>
         <span class="p">)</span>
 
+<div class="viewcode-block" id="Workspace.reload_mets"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.workspace.Workspace.reload_mets">[docs]</a>    <span class="k">def</span> <span class="nf">reload_mets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reload METS from disk.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mets</span> <span class="o">=</span> <span class="n">OcrdMets</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mets_filename</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Workspace.download_url"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.workspace.Workspace.download_url">[docs]</a>    <span class="k">def</span> <span class="nf">download_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Download a URL to the workspace.</span>
