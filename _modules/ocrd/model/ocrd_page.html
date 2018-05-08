@@ -30,178 +30,66 @@
           <div class="body" role="main">
             
   <h1>Source code for ocrd.model.ocrd_page</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">ocrd.constants</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">PAGE_XML_EMPTY</span><span class="p">,</span>
-    <span class="n">NAMESPACES</span><span class="p">,</span>
-    <span class="n">TAG_PAGE_READINGORDER</span><span class="p">,</span>
-    <span class="n">TAG_PAGE_REGIONREFINDEXED</span><span class="p">,</span>
+<span></span><span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="n">StringIO</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+
+<span class="c1"># pylint: disable=unused-import</span>
+<span class="kn">from</span> <span class="nn">ocrd.model.ocrd_page_generateds</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">parse</span><span class="p">,</span>
+    <span class="n">parseString</span><span class="p">,</span>
+
+    <span class="n">AlternativeImageType</span><span class="p">,</span>
+    <span class="n">CoordsType</span><span class="p">,</span>
+    <span class="n">GlyphType</span><span class="p">,</span>
+    <span class="n">OrderedGroupType</span><span class="p">,</span>
+    <span class="n">PcGtsType</span><span class="p">,</span>
+    <span class="n">PageType</span><span class="p">,</span>
+    <span class="n">MetadataType</span><span class="p">,</span>
+    <span class="n">ReadingOrderType</span><span class="p">,</span>
+    <span class="n">RegionRefIndexedType</span><span class="p">,</span>
+    <span class="n">TextEquivType</span><span class="p">,</span>
+    <span class="n">TextRegionType</span><span class="p">,</span>
+    <span class="n">TextLineType</span><span class="p">,</span>
+    <span class="n">WordType</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">ocrd.utils</span> <span class="k">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span> <span class="nn">ocrd.constants</span> <span class="k">import</span> <span class="n">NAMESPACES</span><span class="p">,</span> <span class="n">VERSION</span><span class="p">,</span> <span class="n">MIMETYPE_PAGE</span>
+<span class="kn">from</span> <span class="nn">ocrd.model.ocrd_exif</span> <span class="k">import</span> <span class="n">OcrdExif</span>
 
-<span class="kn">from</span> <span class="nn">.ocrd_xml_base</span> <span class="k">import</span> <span class="n">OcrdXmlDocument</span><span class="p">,</span> <span class="n">ET</span>
-<span class="kn">from</span> <span class="nn">.ocrd_page_textregion</span> <span class="k">import</span> <span class="n">OcrdPageTextRegion</span>
-<span class="kn">from</span> <span class="nn">.ocrd_page_textline</span> <span class="k">import</span> <span class="n">OcrdPageTextLine</span>
+<div class="viewcode-block" id="to_xml"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_page.to_xml">[docs]</a><span class="k">def</span> <span class="nf">to_xml</span><span class="p">(</span><span class="n">el</span><span class="p">):</span>
+    <span class="n">sio</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+    <span class="n">el</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">sio</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">name_</span><span class="o">=</span><span class="s1">&#39;PcGts&#39;</span><span class="p">,</span> <span class="n">namespacedef_</span><span class="o">=</span><span class="s1">&#39;xmlns:pc=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">NAMESPACES</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="s1">&#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">sio</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span></div>
 
-<span class="n">log</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;ocrd.model.ocrd_page&#39;</span><span class="p">)</span>
-
-<div class="viewcode-block" id="OcrdPage"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_page.OcrdPage">[docs]</a><span class="k">class</span> <span class="nc">OcrdPage</span><span class="p">(</span><span class="n">OcrdXmlDocument</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">OcrdPage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_image_el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s1">&#39;file&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_image_file</span> <span class="o">=</span> <span class="kc">None</span>
-
-<div class="viewcode-block" id="OcrdPage.from_file"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_page.OcrdPage.from_file">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="n">input_file</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create a new PAGE-XML from a METS file representing a PAGE-XML or an image.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">input_file</span><span class="o">.</span><span class="n">mimetype</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;image&#39;</span><span class="p">):</span>
-            <span class="n">content</span> <span class="o">=</span> <span class="n">PAGE_XML_EMPTY</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&lt;Page&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;Page imageFileName=&quot;</span><span class="si">%s</span><span class="s1">&quot;&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">url</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">OcrdPage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">input_file</span><span class="o">.</span><span class="n">mimetype</span> <span class="o">==</span> <span class="s1">&#39;text/page+xml&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">OcrdPage</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">input_file</span><span class="o">.</span><span class="n">local_filename</span><span class="p">)</span></div>
-
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">        &lt;OcrdPage&gt;</span>
-<span class="s1">            imageFileName = </span><span class="si">%s</span><span class="s1"></span>
-<span class="s1">        &lt;/OcrdPage&gt;</span>
-<span class="s1">        &#39;&#39;&#39;</span> <span class="o">%</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_tree</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;page:Page&#39;</span><span class="p">,</span> <span class="n">NAMESPACES</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;imageFileName&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="page_from_image"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_page.page_from_image">[docs]</a><span class="k">def</span> <span class="nf">page_from_image</span><span class="p">(</span><span class="n">input_file</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">input_file</span><span class="o">.</span><span class="n">local_filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;input_file must have &#39;local_filename&#39; property&quot;</span><span class="p">)</span>
+    <span class="n">exif</span> <span class="o">=</span> <span class="n">OcrdExif</span><span class="o">.</span><span class="n">from_filename</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">local_filename</span><span class="p">)</span>
+    <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">PcGtsType</span><span class="p">(</span>
+        <span class="n">Metadata</span><span class="o">=</span><span class="n">MetadataType</span><span class="p">(</span>
+            <span class="n">Creator</span><span class="o">=</span><span class="s2">&quot;OCR-D/core </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">VERSION</span><span class="p">,</span>
+            <span class="n">Created</span><span class="o">=</span><span class="n">now</span><span class="p">,</span>
+            <span class="n">LastChange</span><span class="o">=</span><span class="n">now</span>
+        <span class="p">),</span>
+        <span class="n">Page</span><span class="o">=</span><span class="n">PageType</span><span class="p">(</span>
+            <span class="n">imageWidth</span><span class="o">=</span><span class="n">exif</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
+            <span class="n">imageHeight</span><span class="o">=</span><span class="n">exif</span><span class="o">.</span><span class="n">height</span><span class="p">,</span>
+            <span class="c1"># XXX brittle</span>
+            <span class="n">imageFilename</span><span class="o">=</span><span class="n">input_file</span><span class="o">.</span><span class="n">url</span> <span class="k">if</span> <span class="n">input_file</span><span class="o">.</span><span class="n">url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;file://&#39;</span> <span class="o">+</span> <span class="n">input_file</span><span class="o">.</span><span class="n">local_filename</span>
         <span class="p">)</span>
+    <span class="p">)</span></div>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The Page element</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tree</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;.//page:Page&#39;</span><span class="p">,</span> <span class="n">NAMESPACES</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">pcGtsId</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The pcGtsId of the root element</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pcGtsId&#39;</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">imageFileName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;imageFileName&#39;</span><span class="p">)</span>
-
-    <span class="nd">@imageFileName</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">imageFileName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;imageFileName&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">imageWidth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;imageWidth&#39;</span><span class="p">)</span>
-
-    <span class="nd">@imageWidth</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">imageWidth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;imageWidth&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">imageHeight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;imageHeight&#39;</span><span class="p">)</span>
-
-    <span class="nd">@imageHeight</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">imageHeight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;imageHeight&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">imageXResolution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;imageXResolution&#39;</span><span class="p">)</span>
-
-    <span class="nd">@imageXResolution</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">imageXResolution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;imageXResolution&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">imageYResolution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;imageYResolution&#39;</span><span class="p">)</span>
-
-    <span class="nd">@imageYResolution</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">imageYResolution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;imageYResolution&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">imageCompression</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;imageCompression&#39;</span><span class="p">)</span>
-
-    <span class="nd">@imageCompression</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">imageCompression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;imageCompression&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">imagePhotometricInterpretation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;imagePhotometricInterpretation&#39;</span><span class="p">)</span>
-
-    <span class="nd">@imagePhotometricInterpretation</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">imagePhotometricInterpretation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;imagePhotometricInterpretation&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">imageResolutionUnit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;imageResolutionUnit&#39;</span><span class="p">)</span>
-
-    <span class="nd">@imageResolutionUnit</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">imageResolutionUnit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;imageResolutionUnit&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-
-<div class="viewcode-block" id="OcrdPage.add_reading_order_ref"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_page.OcrdPage.add_reading_order_ref">[docs]</a>    <span class="k">def</span> <span class="nf">add_reading_order_ref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region_ref</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add the id of a region to the ReadingOrder</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;.//page:ReadingOrder&#39;</span><span class="p">,</span> <span class="n">NAMESPACES</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="p">,</span> <span class="n">TAG_PAGE_READINGORDER</span><span class="p">)</span>
-        <span class="n">region_ref_indexed</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;.//page:ReadingOrder&#39;</span><span class="p">,</span> <span class="n">NAMESPACES</span><span class="p">),</span> <span class="n">TAG_PAGE_REGIONREFINDEXED</span><span class="p">)</span>
-        <span class="n">region_ref_indexed</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;regionRef&quot;</span><span class="p">,</span> <span class="n">region_ref</span><span class="p">)</span>
-        <span class="n">region_ref_indexed</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">index</span><span class="p">)</span></div>
-
-    <span class="c1"># --------------------------------------------------</span>
-    <span class="c1"># TextRegion</span>
-    <span class="c1"># --------------------------------------------------</span>
-
-<div class="viewcode-block" id="OcrdPage.add_textregion"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_page.OcrdPage.add_textregion">[docs]</a>    <span class="k">def</span> <span class="nf">add_textregion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ID</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add a TextRegion</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">OcrdPageTextRegion</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="p">,</span> <span class="n">ID</span><span class="o">=</span><span class="n">ID</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="OcrdPage.get_textregion"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_page.OcrdPage.get_textregion">[docs]</a>    <span class="k">def</span> <span class="nf">get_textregion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ID</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get TextRegion with ID.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">OcrdPageTextRegion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;.//*[id=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">ID</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="OcrdPage.list_textregions"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_page.OcrdPage.list_textregions">[docs]</a>    <span class="k">def</span> <span class="nf">list_textregions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        List TextRegions as :py:mod:`OcrdPageTextRegion`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">OcrdPageTextRegion</span><span class="p">(</span><span class="n">el</span><span class="p">)</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;.//page:TextRegion&#39;</span><span class="p">,</span> <span class="n">NAMESPACES</span><span class="p">)]</span></div>
-
-    <span class="c1"># --------------------------------------------------</span>
-    <span class="c1"># TextLine</span>
-    <span class="c1"># --------------------------------------------------</span>
-
-<div class="viewcode-block" id="OcrdPage.add_textline"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_page.OcrdPage.add_textline">[docs]</a>    <span class="k">def</span> <span class="nf">add_textline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ID</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add a TextLine to the page.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">OcrdPageTextLine</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="p">,</span> <span class="n">ID</span><span class="o">=</span><span class="n">ID</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="OcrdPage.get_textline"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_page.OcrdPage.get_textline">[docs]</a>    <span class="k">def</span> <span class="nf">get_textline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the n-th TextLine on the page.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">OcrdPageTextLine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;page:TextLine[</span><span class="si">%i</span><span class="s1">]&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">NAMESPACES</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="OcrdPage.list_textlines"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_page.OcrdPage.list_textlines">[docs]</a>    <span class="k">def</span> <span class="nf">list_textlines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        List TextLine on page</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">OcrdPageTextLine</span><span class="p">(</span><span class="n">el</span><span class="p">)</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;page:TextLine&#39;</span><span class="p">,</span> <span class="n">NAMESPACES</span><span class="p">)]</span></div></div>
+<div class="viewcode-block" id="from_file"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_page.from_file">[docs]</a><span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="n">input_file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a new PAGE-XML from a METS file representing a PAGE-XML or an image.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#  print(&quot;PARSING PARSING &#39;%s&#39;&quot; % input_file)</span>
+    <span class="k">if</span> <span class="n">input_file</span><span class="o">.</span><span class="n">mimetype</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;image&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">page_from_image</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">input_file</span><span class="o">.</span><span class="n">mimetype</span> <span class="o">==</span> <span class="n">MIMETYPE_PAGE</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">parse</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">local_filename</span><span class="p">,</span> <span class="n">silence</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unsupported mimetype &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">input_file</span><span class="o">.</span><span class="n">mimetype</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -237,7 +125,7 @@
       &copy;2018, Kay Wuerzner, Konstantin Baierer.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

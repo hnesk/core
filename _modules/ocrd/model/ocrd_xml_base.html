@@ -30,17 +30,11 @@
           <div class="body" role="main">
             
   <h1>Source code for ocrd.model.ocrd_xml_base</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">ocrd.constants</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">NAMESPACES</span><span class="p">,</span>
-    <span class="n">TAG_PAGE_COORDS</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">ocrd.utils</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">xmllint_format</span><span class="p">,</span>
-    <span class="n">xywh_from_coordinate_string</span><span class="p">,</span>
-    <span class="n">coordinate_string_from_xywh</span>
-<span class="p">)</span>
+<span></span><span class="kn">from</span> <span class="nn">lxml</span> <span class="k">import</span> <span class="n">etree</span> <span class="k">as</span> <span class="n">ET</span>
 
-<span class="kn">from</span> <span class="nn">lxml</span> <span class="k">import</span> <span class="n">etree</span> <span class="k">as</span> <span class="n">ET</span>
+<span class="kn">from</span> <span class="nn">ocrd.constants</span> <span class="k">import</span> <span class="n">NAMESPACES</span>
+<span class="kn">from</span> <span class="nn">ocrd.utils</span> <span class="k">import</span> <span class="n">xmllint_format</span>
+
 
 <span class="k">for</span> <span class="n">curie</span> <span class="ow">in</span> <span class="n">NAMESPACES</span><span class="p">:</span>
     <span class="n">ET</span><span class="o">.</span><span class="n">register_namespace</span><span class="p">(</span><span class="n">curie</span><span class="p">,</span> <span class="n">NAMESPACES</span><span class="p">[</span><span class="n">curie</span><span class="p">])</span>
@@ -49,19 +43,6 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">el</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">el</span> <span class="o">=</span> <span class="n">el</span></div>
-
-<div class="viewcode-block" id="get_coords"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_xml_base.get_coords">[docs]</a><span class="k">def</span> <span class="nf">get_coords</span><span class="p">(</span><span class="n">el</span><span class="p">):</span>
-    <span class="n">coords</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;page:Coords&#39;</span><span class="p">,</span> <span class="n">NAMESPACES</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">coords</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">points</span> <span class="o">=</span> <span class="n">coords</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;points&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">xywh_from_coordinate_string</span><span class="p">(</span><span class="n">points</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="set_coords"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_xml_base.set_coords">[docs]</a><span class="k">def</span> <span class="nf">set_coords</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="n">box</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">box</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">coords</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;page:Coords&#39;</span><span class="p">,</span> <span class="n">NAMESPACES</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">coords</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">coords</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="n">TAG_PAGE_COORDS</span><span class="p">)</span>
-        <span class="n">coords</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;points&quot;</span><span class="p">,</span> <span class="n">coordinate_string_from_xywh</span><span class="p">(</span><span class="n">box</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="OcrdXmlDocument"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_xml_base.OcrdXmlDocument">[docs]</a><span class="k">class</span> <span class="nc">OcrdXmlDocument</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
@@ -118,7 +99,7 @@
       &copy;2018, Kay Wuerzner, Konstantin Baierer.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

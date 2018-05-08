@@ -30,7 +30,8 @@
           <div class="body" role="main">
             
   <h1>Source code for ocrd.processor.base</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">from</span> <span class="nn">ocrd.utils</span> <span class="k">import</span> <span class="n">getLogger</span>
 <span class="n">log</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;ocrd.processor&#39;</span><span class="p">)</span>
 
@@ -43,25 +44,34 @@
         <span class="n">workspace</span> <span class="o">=</span> <span class="n">resolver</span><span class="o">.</span><span class="n">workspace_from_url</span><span class="p">(</span><span class="n">mets_url</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="n">working_dir</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">workspace</span>
 
-<span class="c1"># pylint: disable=unused-argument</span>
 <div class="viewcode-block" id="run_processor"><a class="viewcode-back" href="../../../api/ocrd.processor.html#ocrd.processor.base.run_processor">[docs]</a><span class="k">def</span> <span class="nf">run_processor</span><span class="p">(</span>
-        <span class="n">processor</span><span class="p">,</span>
+        <span class="n">processorClass</span><span class="p">,</span>
         <span class="n">mets_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">resolver</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">workspace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">group_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">input_filegrp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">output_filegrp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">log_level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">input_file_grp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_file_grp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">output_mets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">parameter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">working_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a workspace for mets_url and run processor through it</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        parameter (string): URL to the parameter</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">workspace</span> <span class="o">=</span> <span class="n">_get_workspace</span><span class="p">(</span><span class="n">workspace</span><span class="p">,</span> <span class="n">resolver</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">working_dir</span><span class="p">)</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running processor </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">processor</span><span class="p">)</span>
-    <span class="n">processor</span><span class="p">(</span><span class="n">workspace</span><span class="p">)</span><span class="o">.</span><span class="n">process</span><span class="p">()</span></div>
+    <span class="k">if</span> <span class="n">parameter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">download_url</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">param_json_file</span><span class="p">:</span>
+            <span class="n">parameter</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">param_json_file</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running processor </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">processorClass</span><span class="p">)</span>
+    <span class="n">processor</span> <span class="o">=</span> <span class="n">processorClass</span><span class="p">(</span><span class="n">workspace</span><span class="p">,</span> <span class="n">input_file_grp</span><span class="o">=</span><span class="n">input_file_grp</span><span class="p">,</span> <span class="n">output_file_grp</span><span class="o">=</span><span class="n">output_file_grp</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="n">parameter</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Processor instance </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">processor</span><span class="p">)</span>
+    <span class="n">processor</span><span class="o">.</span><span class="n">process</span><span class="p">()</span></div>
     <span class="c1">#  workspace.persist()</span>
 
 <div class="viewcode-block" id="run_cli"><a class="viewcode-back" href="../../../api/ocrd.processor.html#ocrd.processor.base.run_cli">[docs]</a><span class="k">def</span> <span class="nf">run_cli</span><span class="p">(</span>
@@ -70,8 +80,9 @@
         <span class="n">resolver</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">workspace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">group_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">input_filegrp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">output_filegrp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">log_level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">input_file_grp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_file_grp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">output_mets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">parameter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">working_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -92,14 +103,14 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A processor runs an algorithm based on the workspace, the mets.xml in the</span>
 <span class="sd">    workspace (and the input files defined therein) as well as optional</span>
-<span class="sd">    parameters.</span>
+<span class="sd">    parameter.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workspace</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inputGrp</span><span class="o">=</span><span class="s2">&quot;INPUT&quot;</span><span class="p">,</span> <span class="n">outputGrp</span><span class="o">=</span><span class="s2">&quot;OUTPUT&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workspace</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">input_file_grp</span><span class="o">=</span><span class="s2">&quot;INPUT&quot;</span><span class="p">,</span> <span class="n">output_file_grp</span><span class="o">=</span><span class="s2">&quot;OUTPUT&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span> <span class="o">=</span> <span class="n">workspace</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">inputGrp</span> <span class="o">=</span> <span class="n">inputGrp</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">outputGrp</span> <span class="o">=</span> <span class="n">outputGrp</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">parameters</span> <span class="k">if</span> <span class="n">parameters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_file_grp</span> <span class="o">=</span> <span class="n">input_file_grp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_file_grp</span> <span class="o">=</span> <span class="n">output_file_grp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">parameter</span> <span class="k">if</span> <span class="n">parameter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
 
 <div class="viewcode-block" id="Processor.verify"><a class="viewcode-back" href="../../../api/ocrd.processor.html#ocrd.processor.base.Processor.verify">[docs]</a>    <span class="k">def</span> <span class="nf">verify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -118,18 +129,23 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        List the input files</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">mets</span><span class="o">.</span><span class="n">find_files</span><span class="p">(</span><span class="n">fileGrp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">inputGrp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">mets</span><span class="o">.</span><span class="n">find_files</span><span class="p">(</span><span class="n">fileGrp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_file_grp</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Processor.add_output_file"><a class="viewcode-back" href="../../../api/ocrd.processor.html#ocrd.processor.base.Processor.add_output_file">[docs]</a>    <span class="k">def</span> <span class="nf">add_output_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ID</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Processor.add_output_file"><a class="viewcode-back" href="../../../api/ocrd.processor.html#ocrd.processor.base.Processor.add_output_file">[docs]</a>    <span class="k">def</span> <span class="nf">add_output_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_grp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ID</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add an output file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            basename (string) : basename of the file</span>
+<span class="sd">            file_grp (string) : fileGrp to add this file to. Default: self.output_file_grp</span>
+<span class="sd">            ID (string) : file@ID</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Adding output file </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">input_file</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">basename</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">input_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">basename</span> <span class="o">=</span> <span class="n">input_file</span><span class="o">.</span><span class="n">basename_without_extension</span> <span class="o">+</span> <span class="s1">&#39;.xml&#39;</span>
-        <span class="c1">#  if ID is None and input_file is not None:</span>
-        <span class="c1">#      basename = input_file.ID + self.outputGrp</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">add_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputGrp</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="n">basename</span><span class="p">,</span> <span class="n">ID</span><span class="o">=</span><span class="n">ID</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+        <span class="k">if</span> <span class="n">basename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Must give &#39;basename&#39; for add_output_file&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Adding output file </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">basename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">file_grp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">file_grp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_file_grp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">add_file</span><span class="p">(</span><span class="n">file_grp</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="n">basename</span><span class="p">,</span> <span class="n">ID</span><span class="o">=</span><span class="n">ID</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -165,7 +181,7 @@
       &copy;2018, Kay Wuerzner, Konstantin Baierer.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

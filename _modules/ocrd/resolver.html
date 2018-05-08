@@ -36,6 +36,7 @@
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 
+<span class="kn">from</span> <span class="nn">ocrd.errors</span> <span class="k">import</span> <span class="n">Http404</span>
 <span class="kn">from</span> <span class="nn">ocrd.constants</span> <span class="k">import</span> <span class="n">METS_XML_EMPTY</span><span class="p">,</span> <span class="n">TMP_PREFIX</span><span class="p">,</span> <span class="n">EXT_TO_MIME</span>
 <span class="kn">from</span> <span class="nn">ocrd.utils</span> <span class="k">import</span> <span class="n">getLogger</span><span class="p">,</span> <span class="n">safe_filename</span>
 <span class="kn">from</span> <span class="nn">ocrd.resolver_cache</span> <span class="k">import</span> <span class="n">ResolverCache</span>
@@ -132,7 +133,7 @@
 
         <span class="k">return</span> <span class="n">zpath</span></div>
 
-<div class="viewcode-block" id="Resolver.unpack_workspace_from_filename"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.unpack_workspace_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">unpack_workspace_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zip_filename</span><span class="p">):</span>
+<div class="viewcode-block" id="Resolver.unpack_workspace_from_filename"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.unpack_workspace_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">unpack_workspace_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zip_filename</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        :TODO:</span>
@@ -145,7 +146,8 @@
 <span class="sd">        Args:</span>
 <span class="sd">            zip_filename (string) : Path to OCRD-ZIP file</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">directory</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">TMP_PREFIX</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">directory</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">TMP_PREFIX</span><span class="p">)</span>
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Unpacking to </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">directory</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">ZipFile</span><span class="p">(</span><span class="n">zip_filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">z</span><span class="p">:</span>
             <span class="n">z</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">directory</span><span class="p">)</span>
@@ -203,7 +205,7 @@
                 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfilename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
                     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Not found: </span><span class="si">%s</span><span class="s2"> (HTTP </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
+                        <span class="k">raise</span> <span class="n">Http404</span><span class="p">(</span><span class="s2">&quot;Not found: </span><span class="si">%s</span><span class="s2"> (HTTP </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
                     <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_enabled</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cached_filename</span><span class="p">:</span>
@@ -354,7 +356,7 @@
       &copy;2018, Kay Wuerzner, Konstantin Baierer.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

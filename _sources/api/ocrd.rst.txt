@@ -30,6 +30,14 @@ ocrd.decorators module
     :undoc-members:
     :show-inheritance:
 
+ocrd.errors module
+------------------
+
+.. automodule:: ocrd.errors
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 ocrd.resolver module
 --------------------
 
