@@ -9,7 +9,7 @@
     <title>ocrd.utils &#8212; pyocrd  documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -27,6 +27,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for ocrd.utils</h1><div class="highlight"><pre>
@@ -44,17 +46,22 @@
 
 <span class="sd">xywh is what tesserocr expects/produces.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;logging&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;getLogger&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;points_from_xywh&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;xywh_from_points&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;polygon_from_points&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_string&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;concat_padded&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;safe_filename&#39;</span>
+<span class="p">]</span>
+
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
-<span class="c1">#  logging.getLogger(&#39;ocrd.resolver&#39;).setLevel(logging.INFO)</span>
-<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;ocrd.resolver.download_to_directory&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
-<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;ocrd.resolver.add_files_to_mets&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
-
-<div class="viewcode-block" id="getLogger"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.utils.getLogger">[docs]</a><span class="k">def</span> <span class="nf">getLogger</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+<span class="kn">from</span> <span class="nn">ocrd.logging</span> <span class="k">import</span> <span class="n">getLogger</span><span class="p">,</span> <span class="n">logging</span>
 
 <div class="viewcode-block" id="points_from_xywh"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.utils.points_from_xywh">[docs]</a><span class="k">def</span> <span class="nf">points_from_xywh</span><span class="p">(</span><span class="n">box</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -69,16 +76,42 @@
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">h</span>
     <span class="p">)</span></div>
 
+<span class="k">def</span> <span class="nf">points_from_x0y0x1y1</span><span class="p">(</span><span class="n">xyxy</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constructs a polygon representation from a rectangle described as a list [x0, y0, x1, y1]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="p">[</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyxy</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span>
+        <span class="n">x1</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span>
+        <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">y1</span>
+    <span class="p">)</span>
+
 <div class="viewcode-block" id="xywh_from_points"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.utils.xywh_from_points">[docs]</a><span class="k">def</span> <span class="nf">xywh_from_points</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Constructs an dict representing a rectangle with keys x, y, w, h</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="p">[</span><span class="n">tl</span><span class="p">,</span> <span class="n">tr</span><span class="p">,</span> <span class="n">br</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pair</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">points</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[:</span><span class="mi">3</span><span class="p">]]</span>
+    <span class="n">xys</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pair</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">points</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)]</span>
+    <span class="n">minx</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span>
+    <span class="n">miny</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span>
+    <span class="n">maxx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">maxy</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">xy</span> <span class="ow">in</span> <span class="n">xys</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">minx</span><span class="p">:</span>
+            <span class="n">minx</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">maxx</span><span class="p">:</span>
+            <span class="n">maxx</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">miny</span><span class="p">:</span>
+            <span class="n">miny</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">maxy</span><span class="p">:</span>
+            <span class="n">maxy</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">tl</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">tl</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-        <span class="s1">&#39;w&#39;</span><span class="p">:</span> <span class="n">tr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">tl</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="s1">&#39;h&#39;</span><span class="p">:</span> <span class="n">br</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">tr</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">minx</span><span class="p">,</span>
+        <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">miny</span><span class="p">,</span>
+        <span class="s1">&#39;w&#39;</span><span class="p">:</span> <span class="n">maxx</span> <span class="o">-</span> <span class="n">minx</span><span class="p">,</span>
+        <span class="s1">&#39;h&#39;</span><span class="p">:</span> <span class="n">maxy</span> <span class="o">-</span> <span class="n">miny</span><span class="p">,</span>
     <span class="p">}</span></div>
 
 <div class="viewcode-block" id="polygon_from_points"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.utils.polygon_from_points">[docs]</a><span class="k">def</span> <span class="nf">polygon_from_points</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
@@ -91,33 +124,74 @@
         <span class="n">polygon</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x_y</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">x_y</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span>
     <span class="k">return</span> <span class="n">polygon</span></div>
 
-<span class="c1"># https://stackoverflow.com/a/10133365/201318</span>
-<div class="viewcode-block" id="xmllint_format"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.utils.xmllint_format">[docs]</a><span class="k">def</span> <span class="nf">xmllint_format</span><span class="p">(</span><span class="n">xml</span><span class="p">):</span>
-    <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
-        <span class="p">[</span><span class="s1">&#39;xmllint&#39;</span><span class="p">,</span> <span class="s1">&#39;--format&#39;</span><span class="p">,</span> <span class="s1">&#39;/dev/stdin&#39;</span><span class="p">],</span>
-        <span class="n">stdin</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
-        <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">output</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">(</span><span class="n">xml</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">output</span></div>
+<span class="k">def</span> <span class="nf">xmllint_format</span><span class="p">(</span><span class="n">xml</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">lxml</span> <span class="k">import</span> <span class="n">etree</span> <span class="k">as</span> <span class="n">ET</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">resolve_entities</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">strip_cdata</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">remove_blank_text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">document</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">xml</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#39;</span><span class="p">,</span> <span class="n">ET</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)))</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
 
-<span class="c1"># TODO better name</span>
-<div class="viewcode-block" id="mets_file_id"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.utils.mets_file_id">[docs]</a><span class="k">def</span> <span class="nf">mets_file_id</span><span class="p">(</span><span class="n">grp</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<div class="viewcode-block" id="is_string"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.utils.is_string">[docs]</a><span class="k">def</span> <span class="nf">is_string</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+    <span class="c1"># pylint: disable=undefined-variable</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">unicode</span><span class="p">))</span> <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="concat_padded"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.utils.concat_padded">[docs]</a><span class="k">def</span> <span class="nf">concat_padded</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Concatenate string and zero-padded 4 digit number</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%04i</span><span class="s2">&quot;</span>  <span class="o">%</span> <span class="p">(</span><span class="n">grp</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span></div>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">base</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_string</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%04i</span><span class="s2">&quot;</span>  <span class="o">%</span> <span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret</span></div>
 
 <div class="viewcode-block" id="safe_filename"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.utils.safe_filename">[docs]</a><span class="k">def</span> <span class="nf">safe_filename</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
-    <span class="n">ret</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;[^A-Za-z0-9]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;[^A-Za-z0-9]+&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ret</span></div>
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">pyocrd</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=OCR-D&repo=pyocrd&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/OCR-D/pyocrd">
+    <img
+        alt="https://secure.travis-ci.org/OCR-D/pyocrd.svg?branch=master"
+        src="https://secure.travis-ci.org/OCR-D/pyocrd.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">API</a></li>
+</ul>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
@@ -146,8 +220,8 @@
       &copy;2018, Kay Wuerzner, Konstantin Baierer.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>
 

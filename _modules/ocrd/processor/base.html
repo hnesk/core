@@ -9,7 +9,7 @@
     <title>ocrd.processor.base &#8212; pyocrd  documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -27,12 +27,18 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for ocrd.processor.base</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">from</span> <span class="nn">deprecated.sphinx</span> <span class="k">import</span> <span class="n">deprecated</span>
 <span class="kn">from</span> <span class="nn">ocrd.utils</span> <span class="k">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span> <span class="nn">ocrd.validator</span> <span class="k">import</span> <span class="n">ParameterValidator</span>
+
 <span class="n">log</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;ocrd.processor&#39;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">_get_workspace</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resolver</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mets_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">working_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -46,6 +52,7 @@
 
 <div class="viewcode-block" id="run_processor"><a class="viewcode-back" href="../../../api/ocrd.processor.html#ocrd.processor.base.run_processor">[docs]</a><span class="k">def</span> <span class="nf">run_processor</span><span class="p">(</span>
         <span class="n">processorClass</span><span class="p">,</span>
+        <span class="n">ocrd_tool</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">mets_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">resolver</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">workspace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -53,7 +60,6 @@
         <span class="n">log_level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">input_file_grp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">output_file_grp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">output_mets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">parameter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">working_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
@@ -63,16 +69,33 @@
 <span class="sd">    Args:</span>
 <span class="sd">        parameter (string): URL to the parameter</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">workspace</span> <span class="o">=</span> <span class="n">_get_workspace</span><span class="p">(</span><span class="n">workspace</span><span class="p">,</span> <span class="n">resolver</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">working_dir</span><span class="p">)</span>
+    <span class="n">workspace</span> <span class="o">=</span> <span class="n">_get_workspace</span><span class="p">(</span>
+        <span class="n">workspace</span><span class="p">,</span>
+        <span class="n">resolver</span><span class="p">,</span>
+        <span class="n">mets_url</span><span class="p">,</span>
+        <span class="n">working_dir</span>
+    <span class="p">)</span>
     <span class="k">if</span> <span class="n">parameter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">fname</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">download_url</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="s1">&#39;://&#39;</span> <span class="ow">in</span> <span class="n">parameter</span><span class="p">:</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">download_url</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">param_json_file</span><span class="p">:</span>
             <span class="n">parameter</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">param_json_file</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">parameter</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running processor </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">processorClass</span><span class="p">)</span>
-    <span class="n">processor</span> <span class="o">=</span> <span class="n">processorClass</span><span class="p">(</span><span class="n">workspace</span><span class="p">,</span> <span class="n">input_file_grp</span><span class="o">=</span><span class="n">input_file_grp</span><span class="p">,</span> <span class="n">output_file_grp</span><span class="o">=</span><span class="n">output_file_grp</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="n">parameter</span><span class="p">)</span>
+    <span class="n">processor</span> <span class="o">=</span> <span class="n">processorClass</span><span class="p">(</span>
+        <span class="n">workspace</span><span class="p">,</span>
+        <span class="n">ocrd_tool</span><span class="o">=</span><span class="n">ocrd_tool</span><span class="p">,</span>
+        <span class="n">group_id</span><span class="o">=</span><span class="n">group_id</span><span class="p">,</span>
+        <span class="n">input_file_grp</span><span class="o">=</span><span class="n">input_file_grp</span><span class="p">,</span>
+        <span class="n">output_file_grp</span><span class="o">=</span><span class="n">output_file_grp</span><span class="p">,</span>
+        <span class="n">parameter</span><span class="o">=</span><span class="n">parameter</span>
+    <span class="p">)</span>
     <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Processor instance </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">processor</span><span class="p">)</span>
-    <span class="n">processor</span><span class="o">.</span><span class="n">process</span><span class="p">()</span></div>
-    <span class="c1">#  workspace.persist()</span>
+    <span class="n">processor</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+    <span class="n">workspace</span><span class="o">.</span><span class="n">save_mets</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="run_cli"><a class="viewcode-back" href="../../../api/ocrd.processor.html#ocrd.processor.base.run_cli">[docs]</a><span class="k">def</span> <span class="nf">run_cli</span><span class="p">(</span>
         <span class="n">binary</span><span class="p">,</span>
@@ -83,7 +106,6 @@
         <span class="n">log_level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">input_file_grp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">output_file_grp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">output_mets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">parameter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">working_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
@@ -94,10 +116,9 @@
     <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running binary &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">binary</span><span class="p">)</span>
     <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span>
         <span class="n">binary</span><span class="p">,</span>
-        <span class="s1">&#39;-m&#39;</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span>
-        <span class="s1">&#39;-w&#39;</span><span class="p">,</span> <span class="n">workspace</span><span class="o">.</span><span class="n">directory</span>
+        <span class="s1">&#39;--mets&#39;</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span>
+        <span class="s1">&#39;--working-dir&#39;</span><span class="p">,</span> <span class="n">workspace</span><span class="o">.</span><span class="n">directory</span>
     <span class="p">])</span></div>
-    <span class="c1">#  workspace.persist()</span>
 
 <div class="viewcode-block" id="Processor"><a class="viewcode-back" href="../../../api/ocrd.processor.html#ocrd.processor.base.Processor">[docs]</a><span class="k">class</span> <span class="nc">Processor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -106,11 +127,28 @@
 <span class="sd">    parameter.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workspace</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">input_file_grp</span><span class="o">=</span><span class="s2">&quot;INPUT&quot;</span><span class="p">,</span> <span class="n">output_file_grp</span><span class="o">=</span><span class="s2">&quot;OUTPUT&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">workspace</span><span class="p">,</span>
+            <span class="n">ocrd_tool</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">parameter</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">input_file_grp</span><span class="o">=</span><span class="s2">&quot;INPUT&quot;</span><span class="p">,</span>
+            <span class="n">output_file_grp</span><span class="o">=</span><span class="s2">&quot;OUTPUT&quot;</span><span class="p">,</span>
+            <span class="n">group_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">dump_json</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">version</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">dump_json</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">ocrd_tool</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span> <span class="o">=</span> <span class="n">workspace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">input_file_grp</span> <span class="o">=</span> <span class="n">input_file_grp</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_file_grp</span> <span class="o">=</span> <span class="n">output_file_grp</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">parameter</span> <span class="k">if</span> <span class="n">parameter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_id</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">group_id</span> <span class="o">==</span> <span class="p">[]</span> <span class="ow">or</span> <span class="n">group_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">group_id</span>
+        <span class="n">parameterValidator</span> <span class="o">=</span> <span class="n">ParameterValidator</span><span class="p">(</span><span class="n">ocrd_tool</span><span class="p">)</span>
+        <span class="n">parameterValidator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">parameter</span>
 
 <div class="viewcode-block" id="Processor.verify"><a class="viewcode-back" href="../../../api/ocrd.processor.html#ocrd.processor.base.Processor.verify">[docs]</a>    <span class="k">def</span> <span class="nf">verify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -129,10 +167,13 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        List the input files</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">mets</span><span class="o">.</span><span class="n">find_files</span><span class="p">(</span><span class="n">fileGrp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_file_grp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">mets</span><span class="o">.</span><span class="n">find_files</span><span class="p">(</span><span class="n">fileGrp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_file_grp</span><span class="p">,</span> <span class="n">groupId</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_id</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Processor.add_output_file"><a class="viewcode-back" href="../../../api/ocrd.processor.html#ocrd.processor.base.Processor.add_output_file">[docs]</a>    <span class="k">def</span> <span class="nf">add_output_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_grp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ID</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Processor.add_output_file"><a class="viewcode-back" href="../../../api/ocrd.processor.html#ocrd.processor.base.Processor.add_output_file">[docs]</a>    <span class="nd">@deprecated</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;0.8.0&#39;</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;Use self.workspace.add_file directly. See https://github.com/OCR-D/core/issues/166.&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">add_output_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_grp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ID</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        DEPRECATED</span>
+
 <span class="sd">        Add an output file.</span>
 
 <span class="sd">        Args:</span>
@@ -149,10 +190,46 @@
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">pyocrd</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=OCR-D&repo=pyocrd&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/OCR-D/pyocrd">
+    <img
+        alt="https://secure.travis-ci.org/OCR-D/pyocrd.svg?branch=master"
+        src="https://secure.travis-ci.org/OCR-D/pyocrd.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">API</a></li>
+</ul>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../../index.html">Documentation overview</a><ul>
@@ -181,8 +258,8 @@
       &copy;2018, Kay Wuerzner, Konstantin Baierer.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>
 

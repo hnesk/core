@@ -9,7 +9,7 @@
     <title>ocrd.processor package &#8212; pyocrd  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -29,6 +29,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="ocrd-processor-package">
@@ -40,7 +42,7 @@
 <span id="ocrd-processor-base-module"></span><h2>ocrd.processor.base module<a class="headerlink" href="#module-ocrd.processor.base" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="ocrd.processor.base.Processor">
-<em class="property">class </em><code class="descclassname">ocrd.processor.base.</code><code class="descname">Processor</code><span class="sig-paren">(</span><em>workspace</em>, <em>parameter=None</em>, <em>input_file_grp='INPUT'</em>, <em>output_file_grp='OUTPUT'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/processor/base.html#Processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.processor.base.Processor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ocrd.processor.base.</code><code class="descname">Processor</code><span class="sig-paren">(</span><em>workspace</em>, <em>ocrd_tool=None</em>, <em>parameter={}</em>, <em>input_file_grp='INPUT'</em>, <em>output_file_grp='OUTPUT'</em>, <em>group_id=None</em>, <em>dump_json=False</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/processor/base.html#Processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.processor.base.Processor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A processor runs an algorithm based on the workspace, the mets.xml in the
 workspace (and the input files defined therein) as well as optional
@@ -48,7 +50,8 @@ parameter.</p>
 <dl class="method">
 <dt id="ocrd.processor.base.Processor.add_output_file">
 <code class="descname">add_output_file</code><span class="sig-paren">(</span><em>basename=None</em>, <em>file_grp=None</em>, <em>ID=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/processor/base.html#Processor.add_output_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.processor.base.Processor.add_output_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add an output file.</p>
+<dd><p>DEPRECATED</p>
+<p>Add an output file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -62,6 +65,10 @@ parameter.</p>
 </tr>
 </tbody>
 </table>
+<div class="deprecated">
+<p><span class="versionmodified">Deprecated since version 0.8.0: </span>Use self.workspace.add_file directly. See
+<a class="reference external" href="https://github.com/OCR-D/core/issues/166">https://github.com/OCR-D/core/issues/166</a>.</p>
+</div>
 </dd></dl>
 
 <dl class="attribute">
@@ -86,13 +93,13 @@ parameter.</p>
 
 <dl class="function">
 <dt id="ocrd.processor.base.run_cli">
-<code class="descclassname">ocrd.processor.base.</code><code class="descname">run_cli</code><span class="sig-paren">(</span><em>binary</em>, <em>mets_url=None</em>, <em>resolver=None</em>, <em>workspace=None</em>, <em>group_id=None</em>, <em>log_level=None</em>, <em>input_file_grp=None</em>, <em>output_file_grp=None</em>, <em>output_mets=None</em>, <em>parameter=None</em>, <em>working_dir=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/processor/base.html#run_cli"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.processor.base.run_cli" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ocrd.processor.base.</code><code class="descname">run_cli</code><span class="sig-paren">(</span><em>binary</em>, <em>mets_url=None</em>, <em>resolver=None</em>, <em>workspace=None</em>, <em>group_id=None</em>, <em>log_level=None</em>, <em>input_file_grp=None</em>, <em>output_file_grp=None</em>, <em>parameter=None</em>, <em>working_dir=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/processor/base.html#run_cli"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.processor.base.run_cli" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a workspace for mets_url and run MP CLI through it</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="ocrd.processor.base.run_processor">
-<code class="descclassname">ocrd.processor.base.</code><code class="descname">run_processor</code><span class="sig-paren">(</span><em>processorClass</em>, <em>mets_url=None</em>, <em>resolver=None</em>, <em>workspace=None</em>, <em>group_id=None</em>, <em>log_level=None</em>, <em>input_file_grp=None</em>, <em>output_file_grp=None</em>, <em>output_mets=None</em>, <em>parameter=None</em>, <em>working_dir=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/processor/base.html#run_processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.processor.base.run_processor" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ocrd.processor.base.</code><code class="descname">run_processor</code><span class="sig-paren">(</span><em>processorClass</em>, <em>ocrd_tool=None</em>, <em>mets_url=None</em>, <em>resolver=None</em>, <em>workspace=None</em>, <em>group_id=None</em>, <em>log_level=None</em>, <em>input_file_grp=None</em>, <em>output_file_grp=None</em>, <em>parameter=None</em>, <em>working_dir=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/processor/base.html#run_processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.processor.base.run_processor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a workspace for mets_url and run processor through it</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -112,19 +119,48 @@ parameter.</p>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">ocrd.processor package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-ocrd.processor.base">ocrd.processor.base module</a></li>
-<li><a class="reference internal" href="#module-ocrd.processor">Module contents</a></li>
+<h1 class="logo"><a href="../index.html">pyocrd</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=OCR-D&repo=pyocrd&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/OCR-D/pyocrd">
+    <img
+        alt="https://secure.travis-ci.org/OCR-D/pyocrd.svg?branch=master"
+        src="https://secure.travis-ci.org/OCR-D/pyocrd.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="ocrd.html">ocrd package</a></li>
 </ul>
 </li>
 </ul>
+
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
@@ -138,13 +174,6 @@ parameter.</p>
   </ul></li>
 </ul>
 </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/api/ocrd.processor.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">
@@ -165,8 +194,8 @@ parameter.</p>
       &copy;2018, Kay Wuerzner, Konstantin Baierer.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |
       <a href="../_sources/api/ocrd.processor.rst.txt"

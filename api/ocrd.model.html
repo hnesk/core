@@ -9,7 +9,7 @@
     <title>ocrd.model package &#8212; pyocrd  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -29,6 +29,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="ocrd-model-package">
@@ -51,7 +53,7 @@
 <span id="ocrd-model-ocrd-exif-module"></span><h2>ocrd.model.ocrd_exif module<a class="headerlink" href="#module-ocrd.model.ocrd_exif" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="ocrd.model.ocrd_exif.OcrdExif">
-<em class="property">class </em><code class="descclassname">ocrd.model.ocrd_exif.</code><code class="descname">OcrdExif</code><span class="sig-paren">(</span><em>props</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_exif.html#OcrdExif"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_exif.OcrdExif" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ocrd.model.ocrd_exif.</code><code class="descname">OcrdExif</code><span class="sig-paren">(</span><em>img</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_exif.html#OcrdExif"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_exif.OcrdExif" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Represents technical image metadata</p>
 <dl class="staticmethod">
@@ -90,6 +92,12 @@
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="ocrd.model.ocrd_file.OcrdFile.fileGrp">
+<code class="descname">fileGrp</code><a class="headerlink" href="#ocrd.model.ocrd_file.OcrdFile.fileGrp" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">USE</span></code> attribute of the parent <code class="docutils literal notranslate"><span class="pre">mets</span> <span class="pre">--</span> <span class="pre">fileGrp</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="ocrd.model.ocrd_file.OcrdFile.groupId">
 <code class="descname">groupId</code><a class="headerlink" href="#ocrd.model.ocrd_file.OcrdFile.groupId" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -111,11 +119,11 @@
 <span id="ocrd-model-ocrd-mets-module"></span><h2>ocrd.model.ocrd_mets module<a class="headerlink" href="#module-ocrd.model.ocrd_mets" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="ocrd.model.ocrd_mets.OcrdMets">
-<em class="property">class </em><code class="descclassname">ocrd.model.ocrd_mets.</code><code class="descname">OcrdMets</code><span class="sig-paren">(</span><em>file_by_id=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ocrd.model.ocrd_mets.</code><code class="descname">OcrdMets</code><span class="sig-paren">(</span><em>file_by_id=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ocrd.model.ocrd_xml_base.OcrdXmlDocument" title="ocrd.model.ocrd_xml_base.OcrdXmlDocument"><code class="xref py py-class docutils literal notranslate"><span class="pre">ocrd.model.ocrd_xml_base.OcrdXmlDocument</span></code></a></p>
 <dl class="method">
 <dt id="ocrd.model.ocrd_mets.OcrdMets.add_file">
-<code class="descname">add_file</code><span class="sig-paren">(</span><em>fileGrp</em>, <em>mimetype=None</em>, <em>url=None</em>, <em>ID=None</em>, <em>local_filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.add_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.add_file" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_file</code><span class="sig-paren">(</span><em>fileGrp</em>, <em>mimetype=None</em>, <em>url=None</em>, <em>ID=None</em>, <em>groupId=None</em>, <em>force=False</em>, <em>local_filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.add_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.add_file" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -130,16 +138,18 @@
 
 <dl class="method">
 <dt id="ocrd.model.ocrd_mets.OcrdMets.find_files">
-<code class="descname">find_files</code><span class="sig-paren">(</span><em>fileGrp=None</em>, <em>groupId=None</em>, <em>mimetype=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.find_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.find_files" title="Permalink to this definition">¶</a></dt>
+<code class="descname">find_files</code><span class="sig-paren">(</span><em>ID=None</em>, <em>fileGrp=None</em>, <em>groupId=None</em>, <em>mimetype=None</em>, <em>local_only=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.find_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.find_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>List files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ID</strong> (<em>string</em>) – ID of the file</li>
 <li><strong>fileGrp</strong> (<em>string</em>) – USE of the fileGrp to list files of</li>
 <li><strong>groupId</strong> (<em>string</em>) – GROUPID of matching files</li>
 <li><strong>mimetype</strong> (<em>string</em>) – MIMETYPE of matching files</li>
+<li><strong>local</strong> (<em>boolean</em>) – Whether to restrict results to local files, i.e. <a class="reference external" href="file://-URL">file://-URL</a></li>
 </ul>
 </td>
 </tr>
@@ -7635,7 +7645,7 @@ text line and/or text region. For generic use</p>
 <dt id="ocrd.model.ocrd_swagger.OcrdSwagger">
 <em class="property">class </em><code class="descclassname">ocrd.model.ocrd_swagger.</code><code class="descname">OcrdSwagger</code><a class="reference internal" href="../_modules/ocrd/model/ocrd_swagger.html#OcrdSwagger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_swagger.OcrdSwagger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Representing a Swagger OAI 2 schema.</p>
+<p>Representing a Swagger OAI 3 schema.</p>
 <dl class="staticmethod">
 <dt id="ocrd.model.ocrd_swagger.OcrdSwagger.from_ocrd_tools">
 <em class="property">static </em><code class="descname">from_ocrd_tools</code><span class="sig-paren">(</span><em>swagger_template</em>, <em>*ocrd_tool</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_swagger.html#OcrdSwagger.from_ocrd_tools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_swagger.OcrdSwagger.from_ocrd_tools" title="Permalink to this definition">¶</a></dt>
@@ -7671,26 +7681,48 @@ text line and/or text region. For generic use</p>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">ocrd.model package</a><ul>
-<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-ocrd.model.ocrd_exif">ocrd.model.ocrd_exif module</a></li>
-<li><a class="reference internal" href="#module-ocrd.model.ocrd_file">ocrd.model.ocrd_file module</a></li>
-<li><a class="reference internal" href="#module-ocrd.model.ocrd_mets">ocrd.model.ocrd_mets module</a></li>
-<li><a class="reference internal" href="#module-ocrd.model.ocrd_page">ocrd.model.ocrd_page module</a></li>
-<li><a class="reference internal" href="#module-ocrd.model.ocrd_page_generateds">ocrd.model.ocrd_page_generateds module</a></li>
-<li><a class="reference internal" href="#module-ocrd.model.ocrd_swagger">ocrd.model.ocrd_swagger module</a></li>
-<li><a class="reference internal" href="#module-ocrd.model.ocrd_xml_base">ocrd.model.ocrd_xml_base module</a></li>
-<li><a class="reference internal" href="#module-ocrd.model">Module contents</a></li>
+<h1 class="logo"><a href="../index.html">pyocrd</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=OCR-D&repo=pyocrd&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/OCR-D/pyocrd">
+    <img
+        alt="https://secure.travis-ci.org/OCR-D/pyocrd.svg?branch=master"
+        src="https://secure.travis-ci.org/OCR-D/pyocrd.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="ocrd.html">ocrd package</a></li>
 </ul>
 </li>
 </ul>
+
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
@@ -7704,13 +7736,6 @@ text line and/or text region. For generic use</p>
   </ul></li>
 </ul>
 </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/api/ocrd.model.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">
@@ -7731,8 +7756,8 @@ text line and/or text region. For generic use</p>
       &copy;2018, Kay Wuerzner, Konstantin Baierer.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |
       <a href="../_sources/api/ocrd.model.rst.txt"

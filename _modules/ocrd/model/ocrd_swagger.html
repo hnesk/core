@@ -9,7 +9,7 @@
     <title>ocrd.model.ocrd_swagger &#8212; pyocrd  documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -27,6 +27,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for ocrd.model.ocrd_swagger</h1><div class="highlight"><pre>
@@ -54,7 +56,7 @@
 
 <div class="viewcode-block" id="OcrdSwagger"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_swagger.OcrdSwagger">[docs]</a><span class="k">class</span> <span class="nc">OcrdSwagger</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Representing a Swagger OAI 2 schema.</span>
+<span class="sd">    Representing a Swagger OAI 3 schema.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="OcrdSwagger.from_ocrd_tools"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_swagger.OcrdSwagger.from_ocrd_tools">[docs]</a>    <span class="nd">@staticmethod</span>
@@ -77,7 +79,7 @@
         <span class="k">for</span> <span class="n">ocrd_tool_file</span> <span class="ow">in</span> <span class="n">ocrd_tool</span><span class="p">:</span>
             <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">ocrd_tool_file</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">ocrd_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="n">ocrd_json</span><span class="p">[</span><span class="s1">&#39;tools&#39;</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="n">ocrd_json</span><span class="p">[</span><span class="s1">&#39;tools&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
                     <span class="n">OcrdSwagger</span><span class="o">.</span><span class="n">_add_paths_for_tool</span><span class="p">(</span><span class="n">swagger</span><span class="p">,</span> <span class="n">tool</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">swagger</span></div>
@@ -86,7 +88,7 @@
     <span class="k">def</span> <span class="nf">_add_paths_for_tool</span><span class="p">(</span><span class="n">swagger</span><span class="p">,</span> <span class="n">tool</span><span class="p">):</span>
 
         <span class="c1"># e.g. /preprocessing/binarization/kraken-binarize</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="s2">&quot;/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tool</span><span class="p">[</span><span class="s1">&#39;step&#39;</span><span class="p">],</span> <span class="n">tool</span><span class="p">[</span><span class="s1">&#39;executable&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;ocrd_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;ocrd-&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="s2">&quot;/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tool</span><span class="p">[</span><span class="s1">&#39;executable&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;ocrd_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;ocrd-&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
 
         <span class="c1"># parameters are optional</span>
         <span class="k">if</span> <span class="s1">&#39;parameterSchema&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tool</span><span class="p">:</span>
@@ -101,14 +103,14 @@
 
         <span class="c1"># POST /ocrd/processor/{{ PROCESSOR_NAME }}</span>
         <span class="n">post</span> <span class="o">=</span> <span class="n">_clone</span><span class="p">(</span><span class="n">OCRD_OAS3_SPEC</span><span class="p">[</span><span class="s1">&#39;paths&#39;</span><span class="p">][</span><span class="s1">&#39;/ocrd/processor&#39;</span><span class="p">][</span><span class="s1">&#39;post&#39;</span><span class="p">])</span>
-        <span class="n">post</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tool</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">]</span>
+        <span class="n">post</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tool</span><span class="p">[</span><span class="s1">&#39;categories&#39;</span><span class="p">]</span>
         <span class="n">post</span><span class="p">[</span><span class="s1">&#39;summary&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tool</span><span class="p">[</span><span class="s1">&#39;summary&#39;</span><span class="p">]</span>
         <span class="n">post</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tool</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span>
         <span class="n">post</span><span class="p">[</span><span class="s1">&#39;requestBody&#39;</span><span class="p">][</span><span class="s1">&#39;content&#39;</span><span class="p">][</span><span class="s1">&#39;multipart/form-data&#39;</span><span class="p">][</span><span class="s1">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_clone</span><span class="p">(</span><span class="n">OCRD_OAS3_SPEC</span><span class="p">[</span><span class="s1">&#39;components&#39;</span><span class="p">][</span><span class="s1">&#39;schemas&#39;</span><span class="p">][</span><span class="s1">&#39;processors&#39;</span><span class="p">])</span>
         <span class="n">post</span><span class="p">[</span><span class="s1">&#39;requestBody&#39;</span><span class="p">][</span><span class="s1">&#39;content&#39;</span><span class="p">][</span><span class="s1">&#39;multipart/form-data&#39;</span><span class="p">][</span><span class="s1">&#39;schema&#39;</span><span class="p">][</span><span class="s1">&#39;parameters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tool</span><span class="p">[</span><span class="s1">&#39;parameterSchema&#39;</span><span class="p">]</span>
 
         <span class="n">get_schema</span> <span class="o">=</span> <span class="n">_clone</span><span class="p">(</span><span class="n">GET_SCHEMA</span><span class="p">)</span>
-        <span class="n">get_schema</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tool</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">]</span>
+        <span class="n">get_schema</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tool</span><span class="p">[</span><span class="s1">&#39;categories&#39;</span><span class="p">]</span>
         <span class="n">swagger</span><span class="p">[</span><span class="s1">&#39;paths&#39;</span><span class="p">][</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;post&#39;</span><span class="p">:</span> <span class="n">post</span><span class="p">,</span>
             <span class="s1">&#39;get&#39;</span><span class="p">:</span> <span class="n">get_schema</span>
@@ -116,9 +118,9 @@
 
         <span class="c1"># GET /ocrd/processor/{{ PROCESSOR_NAME }}/{_id}</span>
         <span class="n">get</span> <span class="o">=</span> <span class="n">_clone</span><span class="p">(</span><span class="n">OCRD_OAS3_SPEC</span><span class="p">[</span><span class="s1">&#39;paths&#39;</span><span class="p">][</span><span class="s1">&#39;/ocrd/processor/jobid/</span><span class="si">{jobID}</span><span class="s1">&#39;</span><span class="p">][</span><span class="s1">&#39;get&#39;</span><span class="p">])</span>
-        <span class="n">get</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tool</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">]</span>
+        <span class="n">get</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tool</span><span class="p">[</span><span class="s1">&#39;categories&#39;</span><span class="p">]</span>
         <span class="n">delete</span> <span class="o">=</span> <span class="n">_clone</span><span class="p">(</span><span class="n">OCRD_OAS3_SPEC</span><span class="p">[</span><span class="s1">&#39;paths&#39;</span><span class="p">][</span><span class="s1">&#39;/ocrd/processor/jobid/</span><span class="si">{jobID}</span><span class="s1">&#39;</span><span class="p">][</span><span class="s1">&#39;delete&#39;</span><span class="p">])</span>
-        <span class="n">delete</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tool</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">]</span>
+        <span class="n">delete</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tool</span><span class="p">[</span><span class="s1">&#39;categories&#39;</span><span class="p">]</span>
         <span class="n">swagger</span><span class="p">[</span><span class="s1">&#39;paths&#39;</span><span class="p">][</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">{_id}</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;delete&#39;</span><span class="p">:</span> <span class="n">delete</span><span class="p">,</span>
             <span class="s1">&#39;get&#39;</span><span class="p">:</span> <span class="n">get</span>
@@ -126,10 +128,46 @@
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">pyocrd</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=OCR-D&repo=pyocrd&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/OCR-D/pyocrd">
+    <img
+        alt="https://secure.travis-ci.org/OCR-D/pyocrd.svg?branch=master"
+        src="https://secure.travis-ci.org/OCR-D/pyocrd.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">API</a></li>
+</ul>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../../index.html">Documentation overview</a><ul>
@@ -158,8 +196,8 @@
       &copy;2018, Kay Wuerzner, Konstantin Baierer.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>
 

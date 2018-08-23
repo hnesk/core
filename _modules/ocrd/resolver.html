@@ -9,7 +9,7 @@
     <title>ocrd.resolver &#8212; pyocrd  documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -27,6 +27,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for ocrd.resolver</h1><div class="highlight"><pre>
@@ -38,7 +40,6 @@
 
 <span class="kn">from</span> <span class="nn">ocrd.constants</span> <span class="k">import</span> <span class="n">METS_XML_EMPTY</span><span class="p">,</span> <span class="n">TMP_PREFIX</span><span class="p">,</span> <span class="n">EXT_TO_MIME</span>
 <span class="kn">from</span> <span class="nn">ocrd.utils</span> <span class="k">import</span> <span class="n">getLogger</span><span class="p">,</span> <span class="n">safe_filename</span>
-<span class="kn">from</span> <span class="nn">ocrd.resolver_cache</span> <span class="k">import</span> <span class="n">ResolverCache</span>
 <span class="kn">from</span> <span class="nn">ocrd.workspace</span> <span class="k">import</span> <span class="n">Workspace</span>
 <span class="kn">from</span> <span class="nn">ocrd.model</span> <span class="k">import</span> <span class="n">OcrdMets</span>
 
@@ -48,19 +49,15 @@
 <div class="viewcode-block" id="Resolver"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver">[docs]</a><span class="k">class</span> <span class="nc">Resolver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Handle Uploads, Downloads, Repository access and manage temporary directories</span>
-<span class="sd">    Optionally cache files.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        cache_enabled (Boolean): Whether to cache files. If True, passes kwargs to ~ResolverCache.</span>
-<span class="sd">        prefer_symlink (Boolean): If True, symlink from cached file to the workspace instead of copying to reduce I/O.</span>
+<span class="sd">        prefer_symlink (Boolean): If True, symlink from source file to the workspace instead of copying to reduce I/O.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prefer_symlink</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefer_symlink</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cache_enabled</span> <span class="o">=</span> <span class="n">cache_enabled</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prefer_symlink</span> <span class="o">=</span> <span class="n">prefer_symlink</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="n">ResolverCache</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">if</span> <span class="n">cache_enabled</span> <span class="k">else</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">_copy_or_symlink</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">prefer_symlink</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">prefer_symlink</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -156,6 +153,8 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Download a file to the workspace.</span>
 
+<span class="sd">        Early Shortcut: If url is a file://-URL and that file is already in the directory, keep it there.</span>
+
 <span class="sd">        If basename is not given but subdir is, assume user knows what she&#39;s doing and use last URL segment as the basename.</span>
 <span class="sd">        If basename is not given and no subdir is given, use the alnum characters in the URL as the basename.</span>
 
@@ -171,8 +170,10 @@
 <span class="sd">            Local filename</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">log</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;ocrd.resolver.download_to_directory&#39;</span><span class="p">)</span> <span class="c1"># pylint: disable=redefined-outer-name</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;directory=|</span><span class="si">%s</span><span class="s2">| url=|</span><span class="si">%s</span><span class="s2">| basename=|</span><span class="si">%s</span><span class="s2">| overwrite=|</span><span class="si">%s</span><span class="s2">| subdir=|</span><span class="si">%s</span><span class="s2">| prefer_symlink=|</span><span class="si">%s</span><span class="s2">|&quot;</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">,</span> <span class="n">subdir</span><span class="p">,</span> <span class="n">prefer_symlink</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">basename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">subdir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">subdir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> \
+                <span class="p">(</span><span class="n">directory</span> <span class="ow">and</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;file://</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">directory</span><span class="p">)):</span> <span class="c1"># in case downloading a url &#39;file:///tmp/foo/bar&#39; to directory &#39;/tmp/foo&#39;</span>
                 <span class="n">basename</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">basename</span> <span class="o">=</span> <span class="n">safe_filename</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
@@ -191,43 +192,94 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">outfiledir</span><span class="p">):</span>
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">outfiledir</span><span class="p">)</span>
 
-        <span class="n">cached_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_enabled</span> <span class="k">else</span> <span class="kc">False</span>
-
-        <span class="k">if</span> <span class="n">cached_filename</span><span class="p">:</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found cached version of &lt;</span><span class="si">%s</span><span class="s2">&gt; at &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">cached_filename</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_copy_or_symlink</span><span class="p">(</span><span class="n">cached_filename</span><span class="p">,</span> <span class="n">outfilename</span><span class="p">,</span> <span class="n">prefer_symlink</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Downloading &lt;</span><span class="si">%s</span><span class="s2">&gt; to &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">outfilename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_copy_or_symlink</span><span class="p">(</span><span class="n">url</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):],</span> <span class="n">outfilename</span><span class="p">,</span> <span class="n">prefer_symlink</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Downloading &lt;</span><span class="si">%s</span><span class="s2">&gt; to &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">outfilename</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_copy_or_symlink</span><span class="p">(</span><span class="n">url</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):],</span> <span class="n">outfilename</span><span class="p">,</span> <span class="n">prefer_symlink</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfilename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
-                    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Not found: </span><span class="si">%s</span><span class="s2"> (HTTP </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
-                    <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_enabled</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cached_filename</span><span class="p">:</span>
-            <span class="n">cached_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">outfilename</span><span class="p">)</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Stored in cache &lt;</span><span class="si">%s</span><span class="s2">&gt; at &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">cached_filename</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Not found: </span><span class="si">%s</span><span class="s2"> (HTTP </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfilename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">outfilename</span></div>
 
-<div class="viewcode-block" id="Resolver.workspace_from_url"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.workspace_from_url">[docs]</a>    <span class="k">def</span> <span class="nf">workspace_from_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Resolver.workspace_from_url"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.workspace_from_url">[docs]</a>    <span class="k">def</span> <span class="nf">workspace_from_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clobber_mets</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mets_basename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">download_local</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a workspace from a METS by URL.</span>
 
 <span class="sd">        Sets the mets.xml file</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">directory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">directory</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+            <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">mets_url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Must pass mets_url to workspace_from_url&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Must pass mets_url and/or directory to workspace_from_url&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mets_url</span> <span class="o">=</span> <span class="s1">&#39;file://</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">mets_basename</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">mets_url</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;://&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># resolve to absolute</span>
+            <span class="n">mets_url</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">mets_url</span><span class="p">)</span>
             <span class="n">mets_url</span> <span class="o">=</span> <span class="s1">&#39;file://&#39;</span> <span class="o">+</span> <span class="n">mets_url</span>
         <span class="k">if</span> <span class="n">directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># if mets_url is a file-url assume working directory to be  where</span>
+            <span class="c1"># the mets.xml resides</span>
+            <span class="k">if</span> <span class="n">mets_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):</span>
+                <span class="c1"># if directory was not given and mets_url is a file assume that</span>
+                <span class="c1"># directory should be the directory where the mets.xml resides</span>
+                <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">mets_url</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">directory</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">TMP_PREFIX</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Creating workspace &#39;</span><span class="si">%s</span><span class="s2">&#39; for METS @ &lt;</span><span class="si">%s</span><span class="s2">&gt;&quot;</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">)</span>
+
+        <span class="c1"># if mets_basename is not given, use the last URL segment of the mets_url</span>
+        <span class="k">if</span> <span class="n">mets_basename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mets_basename</span> <span class="o">=</span> <span class="n">mets_url</span> \
+                <span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> \
+                <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;?&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> \
+                <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">mets_fpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">mets_basename</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Copying mets url &#39;</span><span class="si">%s</span><span class="s2">&#39; to &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">mets_fpath</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;file://&#39;</span> <span class="o">+</span> <span class="n">mets_fpath</span> <span class="o">==</span> <span class="n">mets_url</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Target and source mets are identical&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">mets_fpath</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">clobber_mets</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;File &#39;</span><span class="si">%s</span><span class="s2">&#39; already exists but clobber_mets is false&quot;</span> <span class="o">%</span> <span class="n">mets_fpath</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">download_to_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="n">mets_basename</span><span class="p">,</span> <span class="n">prefer_symlink</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">workspace</span> <span class="o">=</span> <span class="n">Workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">mets_basename</span><span class="o">=</span><span class="n">mets_basename</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">download_local</span> <span class="ow">or</span> <span class="n">download</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">file_grp</span> <span class="ow">in</span> <span class="n">workspace</span><span class="o">.</span><span class="n">mets</span><span class="o">.</span><span class="n">file_groups</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">download_local</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">workspace</span><span class="o">.</span><span class="n">mets</span><span class="o">.</span><span class="n">find_files</span><span class="p">(</span><span class="n">fileGrp</span><span class="o">=</span><span class="n">file_grp</span><span class="p">,</span> <span class="n">local_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                        <span class="n">workspace</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">subdir</span><span class="o">=</span><span class="n">file_grp</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">workspace</span><span class="o">.</span><span class="n">download_files_in_group</span><span class="p">(</span><span class="n">file_grp</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">workspace</span></div>
+
+<div class="viewcode-block" id="Resolver.workspace_from_nothing"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.workspace_from_nothing">[docs]</a>    <span class="k">def</span> <span class="nf">workspace_from_nothing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">mets_basename</span><span class="o">=</span><span class="s1">&#39;mets.xml&#39;</span><span class="p">,</span> <span class="n">clobber_mets</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create an empty workspace.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">directory</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">TMP_PREFIX</span><span class="p">)</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Creating workspace &#39;</span><span class="si">%s</span><span class="s2">&#39; for METS @ &lt;</span><span class="si">%s</span><span class="s2">&gt;&quot;</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">download_to_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;mets.xml&#39;</span><span class="p">,</span> <span class="n">prefer_symlink</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+
+        <span class="n">mets_fpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">mets_basename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">clobber_mets</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">mets_fpath</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Not clobbering existing mets.xml in &#39;</span><span class="si">%s</span><span class="s2">&#39;.&quot;</span> <span class="o">%</span> <span class="n">directory</span><span class="p">)</span>
+        <span class="n">mets</span> <span class="o">=</span> <span class="n">OcrdMets</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">METS_XML_EMPTY</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">mets_fpath</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fmets</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Writing </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">mets_fpath</span><span class="p">)</span>
+            <span class="n">fmets</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">mets</span><span class="o">.</span><span class="n">to_xml</span><span class="p">(</span><span class="n">xmllint</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">Workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">mets</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Resolver.workspace_from_folder"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.workspace_from_folder">[docs]</a>    <span class="k">def</span> <span class="nf">workspace_from_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">return_mets</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">clobber_mets</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convention</span><span class="o">=</span><span class="s1">&#39;ocrd-gt&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -252,7 +304,6 @@
         <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_files_to_mets</span><span class="p">(</span><span class="n">convention</span><span class="p">,</span> <span class="n">mets</span><span class="p">,</span> <span class="n">directory</span><span class="p">)</span>
-
         <span class="k">if</span> <span class="n">return_mets</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">mets</span>
 
@@ -264,6 +315,7 @@
 
         <span class="k">return</span> <span class="n">Workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">mets</span><span class="p">)</span></div>
 
+    <span class="c1"># pylint: disable=too-many-locals</span>
 <div class="viewcode-block" id="Resolver.add_files_to_mets"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.add_files_to_mets">[docs]</a>    <span class="k">def</span> <span class="nf">add_files_to_mets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">convention</span><span class="p">,</span> <span class="n">mets</span><span class="p">,</span> <span class="n">directory</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add files from folder to METS, accoding to a file structure convention.</span>
@@ -280,7 +332,7 @@
 <span class="sd">                    fileGrp + &#39;_&#39; + upper(Basename of file without extension) == mets:file @ID</span>
 <span class="sd">                    File in root folder == mets:fileGrp @USE == &#39;OCR-D-IMG&#39;</span>
 <span class="sd">                    Extension ==&gt; mets.file @MIMETYPE</span>
-<span class="sd">                        .tif =&gt; image/tif</span>
+<span class="sd">                        .tif =&gt; image/tiff</span>
 <span class="sd">                        .png =&gt; image/png</span>
 <span class="sd">                        .jpg =&gt; image/jpg</span>
 <span class="sd">                        .xml =&gt; image/xml</span>
@@ -323,10 +375,46 @@
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">pyocrd</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=OCR-D&repo=pyocrd&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/OCR-D/pyocrd">
+    <img
+        alt="https://secure.travis-ci.org/OCR-D/pyocrd.svg?branch=master"
+        src="https://secure.travis-ci.org/OCR-D/pyocrd.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">API</a></li>
+</ul>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
@@ -355,8 +443,8 @@
       &copy;2018, Kay Wuerzner, Konstantin Baierer.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>
 

@@ -9,7 +9,7 @@
     <title>ocrd package &#8212; pyocrd  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -29,6 +29,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="ocrd-package">
@@ -39,11 +41,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="ocrd.cli.html">ocrd.cli package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#module-ocrd.cli.bashlib">ocrd.cli.bashlib module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#module-ocrd.cli.generate_swagger">ocrd.cli.generate_swagger module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#ocrd-cli-merge-ocr-txt-module">ocrd.cli.merge_ocr_txt module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#module-ocrd.cli.ocrd_tool">ocrd.cli.ocrd_tool module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#module-ocrd.cli.process">ocrd.cli.process module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#module-ocrd.cli.server">ocrd.cli.server module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#module-ocrd.cli.validate_ocrd_tool">ocrd.cli.validate_ocrd_tool module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#module-ocrd.cli.workspace">ocrd.cli.workspace module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocrd.cli.html#module-ocrd.cli">Module contents</a></li>
 </ul>
@@ -108,7 +111,24 @@
 
 <dl class="function">
 <dt id="ocrd.decorators.ocrd_cli_wrap_processor">
-<code class="descclassname">ocrd.decorators.</code><code class="descname">ocrd_cli_wrap_processor</code><span class="sig-paren">(</span><em>processorClass</em>, <em>mets=None</em>, <em>working_dir=None</em>, <em>cache_enabled=True</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/decorators.html#ocrd_cli_wrap_processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.decorators.ocrd_cli_wrap_processor" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ocrd.decorators.</code><code class="descname">ocrd_cli_wrap_processor</code><span class="sig-paren">(</span><em>processorClass</em>, <em>ocrd_tool=None</em>, <em>mets=None</em>, <em>working_dir=None</em>, <em>dump_json=False</em>, <em>version=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/decorators.html#ocrd_cli_wrap_processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.decorators.ocrd_cli_wrap_processor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-ocrd.logging">
+<span id="ocrd-logging-module"></span><h2>ocrd.logging module<a class="headerlink" href="#module-ocrd.logging" title="Permalink to this headline">¶</a></h2>
+<p>Logging setup</p>
+<p>By default: Log with lastResort logger, usually STDERR.</p>
+<p>Logging can be overridden either programmatically in code using the library or by creating one or more of</p>
+<ul class="simple">
+<li>/etc/ocrd_logging.py</li>
+<li>$HOME/ocrd_logging.py</li>
+<li>$PWD/ocrd_logging.py</li>
+</ul>
+<p>These files will be executed in the context of ocrd/ocrd_logging.py, with <cite>logging</cite> global set.</p>
+<dl class="function">
+<dt id="ocrd.logging.getLogger">
+<code class="descclassname">ocrd.logging.</code><code class="descname">getLogger</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/logging.html#getLogger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.logging.getLogger" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -116,19 +136,14 @@
 <span id="ocrd-resolver-module"></span><h2>ocrd.resolver module<a class="headerlink" href="#module-ocrd.resolver" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="ocrd.resolver.Resolver">
-<em class="property">class </em><code class="descclassname">ocrd.resolver.</code><code class="descname">Resolver</code><span class="sig-paren">(</span><em>cache_enabled=False</em>, <em>prefer_symlink=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ocrd.resolver.</code><code class="descname">Resolver</code><span class="sig-paren">(</span><em>prefer_symlink=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Handle Uploads, Downloads, Repository access and manage temporary directories
-Optionally cache files.</p>
+<p>Handle Uploads, Downloads, Repository access and manage temporary directories</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>cache_enabled</strong> (<em>Boolean</em>) – Whether to cache files. If True, passes kwargs to ~ResolverCache.</li>
-<li><strong>prefer_symlink</strong> (<em>Boolean</em>) – If True, symlink from cached file to the workspace instead of copying to reduce I/O.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prefer_symlink</strong> (<em>Boolean</em>) – If True, symlink from source file to the workspace instead of copying to reduce I/O.</td>
 </tr>
 </tbody>
 </table>
@@ -149,7 +164,7 @@ Optionally cache files.</p>
 <span class="n">fileGrp</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">upper</span><span class="p">(</span><span class="n">Basename</span> <span class="n">of</span> <span class="n">file</span> <span class="n">without</span> <span class="n">extension</span><span class="p">)</span> <span class="o">==</span> <span class="n">mets</span><span class="p">:</span><span class="n">file</span> <span class="nd">@ID</span>
 <span class="n">File</span> <span class="ow">in</span> <span class="n">root</span> <span class="n">folder</span> <span class="o">==</span> <span class="n">mets</span><span class="p">:</span><span class="n">fileGrp</span> <span class="nd">@USE</span> <span class="o">==</span> <span class="s1">&#39;OCR-D-IMG&#39;</span>
 <span class="n">Extension</span> <span class="o">==&gt;</span> <span class="n">mets</span><span class="o">.</span><span class="n">file</span> <span class="nd">@MIMETYPE</span>
-    <span class="o">.</span><span class="n">tif</span> <span class="o">=&gt;</span> <span class="n">image</span><span class="o">/</span><span class="n">tif</span>
+    <span class="o">.</span><span class="n">tif</span> <span class="o">=&gt;</span> <span class="n">image</span><span class="o">/</span><span class="n">tiff</span>
     <span class="o">.</span><span class="n">png</span> <span class="o">=&gt;</span> <span class="n">image</span><span class="o">/</span><span class="n">png</span>
     <span class="o">.</span><span class="n">jpg</span> <span class="o">=&gt;</span> <span class="n">image</span><span class="o">/</span><span class="n">jpg</span>
     <span class="o">.</span><span class="n">xml</span> <span class="o">=&gt;</span> <span class="n">image</span><span class="o">/</span><span class="n">xml</span>
@@ -165,6 +180,7 @@ Optionally cache files.</p>
 <dt id="ocrd.resolver.Resolver.download_to_directory">
 <code class="descname">download_to_directory</code><span class="sig-paren">(</span><em>directory</em>, <em>url</em>, <em>basename=None</em>, <em>overwrite=False</em>, <em>subdir=None</em>, <em>prefer_symlink=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.download_to_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.download_to_directory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download a file to the workspace.</p>
+<p>Early Shortcut: If url is a <a class="reference external" href="file://-URL">file://-URL</a> and that file is already in the directory, keep it there.</p>
 <p>If basename is not given but subdir is, assume user knows what she’s doing and use last URL segment as the basename.
 If basename is not given and no subdir is given, use the alnum characters in the URL as the basename.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -274,39 +290,17 @@ If basename is not given and no subdir is given, use the alnum characters in the
 </dd></dl>
 
 <dl class="method">
+<dt id="ocrd.resolver.Resolver.workspace_from_nothing">
+<code class="descname">workspace_from_nothing</code><span class="sig-paren">(</span><em>directory</em>, <em>mets_basename='mets.xml'</em>, <em>clobber_mets=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.workspace_from_nothing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.workspace_from_nothing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an empty workspace.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="ocrd.resolver.Resolver.workspace_from_url">
-<code class="descname">workspace_from_url</code><span class="sig-paren">(</span><em>mets_url</em>, <em>directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.workspace_from_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.workspace_from_url" title="Permalink to this definition">¶</a></dt>
+<code class="descname">workspace_from_url</code><span class="sig-paren">(</span><em>mets_url</em>, <em>directory=None</em>, <em>clobber_mets=False</em>, <em>mets_basename=None</em>, <em>download=False</em>, <em>download_local=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.workspace_from_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.workspace_from_url" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a workspace from a METS by URL.</p>
 <p>Sets the mets.xml file</p>
 </dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-ocrd.resolver_cache">
-<span id="ocrd-resolver-cache-module"></span><h2>ocrd.resolver_cache module<a class="headerlink" href="#module-ocrd.resolver_cache" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="ocrd.resolver_cache.ResolverCache">
-<em class="property">class </em><code class="descclassname">ocrd.resolver_cache.</code><code class="descname">ResolverCache</code><span class="sig-paren">(</span><em>cache_directory='/tmp/cache-pyocrd'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver_cache.html#ResolverCache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver_cache.ResolverCache" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Cache of downloads, based on URL.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cache_directory</strong> (<em>string</em>) – Where to store cached files</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="ocrd.resolver_cache.ResolverCache.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver_cache.html#ResolverCache.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver_cache.ResolverCache.get" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ocrd.resolver_cache.ResolverCache.put">
-<code class="descname">put</code><span class="sig-paren">(</span><em>url</em>, <em>filename=None</em>, <em>content=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver_cache.html#ResolverCache.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver_cache.ResolverCache.put" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -325,19 +319,19 @@ points is for PAGE</p>
 <p>xywh is what tesserocr expects/produces.</p>
 <dl class="function">
 <dt id="ocrd.utils.getLogger">
-<code class="descclassname">ocrd.utils.</code><code class="descname">getLogger</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/utils.html#getLogger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.utils.getLogger" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ocrd.utils.</code><code class="descname">getLogger</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/logging.html#getLogger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.utils.getLogger" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="function">
-<dt id="ocrd.utils.mets_file_id">
-<code class="descclassname">ocrd.utils.</code><code class="descname">mets_file_id</code><span class="sig-paren">(</span><em>grp</em>, <em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/utils.html#mets_file_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.utils.mets_file_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Concatenate string and zero-padded 4 digit number</p>
-</dd></dl>
 
 <dl class="function">
 <dt id="ocrd.utils.points_from_xywh">
 <code class="descclassname">ocrd.utils.</code><code class="descname">points_from_xywh</code><span class="sig-paren">(</span><em>box</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/utils.html#points_from_xywh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.utils.points_from_xywh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constructs a polygon representation from a rectangle described as a dict with keys x, y, w, h.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ocrd.utils.xywh_from_points">
+<code class="descclassname">ocrd.utils.</code><code class="descname">xywh_from_points</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/utils.html#xywh_from_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.utils.xywh_from_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs an dict representing a rectangle with keys x, y, w, h</p>
 </dd></dl>
 
 <dl class="function">
@@ -347,31 +341,31 @@ points is for PAGE</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="ocrd.utils.is_string">
+<code class="descclassname">ocrd.utils.</code><code class="descname">is_string</code><span class="sig-paren">(</span><em>val</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/utils.html#is_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.utils.is_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ocrd.utils.concat_padded">
+<code class="descclassname">ocrd.utils.</code><code class="descname">concat_padded</code><span class="sig-paren">(</span><em>base</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/utils.html#concat_padded"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.utils.concat_padded" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concatenate string and zero-padded 4 digit number</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="ocrd.utils.safe_filename">
 <code class="descclassname">ocrd.utils.</code><code class="descname">safe_filename</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/utils.html#safe_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.utils.safe_filename" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="function">
-<dt id="ocrd.utils.xmllint_format">
-<code class="descclassname">ocrd.utils.</code><code class="descname">xmllint_format</code><span class="sig-paren">(</span><em>xml</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/utils.html#xmllint_format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.utils.xmllint_format" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ocrd.utils.xywh_from_points">
-<code class="descclassname">ocrd.utils.</code><code class="descname">xywh_from_points</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/utils.html#xywh_from_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.utils.xywh_from_points" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructs an dict representing a rectangle with keys x, y, w, h</p>
-</dd></dl>
 
 </div>
 <div class="section" id="module-ocrd.validator">
 <span id="ocrd-validator-module"></span><h2>ocrd.validator module<a class="headerlink" href="#module-ocrd.validator" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="ocrd.validator.JsonValidator">
-<em class="property">class </em><code class="descclassname">ocrd.validator.</code><code class="descname">JsonValidator</code><span class="sig-paren">(</span><em>schema</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#JsonValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.JsonValidator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ocrd.validator.</code><code class="descname">JsonValidator</code><span class="sig-paren">(</span><em>schema</em>, <em>validator_class=&lt;class 'jsonschema.validators.create.&lt;locals&gt;.Validator'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#JsonValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.JsonValidator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="ocrd.validator.JsonValidator.validate">
-<code class="descname">validate</code><span class="sig-paren">(</span><em>cli_json</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#JsonValidator.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.JsonValidator.validate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">validate</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#JsonValidator.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.JsonValidator.validate" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="staticmethod">
@@ -383,13 +377,19 @@ points is for PAGE</p>
 
 <dl class="class">
 <dt id="ocrd.validator.OcrdToolValidator">
-<em class="property">class </em><code class="descclassname">ocrd.validator.</code><code class="descname">OcrdToolValidator</code><span class="sig-paren">(</span><em>schema</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#OcrdToolValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.OcrdToolValidator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ocrd.validator.</code><code class="descname">OcrdToolValidator</code><span class="sig-paren">(</span><em>schema</em>, <em>validator_class=&lt;class 'jsonschema.validators.create.&lt;locals&gt;.Validator'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#OcrdToolValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.OcrdToolValidator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ocrd.validator.JsonValidator" title="ocrd.validator.JsonValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ocrd.validator.JsonValidator</span></code></a></p>
 <dl class="staticmethod">
 <dt id="ocrd.validator.OcrdToolValidator.validate_json">
-<em class="property">static </em><code class="descname">validate_json</code><span class="sig-paren">(</span><em>obj, schema={'additionalProperties': False, 'description': 'Schema for tools by OCR-D MP', 'properties': {'git_url': {'description': 'Github/Gitlab URL', 'type': 'string', 'format': 'url'}, 'dockerhub': {'description': 'DockerHub image', 'type': 'string'}, 'tools': {'type': 'array', 'items': {'type': 'object', 'additionalProperties': False, 'required': ['description', 'step', 'executable'], 'properties': {'executable': {'description': 'The name of the CLI executable in $PATH', 'type': 'string'}, 'parameterSchema': {'description': 'JSON Schema for the parameters.json file', 'type': 'object'}, 'description': {'description': 'Concise description what the tool does', 'type': 'string'}, 'step': {'description': 'Step in the OCR-D functional model for this tool', 'type': 'string', 'enum': ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'recognition/text-recognition', 'recognition/font-identification', 'layout/segmentation', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/classification', 'layout/analysis']}, 'tags': {'description': 'Tools belong to this category, representing modules within the OCR-D project structure', 'type': 'array', 'items': {'type': 'string', 'enum': ['Image preprocessing', 'Layout analysis', 'Text recognition and optimization', 'Model training', 'Long-term preservation', 'Quality assurance']}}}}}}, 'required': ['git_url', 'tools'], 'type': 'object'}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#OcrdToolValidator.validate_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.OcrdToolValidator.validate_json" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">validate_json</code><span class="sig-paren">(</span><em>obj, schema={'additionalProperties': False, 'description': 'Schema for tools by OCR-D MP', 'properties': {'version': {'description': 'Version of the tool, expressed as MAJOR.MINOR.PATCH.', 'type': 'string', 'pattern': '^[0-9]+\\.[0-9]+\\.[0-9]+$'}, 'git_url': {'description': 'Github/Gitlab URL', 'type': 'string', 'format': 'url'}, 'dockerhub': {'description': 'DockerHub image', 'type': 'string'}, 'tools': {'type': 'object', 'additionalProperties': False, 'patternProperties': {'ocrd-.*': {'type': 'object', 'additionalProperties': False, 'required': ['description', 'steps', 'executable', 'categories'], 'properties': {'executable': {'description': 'The name of the CLI executable in $PATH', 'type': 'string'}, 'parameters': {'description': 'Object describing the parameters of a tool. Keys are parameter names, values sub-schemas.', 'type': 'object', 'patternProperties': {'.*': {'type': 'object', 'additionalProperties': False, 'required': ['description', 'type'], 'properties': {'type': {'type': 'string', 'description': 'Data type of this parameter', 'enum': ['string', 'number', 'boolean']}, 'format': {'description': 'Subtype, such as `float` for type `number` or `uri` for type `string`.'}, 'description': {'description': 'Concise description of syntax and semantics of this parameter'}, 'required': {'type': 'boolean', 'description': 'Whether this parameter is required'}, 'default': {'description': 'Default value when not provided by the user'}, 'enum': {'type': 'array', 'description': 'List the allowed values if a fixed list.'}}}}}, 'description': {'description': 'Concise description what the tool does'}, 'categories': {'description': 'Tools belong to this categories, representing modules within the OCR-D project structure', 'type': 'array', 'items': {'type': 'string', 'enum': ['Image preprocessing', 'Layout analysis', 'Text recognition and optimization', 'Model training', 'Long-term preservation', 'Quality assurance']}}, 'steps': {'description': 'This tool can be used at these steps in the OCR-D functional model', 'type': 'array', 'items': {'type': 'string', 'enum': ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'layout/segmentation', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']}}}}}}}, 'required': ['version', 'git_url', 'tools'], 'type': 'object'}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#OcrdToolValidator.validate_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.OcrdToolValidator.validate_json" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+<dl class="class">
+<dt id="ocrd.validator.ParameterValidator">
+<em class="property">class </em><code class="descclassname">ocrd.validator.</code><code class="descname">ParameterValidator</code><span class="sig-paren">(</span><em>ocrd_tool</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#ParameterValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.ParameterValidator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ocrd.validator.JsonValidator" title="ocrd.validator.JsonValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ocrd.validator.JsonValidator</span></code></a></p>
 </dd></dl>
 
 <dl class="class">
@@ -421,7 +421,7 @@ points is for PAGE</p>
 
 <dl class="class">
 <dt id="ocrd.validator.WorkspaceValidator">
-<em class="property">class </em><code class="descclassname">ocrd.validator.</code><code class="descname">WorkspaceValidator</code><span class="sig-paren">(</span><em>resolver</em>, <em>mets_url</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#WorkspaceValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.WorkspaceValidator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ocrd.validator.</code><code class="descname">WorkspaceValidator</code><span class="sig-paren">(</span><em>resolver</em>, <em>mets_url</em>, <em>directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#WorkspaceValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.WorkspaceValidator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Validates an OCR-D/METS workspace against the specs.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -443,7 +443,7 @@ points is for PAGE</p>
 
 <dl class="staticmethod">
 <dt id="ocrd.validator.WorkspaceValidator.validate_url">
-<em class="property">static </em><code class="descname">validate_url</code><span class="sig-paren">(</span><em>resolver</em>, <em>mets_url</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#WorkspaceValidator.validate_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.WorkspaceValidator.validate_url" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">validate_url</code><span class="sig-paren">(</span><em>resolver</em>, <em>mets_url</em>, <em>directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#WorkspaceValidator.validate_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.WorkspaceValidator.validate_url" title="Permalink to this definition">¶</a></dt>
 <dd><p>Validates the workspace of a METS URL against the specs</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -457,12 +457,17 @@ points is for PAGE</p>
 
 </dd></dl>
 
+<dl class="function">
+<dt id="ocrd.validator.extend_with_default">
+<code class="descclassname">ocrd.validator.</code><code class="descname">extend_with_default</code><span class="sig-paren">(</span><em>validator_class</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator.html#extend_with_default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.extend_with_default" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 <div class="section" id="module-ocrd.workspace">
 <span id="ocrd-workspace-module"></span><h2>ocrd.workspace module<a class="headerlink" href="#module-ocrd.workspace" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="ocrd.workspace.Workspace">
-<em class="property">class </em><code class="descclassname">ocrd.workspace.</code><code class="descname">Workspace</code><span class="sig-paren">(</span><em>resolver</em>, <em>directory</em>, <em>mets=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ocrd.workspace.</code><code class="descname">Workspace</code><span class="sig-paren">(</span><em>resolver</em>, <em>directory</em>, <em>mets=None</em>, <em>mets_basename='mets.xml'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A workspace is a temporary directory set up for a processor. It’s the
 interface to the METS/PAGE XML and delegates download and upload to the
@@ -474,6 +479,7 @@ Resolver.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>directory</strong> (<em>string</em>) – Folder to work in</li>
 <li><strong>mets</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">OcrdMets</span></code>) – OcrdMets representing this workspace. Loaded from ‘mets.xml’ if <code class="docutils literal notranslate"><span class="pre">None</span></code>.</li>
+<li><strong>mets_basename</strong> (<em>string</em>) – Basename of the METS XML file. Default: Last URL segment of the mets_url.</li>
 </ul>
 </td>
 </tr>
@@ -588,26 +594,48 @@ OUTPUT group to the data repository, sets their URL accordingly.</p>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">ocrd package</a><ul>
-<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-ocrd.constants">ocrd.constants module</a></li>
-<li><a class="reference internal" href="#module-ocrd.decorators">ocrd.decorators module</a></li>
-<li><a class="reference internal" href="#module-ocrd.resolver">ocrd.resolver module</a></li>
-<li><a class="reference internal" href="#module-ocrd.resolver_cache">ocrd.resolver_cache module</a></li>
-<li><a class="reference internal" href="#module-ocrd.utils">ocrd.utils module</a></li>
-<li><a class="reference internal" href="#module-ocrd.validator">ocrd.validator module</a></li>
-<li><a class="reference internal" href="#module-ocrd.workspace">ocrd.workspace module</a></li>
-<li><a class="reference internal" href="#module-ocrd">Module contents</a></li>
+<h1 class="logo"><a href="../index.html">pyocrd</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=OCR-D&repo=pyocrd&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/OCR-D/pyocrd">
+    <img
+        alt="https://secure.travis-ci.org/OCR-D/pyocrd.svg?branch=master"
+        src="https://secure.travis-ci.org/OCR-D/pyocrd.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ocrd package</a></li>
 </ul>
 </li>
 </ul>
+
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
@@ -619,13 +647,6 @@ OUTPUT group to the data repository, sets their URL accordingly.</p>
   </ul></li>
 </ul>
 </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/api/ocrd.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">
@@ -646,8 +667,8 @@ OUTPUT group to the data repository, sets their URL accordingly.</p>
       &copy;2018, Kay Wuerzner, Konstantin Baierer.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |
       <a href="../_sources/api/ocrd.rst.txt"

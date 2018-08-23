@@ -9,7 +9,7 @@
     <title>ocrd.model.ocrd_exif &#8212; pyocrd  documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -27,76 +27,12 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for ocrd.model.ocrd_exif</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">exiftool</span>
-
-<span class="n">EXIF_COMPRESSION_METHODS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Uncompressed&quot;</span><span class="p">,</span>
-    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;CCITT 1D&quot;</span><span class="p">,</span>
-    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;T4/Group 3 Fax&quot;</span><span class="p">,</span>
-    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;T6/Group 4 Fax&quot;</span><span class="p">,</span>
-    <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;LZW&quot;</span><span class="p">,</span>
-    <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;JPEG (old-style)&quot;</span><span class="p">,</span>
-    <span class="mi">7</span><span class="p">:</span> <span class="s2">&quot;JPEG&quot;</span><span class="p">,</span>
-    <span class="mi">8</span><span class="p">:</span> <span class="s2">&quot;Adobe Deflate&quot;</span><span class="p">,</span>
-    <span class="mi">9</span><span class="p">:</span> <span class="s2">&quot;JBIG B&amp;W&quot;</span><span class="p">,</span>
-    <span class="mi">10</span><span class="p">:</span> <span class="s2">&quot;JBIG Color&quot;</span><span class="p">,</span>
-    <span class="mi">99</span><span class="p">:</span> <span class="s2">&quot;JPEG&quot;</span><span class="p">,</span>
-    <span class="mi">262</span><span class="p">:</span> <span class="s2">&quot;Kodak 262&quot;</span><span class="p">,</span>
-    <span class="mi">32766</span><span class="p">:</span> <span class="s2">&quot;Next&quot;</span><span class="p">,</span>
-    <span class="mi">32767</span><span class="p">:</span> <span class="s2">&quot;Sony ARW Compressed&quot;</span><span class="p">,</span>
-    <span class="mi">32769</span><span class="p">:</span> <span class="s2">&quot;Packed RAW&quot;</span><span class="p">,</span>
-    <span class="mi">32770</span><span class="p">:</span> <span class="s2">&quot;Samsung SRW Compressed&quot;</span><span class="p">,</span>
-    <span class="mi">32771</span><span class="p">:</span> <span class="s2">&quot;CCIRLEW&quot;</span><span class="p">,</span>
-    <span class="mi">32772</span><span class="p">:</span> <span class="s2">&quot;Samsung SRW Compressed 2&quot;</span><span class="p">,</span>
-    <span class="mi">32773</span><span class="p">:</span> <span class="s2">&quot;PackBits&quot;</span><span class="p">,</span>
-    <span class="mi">32809</span><span class="p">:</span> <span class="s2">&quot;Thunderscan&quot;</span><span class="p">,</span>
-    <span class="mi">32867</span><span class="p">:</span> <span class="s2">&quot;Kodak KDC Compressed&quot;</span><span class="p">,</span>
-    <span class="mi">32895</span><span class="p">:</span> <span class="s2">&quot;IT8CTPAD&quot;</span><span class="p">,</span>
-    <span class="mi">32896</span><span class="p">:</span> <span class="s2">&quot;IT8LW&quot;</span><span class="p">,</span>
-    <span class="mi">32897</span><span class="p">:</span> <span class="s2">&quot;IT8MP&quot;</span><span class="p">,</span>
-    <span class="mi">32898</span><span class="p">:</span> <span class="s2">&quot;IT8BL&quot;</span><span class="p">,</span>
-    <span class="mi">32908</span><span class="p">:</span> <span class="s2">&quot;PixarFilm&quot;</span><span class="p">,</span>
-    <span class="mi">32909</span><span class="p">:</span> <span class="s2">&quot;PixarLog&quot;</span><span class="p">,</span>
-    <span class="mi">32946</span><span class="p">:</span> <span class="s2">&quot;Deflate&quot;</span><span class="p">,</span>
-    <span class="mi">32947</span><span class="p">:</span> <span class="s2">&quot;DCS&quot;</span><span class="p">,</span>
-    <span class="mi">34661</span><span class="p">:</span> <span class="s2">&quot;JBIG&quot;</span><span class="p">,</span>
-    <span class="mi">34676</span><span class="p">:</span> <span class="s2">&quot;SGILog&quot;</span><span class="p">,</span>
-    <span class="mi">34677</span><span class="p">:</span> <span class="s2">&quot;SGILog24&quot;</span><span class="p">,</span>
-    <span class="mi">34712</span><span class="p">:</span> <span class="s2">&quot;JPEG 2000&quot;</span><span class="p">,</span>
-    <span class="mi">34713</span><span class="p">:</span> <span class="s2">&quot;Nikon NEF Compressed&quot;</span><span class="p">,</span>
-    <span class="mi">34715</span><span class="p">:</span> <span class="s2">&quot;JBIG2 TIFF FX&quot;</span><span class="p">,</span>
-    <span class="mi">34718</span><span class="p">:</span> <span class="s2">&quot;Microsoft Document Imaging (MDI) Binary Level Codec&quot;</span><span class="p">,</span>
-    <span class="mi">34719</span><span class="p">:</span> <span class="s2">&quot;Microsoft Document Imaging (MDI) Progressive Transform Codec&quot;</span><span class="p">,</span>
-    <span class="mi">34720</span><span class="p">:</span> <span class="s2">&quot;Microsoft Document Imaging (MDI) Vector&quot;</span><span class="p">,</span>
-    <span class="mi">34892</span><span class="p">:</span> <span class="s2">&quot;Lossy JPEG&quot;</span><span class="p">,</span>
-    <span class="mi">65000</span><span class="p">:</span> <span class="s2">&quot;Kodak DCR Compressed&quot;</span><span class="p">,</span>
-    <span class="mi">65535</span><span class="p">:</span> <span class="s2">&quot;Pentax PEF Compressed&quot;</span><span class="p">,</span>
-<span class="p">}</span>
-
-<span class="n">EXIF_PHOTOMETRICINTERPRETATION_VALUES</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;WhiteIsZero&quot;</span><span class="p">,</span>
-    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;BlackIsZero&quot;</span><span class="p">,</span>
-    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;RGB&quot;</span><span class="p">,</span>
-    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;RGB Palette&quot;</span><span class="p">,</span>
-    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;Transparency Mask&quot;</span><span class="p">,</span>
-    <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;CMYK&quot;</span><span class="p">,</span>
-    <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;YCbCr&quot;</span><span class="p">,</span>
-    <span class="mi">8</span><span class="p">:</span> <span class="s2">&quot;CIELab&quot;</span><span class="p">,</span>
-    <span class="mi">9</span><span class="p">:</span> <span class="s2">&quot;ICCLab&quot;</span><span class="p">,</span>
-    <span class="mi">10</span><span class="p">:</span> <span class="s2">&quot;ITULab&quot;</span><span class="p">,</span>
-    <span class="mi">32803</span><span class="p">:</span> <span class="s2">&quot;Color Filter Array&quot;</span><span class="p">,</span>
-    <span class="mi">32844</span><span class="p">:</span> <span class="s2">&quot;Pixar LogL&quot;</span><span class="p">,</span>
-    <span class="mi">32845</span><span class="p">:</span> <span class="s2">&quot;Pixar LogLuv&quot;</span><span class="p">,</span>
-    <span class="mi">34892</span><span class="p">:</span> <span class="s2">&quot;Linear Raw&quot;</span><span class="p">,</span>
-<span class="p">}</span>
-
-<span class="n">EXIF_RESOLUTIONUNIT_VALUES</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;inches&quot;</span><span class="p">,</span>
-    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;cm&quot;</span><span class="p">,</span>
-<span class="p">}</span>
+<span></span><span class="kn">import</span> <span class="nn">PIL</span>
 
 <div class="viewcode-block" id="OcrdExif"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_exif.OcrdExif">[docs]</a><span class="k">class</span> <span class="nc">OcrdExif</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -105,18 +41,36 @@
 
 <div class="viewcode-block" id="OcrdExif.from_filename"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_exif.OcrdExif.from_filename">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_filename</span><span class="p">(</span><span class="n">image_filename</span><span class="p">):</span>
-        <span class="k">with</span> <span class="n">exiftool</span><span class="o">.</span><span class="n">ExifTool</span><span class="p">()</span> <span class="k">as</span> <span class="n">et</span><span class="p">:</span>
-            <span class="n">exif_props</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="n">image_filename</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">OcrdExif</span><span class="p">(</span><span class="n">exif_props</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">image_filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Must pass &#39;image_filename&#39; to OcrdExif.from_filename&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">OcrdExif</span><span class="p">(</span><span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_filename</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">props</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s2">&quot;EXIF:ImageWidth&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s2">&quot;EXIF:ImageHeight&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">xResolution</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s2">&quot;EXIF:XResolution&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">yResolution</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s2">&quot;EXIF:YResolution&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">compression</span> <span class="o">=</span> <span class="n">EXIF_COMPRESSION_METHODS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;EXIF:Compression&quot;</span><span class="p">],</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">photometricInterpretation</span> <span class="o">=</span> <span class="n">EXIF_PHOTOMETRICINTERPRETATION_VALUES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;EXIF:PhotometricInterpretation&quot;</span><span class="p">],</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">resolutionUnit</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">EXIF_RESOLUTIONUNIT_VALUES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;EXIF:ResolutionUnit&quot;</span><span class="p">],</span> <span class="s2">&quot;None&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+        <span class="c1">#  print(img.__dict__)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">height</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">photometricInterpretation</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">mode</span>
+        <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;compression&#39;</span><span class="p">,</span> <span class="s1">&#39;photometric_interpretation&#39;</span><span class="p">]:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="n">prop</span><span class="p">]</span> <span class="k">if</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">&#39;TIFF&#39;</span> <span class="ow">and</span> <span class="s1">&#39;dpi&#39;</span> <span class="ow">in</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xResolution</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;dpi&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">yResolution</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;dpi&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resolutionUnit</span> <span class="o">=</span> <span class="s1">&#39;cm&#39;</span> <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">tag</span><span class="p">[</span><span class="mi">296</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="s1">&#39;inches&#39;</span>
+        <span class="k">elif</span> <span class="n">img</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">&#39;JPEG&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xResolution</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;jfif_density&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">yResolution</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;jfif_density&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resolutionUnit</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;jfif_unit&#39;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">img</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">&#39;PNG&#39;</span> <span class="ow">and</span> <span class="s1">&#39;dpi&#39;</span> <span class="ow">in</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;pnginfo&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xResolution</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;dpi&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">yResolution</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;dpi&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1">#  if img.format == &#39;JPEG2000&#39;:</span>
+            <span class="c1">#      import sys</span>
+            <span class="c1">#      print(&#39;JPEG 2000 not supported yet :(&#39;, file=sys.stderr)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xResolution</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">yResolution</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resolutionUnit</span> <span class="o">=</span> <span class="s1">&#39;inches&#39;</span>
 
 <div class="viewcode-block" id="OcrdExif.to_xml"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_exif.OcrdExif.to_xml">[docs]</a>    <span class="k">def</span> <span class="nf">to_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="s1">&#39;&lt;exif&gt;&#39;</span>
@@ -127,10 +81,46 @@
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">pyocrd</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=OCR-D&repo=pyocrd&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/OCR-D/pyocrd">
+    <img
+        alt="https://secure.travis-ci.org/OCR-D/pyocrd.svg?branch=master"
+        src="https://secure.travis-ci.org/OCR-D/pyocrd.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">API</a></li>
+</ul>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../../index.html">Documentation overview</a><ul>
@@ -159,8 +149,8 @@
       &copy;2018, Kay Wuerzner, Konstantin Baierer.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>
 
