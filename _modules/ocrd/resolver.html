@@ -49,25 +49,7 @@
 <div class="viewcode-block" id="Resolver"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver">[docs]</a><span class="k">class</span> <span class="nc">Resolver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Handle Uploads, Downloads, Repository access and manage temporary directories</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        prefer_symlink (Boolean): If True, symlink from source file to the workspace instead of copying to reduce I/O.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefer_symlink</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">prefer_symlink</span> <span class="o">=</span> <span class="n">prefer_symlink</span>
-
-    <span class="k">def</span> <span class="nf">_copy_or_symlink</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">prefer_symlink</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">prefer_symlink</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">prefer_symlink</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefer_symlink</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dst</span><span class="p">):</span>
-            <span class="k">return</span>
-        <span class="k">if</span> <span class="n">prefer_symlink</span><span class="p">:</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">copyfile</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Resolver.pack_workspace"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.pack_workspace">[docs]</a>    <span class="k">def</span> <span class="nf">pack_workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workspace</span><span class="p">,</span> <span class="n">zpath</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -149,7 +131,7 @@
             <span class="n">z</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">directory</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Resolver.download_to_directory"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.download_to_directory">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">subdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefer_symlink</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Resolver.download_to_directory"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.download_to_directory">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">subdir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Download a file to the workspace.</span>
 
@@ -164,13 +146,12 @@
 <span class="sd">            url (string): URL to download from</span>
 <span class="sd">            overwrite (boolean): Whether to overwrite existing files with that name</span>
 <span class="sd">            subdir (boolean, None): Subdirectory to create within the directory. Think fileGrp.</span>
-<span class="sd">            prefer_symlink (boolean): Whether to use symlinks instead of copying. Overrides self.prefer_symlink</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Local filename</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">log</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;ocrd.resolver.download_to_directory&#39;</span><span class="p">)</span> <span class="c1"># pylint: disable=redefined-outer-name</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;directory=|</span><span class="si">%s</span><span class="s2">| url=|</span><span class="si">%s</span><span class="s2">| basename=|</span><span class="si">%s</span><span class="s2">| overwrite=|</span><span class="si">%s</span><span class="s2">| subdir=|</span><span class="si">%s</span><span class="s2">| prefer_symlink=|</span><span class="si">%s</span><span class="s2">|&quot;</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">,</span> <span class="n">subdir</span><span class="p">,</span> <span class="n">prefer_symlink</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;directory=|</span><span class="si">%s</span><span class="s2">| url=|</span><span class="si">%s</span><span class="s2">| basename=|</span><span class="si">%s</span><span class="s2">| overwrite=|</span><span class="si">%s</span><span class="s2">| subdir=|</span><span class="si">%s</span><span class="s2">|&quot;</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">,</span> <span class="n">subdir</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">basename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">subdir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> \
                 <span class="p">(</span><span class="n">directory</span> <span class="ow">and</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;file://</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">directory</span><span class="p">)):</span> <span class="c1"># in case downloading a url &#39;file:///tmp/foo/bar&#39; to directory &#39;/tmp/foo&#39;</span>
@@ -194,7 +175,7 @@
 
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Downloading &lt;</span><span class="si">%s</span><span class="s2">&gt; to &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">outfilename</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_copy_or_symlink</span><span class="p">(</span><span class="n">url</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):],</span> <span class="n">outfilename</span><span class="p">,</span> <span class="n">prefer_symlink</span><span class="p">)</span>
+            <span class="n">copyfile</span><span class="p">(</span><span class="n">url</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):],</span> <span class="n">outfilename</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
@@ -248,7 +229,7 @@
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">mets_fpath</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">clobber_mets</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;File &#39;</span><span class="si">%s</span><span class="s2">&#39; already exists but clobber_mets is false&quot;</span> <span class="o">%</span> <span class="n">mets_fpath</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">download_to_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="n">mets_basename</span><span class="p">,</span> <span class="n">prefer_symlink</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">download_to_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="n">mets_basename</span><span class="p">)</span>
 
         <span class="n">workspace</span> <span class="o">=</span> <span class="n">Workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">mets_basename</span><span class="o">=</span><span class="n">mets_basename</span><span class="p">)</span>
 
