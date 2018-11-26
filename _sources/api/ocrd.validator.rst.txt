@@ -20,6 +20,14 @@ ocrd.validator.ocrd\_tool\_validator module
     :undoc-members:
     :show-inheritance:
 
+ocrd.validator.ocrd\_zip\_validator module
+------------------------------------------
+
+.. automodule:: ocrd.validator.ocrd_zip_validator
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 ocrd.validator.parameter\_validator module
 ------------------------------------------
 

@@ -92,10 +92,9 @@
     <span class="c1">#  print(&quot;PARSING PARSING &#39;%s&#39;&quot; % input_file)</span>
     <span class="k">if</span> <span class="n">input_file</span><span class="o">.</span><span class="n">mimetype</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;image&#39;</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">page_from_image</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">input_file</span><span class="o">.</span><span class="n">mimetype</span> <span class="o">==</span> <span class="n">MIMETYPE_PAGE</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">input_file</span><span class="o">.</span><span class="n">mimetype</span> <span class="o">==</span> <span class="n">MIMETYPE_PAGE</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">parse</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">local_filename</span><span class="p">,</span> <span class="n">silence</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unsupported mimetype &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">input_file</span><span class="o">.</span><span class="n">mimetype</span><span class="p">)</span></div>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unsupported mimetype &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">input_file</span><span class="o">.</span><span class="n">mimetype</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

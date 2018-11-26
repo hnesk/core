@@ -49,6 +49,41 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-ocrd.model.ocrd_agent">
+<span id="ocrd-model-ocrd-agent-module"></span><h2>ocrd.model.ocrd_agent module<a class="headerlink" href="#module-ocrd.model.ocrd_agent" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ocrd.model.ocrd_agent.OcrdAgent">
+<em class="property">class </em><code class="descclassname">ocrd.model.ocrd_agent.</code><code class="descname">OcrdAgent</code><span class="sig-paren">(</span><em>el=None</em>, <em>name=None</em>, <em>_type=None</em>, <em>othertype=None</em>, <em>role=None</em>, <em>otherrole=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_agent.html#OcrdAgent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_agent.OcrdAgent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a &lt;mets:agent&gt;</p>
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_agent.OcrdAgent.name">
+<code class="descname">name</code><a class="headerlink" href="#ocrd.model.ocrd_agent.OcrdAgent.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_agent.OcrdAgent.otherrole">
+<code class="descname">otherrole</code><a class="headerlink" href="#ocrd.model.ocrd_agent.OcrdAgent.otherrole" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_agent.OcrdAgent.othertype">
+<code class="descname">othertype</code><a class="headerlink" href="#ocrd.model.ocrd_agent.OcrdAgent.othertype" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_agent.OcrdAgent.role">
+<code class="descname">role</code><a class="headerlink" href="#ocrd.model.ocrd_agent.OcrdAgent.role" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_agent.OcrdAgent.type">
+<code class="descname">type</code><a class="headerlink" href="#ocrd.model.ocrd_agent.OcrdAgent.type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-ocrd.model.ocrd_exif">
 <span id="ocrd-model-ocrd-exif-module"></span><h2>ocrd.model.ocrd_exif module<a class="headerlink" href="#module-ocrd.model.ocrd_exif" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -122,6 +157,12 @@
 <em class="property">class </em><code class="descclassname">ocrd.model.ocrd_mets.</code><code class="descname">OcrdMets</code><span class="sig-paren">(</span><em>file_by_id=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ocrd.model.ocrd_xml_base.OcrdXmlDocument" title="ocrd.model.ocrd_xml_base.OcrdXmlDocument"><code class="xref py py-class docutils literal notranslate"><span class="pre">ocrd.model.ocrd_xml_base.OcrdXmlDocument</span></code></a></p>
 <dl class="method">
+<dt id="ocrd.model.ocrd_mets.OcrdMets.add_agent">
+<code class="descname">add_agent</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.add_agent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.add_agent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an agent to the list of agents in the metsHdr.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="ocrd.model.ocrd_mets.OcrdMets.add_file">
 <code class="descname">add_file</code><span class="sig-paren">(</span><em>fileGrp</em>, <em>mimetype=None</em>, <em>url=None</em>, <em>ID=None</em>, <em>groupId=None</em>, <em>force=False</em>, <em>local_filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.add_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.add_file" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -129,6 +170,16 @@
 <dl class="method">
 <dt id="ocrd.model.ocrd_mets.OcrdMets.add_file_group">
 <code class="descname">add_file_group</code><span class="sig-paren">(</span><em>fileGrp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.add_file_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.add_file_group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ocrd.model.ocrd_mets.OcrdMets.agents">
+<code class="descname">agents</code><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.agents" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="ocrd.model.ocrd_mets.OcrdMets.empty_mets">
+<em class="property">static </em><code class="descname">empty_mets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_mets.html#OcrdMets.empty_mets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_mets.OcrdMets.empty_mets" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -7634,21 +7685,6 @@ text line and/or text region. For generic use</p>
 <dl class="attribute">
 <dt id="ocrd.model.ocrd_page_generateds.WordType.superclass">
 <code class="descname">superclass</code><em class="property"> = None</em><a class="headerlink" href="#ocrd.model.ocrd_page_generateds.WordType.superclass" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-ocrd.model.ocrd_swagger">
-<span id="ocrd-model-ocrd-swagger-module"></span><h2>ocrd.model.ocrd_swagger module<a class="headerlink" href="#module-ocrd.model.ocrd_swagger" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="ocrd.model.ocrd_swagger.OcrdSwagger">
-<em class="property">class </em><code class="descclassname">ocrd.model.ocrd_swagger.</code><code class="descname">OcrdSwagger</code><a class="reference internal" href="../_modules/ocrd/model/ocrd_swagger.html#OcrdSwagger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_swagger.OcrdSwagger" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Representing a Swagger OAI 3 schema.</p>
-<dl class="staticmethod">
-<dt id="ocrd.model.ocrd_swagger.OcrdSwagger.from_ocrd_tools">
-<em class="property">static </em><code class="descname">from_ocrd_tools</code><span class="sig-paren">(</span><em>swagger_template</em>, <em>*ocrd_tool</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/model/ocrd_swagger.html#OcrdSwagger.from_ocrd_tools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.model.ocrd_swagger.OcrdSwagger.from_ocrd_tools" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

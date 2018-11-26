@@ -32,12 +32,31 @@
           <div class="body" role="main">
             
   <h1>Source code for ocrd.model.ocrd_mets</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">ocrd.constants</span> <span class="k">import</span> <span class="n">NAMESPACES</span> <span class="k">as</span> <span class="n">NS</span><span class="p">,</span> <span class="n">TAG_METS_FILE</span><span class="p">,</span> <span class="n">TAG_METS_FILEGRP</span><span class="p">,</span> <span class="n">IDENTIFIER_PRIORITY</span><span class="p">,</span> <span class="n">TAG_MODS_IDENTIFIER</span>
+<span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+
+<span class="kn">from</span> <span class="nn">ocrd.constants</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">NAMESPACES</span> <span class="k">as</span> <span class="n">NS</span><span class="p">,</span>
+    <span class="n">TAG_METS_FILE</span><span class="p">,</span>
+    <span class="n">TAG_METS_FILEGRP</span><span class="p">,</span>
+    <span class="n">TAG_METS_AGENT</span><span class="p">,</span>
+    <span class="n">IDENTIFIER_PRIORITY</span><span class="p">,</span>
+    <span class="n">TAG_MODS_IDENTIFIER</span><span class="p">,</span>
+    <span class="n">METS_XML_EMPTY</span><span class="p">,</span>
+    <span class="n">VERSION</span>
+<span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">.ocrd_xml_base</span> <span class="k">import</span> <span class="n">OcrdXmlDocument</span><span class="p">,</span> <span class="n">ET</span>
 <span class="kn">from</span> <span class="nn">.ocrd_file</span> <span class="k">import</span> <span class="n">OcrdFile</span>
+<span class="kn">from</span> <span class="nn">.ocrd_agent</span> <span class="k">import</span> <span class="n">OcrdAgent</span>
 
 <div class="viewcode-block" id="OcrdMets"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_mets.OcrdMets">[docs]</a><span class="k">class</span> <span class="nc">OcrdMets</span><span class="p">(</span><span class="n">OcrdXmlDocument</span><span class="p">):</span>
+
+<div class="viewcode-block" id="OcrdMets.empty_mets"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_mets.OcrdMets.empty_mets">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">empty_mets</span><span class="p">():</span>
+        <span class="n">tpl</span> <span class="o">=</span> <span class="n">METS_XML_EMPTY</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">tpl</span> <span class="o">=</span> <span class="n">tpl</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;{{ VERSION }}&#39;</span><span class="p">,</span> <span class="n">VERSION</span><span class="p">)</span>
+        <span class="n">tpl</span> <span class="o">=</span> <span class="n">tpl</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;{{ NOW }}&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">OcrdMets</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">tpl</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span></div>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_by_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">OcrdMets</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -65,6 +84,20 @@
             <span class="n">id_el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">mods</span><span class="p">,</span> <span class="n">TAG_MODS_IDENTIFIER</span><span class="p">)</span>
             <span class="n">id_el</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;purl&#39;</span><span class="p">)</span>
         <span class="n">id_el</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">purl</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">agents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">OcrdAgent</span><span class="p">(</span><span class="n">el_agent</span><span class="p">)</span> <span class="k">for</span> <span class="n">el_agent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;.//mets:metsHdr/mets:agent&#39;</span><span class="p">,</span> <span class="n">NS</span><span class="p">)]</span>
+
+<div class="viewcode-block" id="OcrdMets.add_agent"><a class="viewcode-back" href="../../../api/ocrd.model.html#ocrd.model.ocrd_mets.OcrdMets.add_agent">[docs]</a>    <span class="k">def</span> <span class="nf">add_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add an agent to the list of agents in the metsHdr.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">el_metsHdr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;.//mets:metsHdr&#39;</span><span class="p">,</span> <span class="n">NS</span><span class="p">)</span>
+        <span class="c1">#  assert(el_metsHdr is not None)</span>
+        <span class="n">el_agent</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">el_metsHdr</span><span class="p">,</span> <span class="n">TAG_METS_AGENT</span><span class="p">)</span>
+        <span class="c1">#  print(ET.tostring(el_metsHdr))</span>
+        <span class="k">return</span> <span class="n">OcrdAgent</span><span class="p">(</span><span class="n">el_agent</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">file_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

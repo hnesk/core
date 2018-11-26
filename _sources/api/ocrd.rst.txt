@@ -63,6 +63,22 @@ ocrd.workspace module
     :undoc-members:
     :show-inheritance:
 
+ocrd.workspace\_backup module
+-----------------------------
+
+.. automodule:: ocrd.workspace_backup
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+ocrd.workspace\_bagger module
+-----------------------------
+
+.. automodule:: ocrd.workspace_bagger
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------
