@@ -181,7 +181,7 @@
 <p>Handle Uploads, Downloads, Repository access and manage temporary directories</p>
 <dl class="method">
 <dt id="ocrd.resolver.Resolver.download_to_directory">
-<code class="descname">download_to_directory</code><span class="sig-paren">(</span><em>directory</em>, <em>url</em>, <em>basename=None</em>, <em>overwrite=False</em>, <em>subdir=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.download_to_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.download_to_directory" title="Permalink to this definition">¶</a></dt>
+<code class="descname">download_to_directory</code><span class="sig-paren">(</span><em>directory</em>, <em>url</em>, <em>basename=None</em>, <em>overwrite=False</em>, <em>subdir=None</em>, <em>relbase=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.download_to_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.download_to_directory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download a file to the workspace.</p>
 <p>Early Shortcut: If url is a <a class="reference external" href="file://-URL">file://-URL</a> and that file is already in the directory, keep it there.</p>
 <p>If basename is not given but subdir is, assume user knows what she’s doing and use last URL segment as the basename.
@@ -196,6 +196,7 @@ If basename is not given and no subdir is given, use the alnum characters in the
 <li><strong>url</strong> (<em>string</em>) – URL to download from</li>
 <li><strong>overwrite</strong> (<em>boolean</em>) – Whether to overwrite existing files with that name</li>
 <li><strong>subdir</strong> (<em>string</em><em>, </em><em>None</em>) – Subdirectory to create within the directory. Think fileGrp.</li>
+<li><strong>relbase</strong> (<em>string</em><em>, </em><em>''</em>) – Base directory for resolving relative file names</li>
 </ul>
 </td>
 </tr>
@@ -217,6 +218,24 @@ If basename is not given and no subdir is given, use the alnum characters in the
 <code class="descname">workspace_from_url</code><span class="sig-paren">(</span><em>mets_url</em>, <em>directory=None</em>, <em>clobber_mets=False</em>, <em>mets_basename=None</em>, <em>download=False</em>, <em>download_local=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/resolver.html#Resolver.workspace_from_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.workspace_from_url" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a workspace from a METS by URL.</p>
 <p>Sets the mets.xml file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mets_url</strong> (<em>string</em>) – Source mets URL</li>
+<li><strong>directory</strong> (<em>string</em>) – Directory containing/to contain the mets.xml</li>
+<li><strong>clobber_mets</strong> (<em>boolean</em><em>, </em><em>False</em>) – Whether to overwrite existing mets.xml. By default existing mets.xml will raise an exception.</li>
+<li><strong>download</strong> (<em>boolean</em><em>, </em><em>False</em>) – Whether to download all the files</li>
+<li><strong>download_local</strong> (<em>boolean</em><em>, </em><em>False</em>) – Whether to download the <a class="reference external" href="file://-URL">file://-URL</a> to the new location</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Workspace</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -297,7 +316,7 @@ points is for PAGE</p>
 <span id="ocrd-workspace-module"></span><h2>ocrd.workspace module<a class="headerlink" href="#module-ocrd.workspace" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="ocrd.workspace.Workspace">
-<em class="property">class </em><code class="descclassname">ocrd.workspace.</code><code class="descname">Workspace</code><span class="sig-paren">(</span><em>resolver</em>, <em>directory</em>, <em>mets=None</em>, <em>mets_basename='mets.xml'</em>, <em>automatic_backup=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ocrd.workspace.</code><code class="descname">Workspace</code><span class="sig-paren">(</span><em>resolver</em>, <em>directory</em>, <em>mets=None</em>, <em>mets_basename='mets.xml'</em>, <em>automatic_backup=False</em>, <em>source_mets_url=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/workspace.html#Workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A workspace is a temporary directory set up for a processor. It’s the
 interface to the METS/PAGE XML and delegates download and upload to the
@@ -310,6 +329,7 @@ Resolver.</p>
 <li><strong>directory</strong> (<em>string</em>) – Folder to work in</li>
 <li><strong>mets</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">OcrdMets</span></code>) – OcrdMets representing this workspace. Loaded from ‘mets.xml’ if <code class="docutils literal notranslate"><span class="pre">None</span></code>.</li>
 <li><strong>mets_basename</strong> (<em>string</em>) – Basename of the METS XML file. Default: Last URL segment of the mets_url.</li>
+<li><strong>source_mets_url</strong> (<em>string</em>) – URL to the directory containing the source mets.xml, to resolve relative file URL.</li>
 </ul>
 </td>
 </tr>

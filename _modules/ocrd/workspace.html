@@ -33,6 +33,7 @@
             
   <h1>Source code for ocrd.workspace</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">dirname</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 
@@ -57,9 +58,10 @@
 <span class="sd">        directory (string) : Folder to work in</span>
 <span class="sd">        mets (:class:`OcrdMets`) : OcrdMets representing this workspace. Loaded from &#39;mets.xml&#39; if ``None``.</span>
 <span class="sd">        mets_basename (string) : Basename of the METS XML file. Default: Last URL segment of the mets_url.</span>
+<span class="sd">        source_mets_url (string) : URL to the directory containing the source mets.xml, to resolve relative file URL.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolver</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">mets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mets_basename</span><span class="o">=</span><span class="s1">&#39;mets.xml&#39;</span><span class="p">,</span> <span class="n">automatic_backup</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolver</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">mets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mets_basename</span><span class="o">=</span><span class="s1">&#39;mets.xml&#39;</span><span class="p">,</span> <span class="n">automatic_backup</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">source_mets_url</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">resolver</span> <span class="o">=</span> <span class="n">resolver</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mets_target</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">mets_basename</span><span class="p">)</span>
@@ -67,6 +69,7 @@
             <span class="n">mets</span> <span class="o">=</span> <span class="n">OcrdMets</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mets_target</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mets</span> <span class="o">=</span> <span class="n">mets</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">automatic_backup</span> <span class="o">=</span> <span class="n">automatic_backup</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_mets_url</span> <span class="o">=</span> <span class="n">source_mets_url</span>
         <span class="c1">#  print(mets.to_xml(xmllint=True).decode(&#39;utf-8&#39;))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image_cache</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;pil&#39;</span><span class="p">:</span> <span class="p">{},</span>
