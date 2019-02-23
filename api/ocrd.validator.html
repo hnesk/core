@@ -15,8 +15,6 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="ocrd.webservice package" href="ocrd.webservice.html" />
-    <link rel="prev" title="ocrd.processor package" href="ocrd.processor.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -38,287 +36,26 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-ocrd.validator.json_validator">
-<span id="ocrd-validator-json-validator-module"></span><h2>ocrd.validator.json_validator module<a class="headerlink" href="#module-ocrd.validator.json_validator" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="ocrd.validator.json_validator.JsonValidator">
-<em class="property">class </em><code class="descclassname">ocrd.validator.json_validator.</code><code class="descname">JsonValidator</code><span class="sig-paren">(</span><em>schema</em>, <em>validator_class=&lt;class 'jsonschema.validators.create.&lt;locals&gt;.Validator'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/json_validator.html#JsonValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.json_validator.JsonValidator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="method">
-<dt id="ocrd.validator.json_validator.JsonValidator.validate">
-<code class="descname">validate</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/json_validator.html#JsonValidator.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.json_validator.JsonValidator.validate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="staticmethod">
-<dt id="ocrd.validator.json_validator.JsonValidator.validate_json">
-<em class="property">static </em><code class="descname">validate_json</code><span class="sig-paren">(</span><em>obj</em>, <em>schema</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/json_validator.html#JsonValidator.validate_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.json_validator.JsonValidator.validate_json" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="ocrd.validator.json_validator.extend_with_default">
-<code class="descclassname">ocrd.validator.json_validator.</code><code class="descname">extend_with_default</code><span class="sig-paren">(</span><em>validator_class</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/json_validator.html#extend_with_default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.json_validator.extend_with_default" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<div class="section" id="ocrd-validator-json-validator-module">
+<h2>ocrd.validator.json_validator module<a class="headerlink" href="#ocrd-validator-json-validator-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-ocrd.validator.ocrd_tool_validator">
-<span id="ocrd-validator-ocrd-tool-validator-module"></span><h2>ocrd.validator.ocrd_tool_validator module<a class="headerlink" href="#module-ocrd.validator.ocrd_tool_validator" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="ocrd.validator.ocrd_tool_validator.OcrdToolValidator">
-<em class="property">class </em><code class="descclassname">ocrd.validator.ocrd_tool_validator.</code><code class="descname">OcrdToolValidator</code><span class="sig-paren">(</span><em>schema</em>, <em>validator_class=&lt;class 'jsonschema.validators.create.&lt;locals&gt;.Validator'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/ocrd_tool_validator.html#OcrdToolValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.ocrd_tool_validator.OcrdToolValidator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ocrd.validator.json_validator.JsonValidator" title="ocrd.validator.json_validator.JsonValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ocrd.validator.json_validator.JsonValidator</span></code></a></p>
-<dl class="staticmethod">
-<dt id="ocrd.validator.ocrd_tool_validator.OcrdToolValidator.validate_json">
-<em class="property">static </em><code class="descname">validate_json</code><span class="sig-paren">(</span><em>obj, schema={'additionalProperties': False, 'description': 'Schema for tools by OCR-D MP', 'properties': {'version': {'description': 'Version of the tool, expressed as MAJOR.MINOR.PATCH.', 'type': 'string', 'pattern': '^[0-9]+\\.[0-9]+\\.[0-9]+$'}, 'git_url': {'description': 'Github/Gitlab URL', 'type': 'string', 'format': 'url'}, 'dockerhub': {'description': 'DockerHub image', 'type': 'string'}, 'tools': {'type': 'object', 'additionalProperties': False, 'patternProperties': {'ocrd-.*': {'type': 'object', 'additionalProperties': False, 'required': ['description', 'steps', 'executable', 'categories', 'input_file_grp', 'output_file_grp'], 'properties': {'executable': {'description': 'The name of the CLI executable in $PATH', 'type': 'string'}, 'input_file_grp': {'description': 'Input fileGrp&#64;USE this tool expects by default', 'type': 'array', 'items': {'type': 'string', 'pattern': '^OCR-D-[A-Z0-9-]+$'}}, 'output_file_grp': {'description': 'Output fileGrp&#64;USE this tool produces by default', 'type': 'array', 'items': {'type': 'string', 'pattern': '^OCR-D-[A-Z0-9-]+$'}}, 'parameters': {'description': 'Object describing the parameters of a tool. Keys are parameter names, values sub-schemas.', 'type': 'object', 'patternProperties': {'.*': {'type': 'object', 'additionalProperties': False, 'required': ['description', 'type'], 'properties': {'type': {'type': 'string', 'description': 'Data type of this parameter', 'enum': ['string', 'number', 'boolean']}, 'format': {'description': 'Subtype, such as `float` for type `number` or `uri` for type `string`.'}, 'description': {'description': 'Concise description of syntax and semantics of this parameter'}, 'required': {'type': 'boolean', 'description': 'Whether this parameter is required'}, 'default': {'description': 'Default value when not provided by the user'}, 'enum': {'type': 'array', 'description': 'List the allowed values if a fixed list.'}, 'content-type': {'type': 'string', 'description': 'If parameter is reference to file: Media type of the file', 'pattern': '^[a-z0-9\\._-]+/[A-Za-z0-9\\._\\+-]+$'}, 'cacheable': {'type': 'boolean', 'description': &quot;If parameter is reference to file: Whether the file should be cached, e.g. because it is large and won't change.&quot;, 'default': False}}}}}, 'description': {'description': 'Concise description what the tool does'}, 'categories': {'description': 'Tools belong to this categories, representing modules within the OCR-D project structure', 'type': 'array', 'items': {'type': 'string', 'enum': ['Image preprocessing', 'Layout analysis', 'Text recognition and optimization', 'Model training', 'Long-term preservation', 'Quality assurance']}}, 'steps': {'description': 'This tool can be used at these steps in the OCR-D functional model', 'type': 'array', 'items': {'type': 'string', 'enum': ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']}}}}}}}, 'required': ['version', 'git_url', 'tools'], 'type': 'object'}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/ocrd_tool_validator.html#OcrdToolValidator.validate_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.ocrd_tool_validator.OcrdToolValidator.validate_json" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<div class="section" id="ocrd-validator-ocrd-tool-validator-module">
+<h2>ocrd.validator.ocrd_tool_validator module<a class="headerlink" href="#ocrd-validator-ocrd-tool-validator-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-ocrd.validator.ocrd_zip_validator">
-<span id="ocrd-validator-ocrd-zip-validator-module"></span><h2>ocrd.validator.ocrd_zip_validator module<a class="headerlink" href="#module-ocrd.validator.ocrd_zip_validator" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="ocrd.validator.ocrd_zip_validator.OcrdZipValidator">
-<em class="property">class </em><code class="descclassname">ocrd.validator.ocrd_zip_validator.</code><code class="descname">OcrdZipValidator</code><span class="sig-paren">(</span><em>resolver</em>, <em>path_to_zip</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/ocrd_zip_validator.html#OcrdZipValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.ocrd_zip_validator.OcrdZipValidator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Validate conformance with BagIt and OCR-D bagit profile.</p>
-<dl class="docutils">
-<dt>See:</dt>
-<dd><ul class="first last simple">
-<li><a class="reference external" href="https://ocr-d.github.io/ocrd_zip">https://ocr-d.github.io/ocrd_zip</a></li>
-<li><a class="reference external" href="https://ocr-d.github.io/bagit-profile.json">https://ocr-d.github.io/bagit-profile.json</a></li>
-<li><a class="reference external" href="https://ocr-d.github.io/bagit-profile.yml">https://ocr-d.github.io/bagit-profile.yml</a></li>
-</ul>
-</dd>
-</dl>
-<dl class="method">
-<dt id="ocrd.validator.ocrd_zip_validator.OcrdZipValidator.validate">
-<code class="descname">validate</code><span class="sig-paren">(</span><em>skip_checksums=False</em>, <em>skip_workspace=False</em>, <em>skip_bag=False</em>, <em>skip_unzip=False</em>, <em>skip_delete=False</em>, <em>processes=2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/ocrd_zip_validator.html#OcrdZipValidator.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.ocrd_zip_validator.OcrdZipValidator.validate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validate an OCRD-ZIP file for profile, bag and workspace conformance</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>skip_bag</strong> (<em>boolean</em>) – Whether to skip all checks of manifests and files</li>
-<li><strong>skip_checksums</strong> (<em>boolean</em>) – Whether to omit checksum checks but still check basic BagIt conformance</li>
-<li><strong>skip_workspace</strong> (<em>boolean</em>) – Whether to skip the workspace check of files in /data</li>
-<li><strong>skip_unzip</strong> (<em>boolean</em>) – Whether the OCRD-ZIP is unzipped, i.e. a directory</li>
-<li><strong>skip_delete</strong> (<em>boolean</em>) – Whether to skip deleting the unpacked OCRD-ZIP dir after valdiation</li>
-<li><strong>processes</strong> (<em>integer</em>) – Number of processes used for checksum validation</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="ocrd-validator-ocrd-zip-validator-module">
+<h2>ocrd.validator.ocrd_zip_validator module<a class="headerlink" href="#ocrd-validator-ocrd-zip-validator-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-ocrd.validator.parameter_validator">
-<span id="ocrd-validator-parameter-validator-module"></span><h2>ocrd.validator.parameter_validator module<a class="headerlink" href="#module-ocrd.validator.parameter_validator" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="ocrd.validator.parameter_validator.ParameterValidator">
-<em class="property">class </em><code class="descclassname">ocrd.validator.parameter_validator.</code><code class="descname">ParameterValidator</code><span class="sig-paren">(</span><em>ocrd_tool</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/parameter_validator.html#ParameterValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.parameter_validator.ParameterValidator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ocrd.validator.json_validator.JsonValidator" title="ocrd.validator.json_validator.JsonValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ocrd.validator.json_validator.JsonValidator</span></code></a></p>
-</dd></dl>
-
+<div class="section" id="ocrd-validator-parameter-validator-module">
+<h2>ocrd.validator.parameter_validator module<a class="headerlink" href="#ocrd-validator-parameter-validator-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-ocrd.validator.report">
-<span id="ocrd-validator-report-module"></span><h2>ocrd.validator.report module<a class="headerlink" href="#module-ocrd.validator.report" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="ocrd.validator.report.ValidationReport">
-<em class="property">class </em><code class="descclassname">ocrd.validator.report.</code><code class="descname">ValidationReport</code><a class="reference internal" href="../_modules/ocrd/validator/report.html#ValidationReport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.report.ValidationReport" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Container of warnings and errors about a workspace.</p>
-<dl class="method">
-<dt id="ocrd.validator.report.ValidationReport.add_error">
-<code class="descname">add_error</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/report.html#ValidationReport.add_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.report.ValidationReport.add_error" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ocrd.validator.report.ValidationReport.add_warning">
-<code class="descname">add_warning</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/report.html#ValidationReport.add_warning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.report.ValidationReport.add_warning" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="ocrd.validator.report.ValidationReport.is_valid">
-<code class="descname">is_valid</code><a class="headerlink" href="#ocrd.validator.report.ValidationReport.is_valid" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ocrd.validator.report.ValidationReport.to_xml">
-<code class="descname">to_xml</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/report.html#ValidationReport.to_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.report.ValidationReport.to_xml" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<div class="section" id="ocrd-validator-report-module">
+<h2>ocrd.validator.report module<a class="headerlink" href="#ocrd-validator-report-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-ocrd.validator.workspace_validator">
-<span id="ocrd-validator-workspace-validator-module"></span><h2>ocrd.validator.workspace_validator module<a class="headerlink" href="#module-ocrd.validator.workspace_validator" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="ocrd.validator.workspace_validator.WorkspaceValidator">
-<em class="property">class </em><code class="descclassname">ocrd.validator.workspace_validator.</code><code class="descname">WorkspaceValidator</code><span class="sig-paren">(</span><em>resolver</em>, <em>mets_url</em>, <em>directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/workspace_validator.html#WorkspaceValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.workspace_validator.WorkspaceValidator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Validates an OCR-D/METS workspace against the specs.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>resolver</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Resolver</span></code>) – Instance of a resolver</li>
-<li><strong>mets_url</strong> (<em>string</em>) – URL of the METS file</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="ocrd.validator.workspace_validator.WorkspaceValidator.validate">
-<code class="descname">validate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/workspace_validator.html#WorkspaceValidator.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.workspace_validator.WorkspaceValidator.validate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="staticmethod">
-<dt id="ocrd.validator.workspace_validator.WorkspaceValidator.validate_url">
-<em class="property">static </em><code class="descname">validate_url</code><span class="sig-paren">(</span><em>resolver</em>, <em>mets_url</em>, <em>directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/workspace_validator.html#WorkspaceValidator.validate_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.workspace_validator.WorkspaceValidator.validate_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validates the workspace of a METS URL against the specs</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">report (<code class="xref py py-class docutils literal notranslate"><span class="pre">ValidationReport</span></code>) Report on the validity</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="ocrd-validator-workspace-validator-module">
+<h2>ocrd.validator.workspace_validator module<a class="headerlink" href="#ocrd-validator-workspace-validator-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-ocrd.validator">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-ocrd.validator" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="ocrd.validator.ParameterValidator">
-<em class="property">class </em><code class="descclassname">ocrd.validator.</code><code class="descname">ParameterValidator</code><span class="sig-paren">(</span><em>ocrd_tool</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/parameter_validator.html#ParameterValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.ParameterValidator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ocrd.validator.json_validator.JsonValidator" title="ocrd.validator.json_validator.JsonValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ocrd.validator.json_validator.JsonValidator</span></code></a></p>
-</dd></dl>
-
-<dl class="class">
-<dt id="ocrd.validator.WorkspaceValidator">
-<em class="property">class </em><code class="descclassname">ocrd.validator.</code><code class="descname">WorkspaceValidator</code><span class="sig-paren">(</span><em>resolver</em>, <em>mets_url</em>, <em>directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/workspace_validator.html#WorkspaceValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.WorkspaceValidator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Validates an OCR-D/METS workspace against the specs.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>resolver</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Resolver</span></code>) – Instance of a resolver</li>
-<li><strong>mets_url</strong> (<em>string</em>) – URL of the METS file</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="ocrd.validator.WorkspaceValidator.validate">
-<code class="descname">validate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/workspace_validator.html#WorkspaceValidator.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.WorkspaceValidator.validate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="staticmethod">
-<dt id="ocrd.validator.WorkspaceValidator.validate_url">
-<em class="property">static </em><code class="descname">validate_url</code><span class="sig-paren">(</span><em>resolver</em>, <em>mets_url</em>, <em>directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/workspace_validator.html#WorkspaceValidator.validate_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.WorkspaceValidator.validate_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validates the workspace of a METS URL against the specs</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">report (<a class="reference internal" href="#ocrd.validator.ValidationReport" title="ocrd.validator.ValidationReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValidationReport</span></code></a>) Report on the validity</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="ocrd.validator.OcrdToolValidator">
-<em class="property">class </em><code class="descclassname">ocrd.validator.</code><code class="descname">OcrdToolValidator</code><span class="sig-paren">(</span><em>schema</em>, <em>validator_class=&lt;class 'jsonschema.validators.create.&lt;locals&gt;.Validator'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/ocrd_tool_validator.html#OcrdToolValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.OcrdToolValidator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ocrd.validator.json_validator.JsonValidator" title="ocrd.validator.json_validator.JsonValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ocrd.validator.json_validator.JsonValidator</span></code></a></p>
-<dl class="staticmethod">
-<dt id="ocrd.validator.OcrdToolValidator.validate_json">
-<em class="property">static </em><code class="descname">validate_json</code><span class="sig-paren">(</span><em>obj, schema={'additionalProperties': False, 'description': 'Schema for tools by OCR-D MP', 'properties': {'version': {'description': 'Version of the tool, expressed as MAJOR.MINOR.PATCH.', 'type': 'string', 'pattern': '^[0-9]+\\.[0-9]+\\.[0-9]+$'}, 'git_url': {'description': 'Github/Gitlab URL', 'type': 'string', 'format': 'url'}, 'dockerhub': {'description': 'DockerHub image', 'type': 'string'}, 'tools': {'type': 'object', 'additionalProperties': False, 'patternProperties': {'ocrd-.*': {'type': 'object', 'additionalProperties': False, 'required': ['description', 'steps', 'executable', 'categories', 'input_file_grp', 'output_file_grp'], 'properties': {'executable': {'description': 'The name of the CLI executable in $PATH', 'type': 'string'}, 'input_file_grp': {'description': 'Input fileGrp&#64;USE this tool expects by default', 'type': 'array', 'items': {'type': 'string', 'pattern': '^OCR-D-[A-Z0-9-]+$'}}, 'output_file_grp': {'description': 'Output fileGrp&#64;USE this tool produces by default', 'type': 'array', 'items': {'type': 'string', 'pattern': '^OCR-D-[A-Z0-9-]+$'}}, 'parameters': {'description': 'Object describing the parameters of a tool. Keys are parameter names, values sub-schemas.', 'type': 'object', 'patternProperties': {'.*': {'type': 'object', 'additionalProperties': False, 'required': ['description', 'type'], 'properties': {'type': {'type': 'string', 'description': 'Data type of this parameter', 'enum': ['string', 'number', 'boolean']}, 'format': {'description': 'Subtype, such as `float` for type `number` or `uri` for type `string`.'}, 'description': {'description': 'Concise description of syntax and semantics of this parameter'}, 'required': {'type': 'boolean', 'description': 'Whether this parameter is required'}, 'default': {'description': 'Default value when not provided by the user'}, 'enum': {'type': 'array', 'description': 'List the allowed values if a fixed list.'}, 'content-type': {'type': 'string', 'description': 'If parameter is reference to file: Media type of the file', 'pattern': '^[a-z0-9\\._-]+/[A-Za-z0-9\\._\\+-]+$'}, 'cacheable': {'type': 'boolean', 'description': &quot;If parameter is reference to file: Whether the file should be cached, e.g. because it is large and won't change.&quot;, 'default': False}}}}}, 'description': {'description': 'Concise description what the tool does'}, 'categories': {'description': 'Tools belong to this categories, representing modules within the OCR-D project structure', 'type': 'array', 'items': {'type': 'string', 'enum': ['Image preprocessing', 'Layout analysis', 'Text recognition and optimization', 'Model training', 'Long-term preservation', 'Quality assurance']}}, 'steps': {'description': 'This tool can be used at these steps in the OCR-D functional model', 'type': 'array', 'items': {'type': 'string', 'enum': ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']}}}}}}}, 'required': ['version', 'git_url', 'tools'], 'type': 'object'}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/ocrd_tool_validator.html#OcrdToolValidator.validate_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.OcrdToolValidator.validate_json" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="ocrd.validator.OcrdZipValidator">
-<em class="property">class </em><code class="descclassname">ocrd.validator.</code><code class="descname">OcrdZipValidator</code><span class="sig-paren">(</span><em>resolver</em>, <em>path_to_zip</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/ocrd_zip_validator.html#OcrdZipValidator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.OcrdZipValidator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Validate conformance with BagIt and OCR-D bagit profile.</p>
-<dl class="docutils">
-<dt>See:</dt>
-<dd><ul class="first last simple">
-<li><a class="reference external" href="https://ocr-d.github.io/ocrd_zip">https://ocr-d.github.io/ocrd_zip</a></li>
-<li><a class="reference external" href="https://ocr-d.github.io/bagit-profile.json">https://ocr-d.github.io/bagit-profile.json</a></li>
-<li><a class="reference external" href="https://ocr-d.github.io/bagit-profile.yml">https://ocr-d.github.io/bagit-profile.yml</a></li>
-</ul>
-</dd>
-</dl>
-<dl class="method">
-<dt id="ocrd.validator.OcrdZipValidator.validate">
-<code class="descname">validate</code><span class="sig-paren">(</span><em>skip_checksums=False</em>, <em>skip_workspace=False</em>, <em>skip_bag=False</em>, <em>skip_unzip=False</em>, <em>skip_delete=False</em>, <em>processes=2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/ocrd_zip_validator.html#OcrdZipValidator.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.OcrdZipValidator.validate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validate an OCRD-ZIP file for profile, bag and workspace conformance</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>skip_bag</strong> (<em>boolean</em>) – Whether to skip all checks of manifests and files</li>
-<li><strong>skip_checksums</strong> (<em>boolean</em>) – Whether to omit checksum checks but still check basic BagIt conformance</li>
-<li><strong>skip_workspace</strong> (<em>boolean</em>) – Whether to skip the workspace check of files in /data</li>
-<li><strong>skip_unzip</strong> (<em>boolean</em>) – Whether the OCRD-ZIP is unzipped, i.e. a directory</li>
-<li><strong>skip_delete</strong> (<em>boolean</em>) – Whether to skip deleting the unpacked OCRD-ZIP dir after valdiation</li>
-<li><strong>processes</strong> (<em>integer</em>) – Number of processes used for checksum validation</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="ocrd.validator.ValidationReport">
-<em class="property">class </em><code class="descclassname">ocrd.validator.</code><code class="descname">ValidationReport</code><a class="reference internal" href="../_modules/ocrd/validator/report.html#ValidationReport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.ValidationReport" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Container of warnings and errors about a workspace.</p>
-<dl class="method">
-<dt id="ocrd.validator.ValidationReport.add_error">
-<code class="descname">add_error</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/report.html#ValidationReport.add_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.ValidationReport.add_error" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ocrd.validator.ValidationReport.add_warning">
-<code class="descname">add_warning</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/report.html#ValidationReport.add_warning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.ValidationReport.add_warning" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="ocrd.validator.ValidationReport.is_valid">
-<code class="descname">is_valid</code><a class="headerlink" href="#ocrd.validator.ValidationReport.is_valid" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ocrd.validator.ValidationReport.to_xml">
-<code class="descname">to_xml</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/validator/report.html#ValidationReport.to_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.validator.ValidationReport.to_xml" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<div class="section" id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -359,23 +96,14 @@
 
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="ocrd.html">ocrd package</a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">API</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="modules.html">ocrd</a><ul>
-  <li><a href="ocrd.html">ocrd package</a><ul>
-      <li>Previous: <a href="ocrd.processor.html" title="previous chapter">ocrd.processor package</a></li>
-      <li>Next: <a href="ocrd.webservice.html" title="next chapter">ocrd.webservice package</a></li>
-  </ul></li>
-  </ul></li>
   </ul></li>
 </ul>
 </div>

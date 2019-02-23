@@ -40,18 +40,18 @@
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="kn">from</span> <span class="nn">ocrd.constants</span> <span class="k">import</span> <span class="n">TMP_PREFIX</span>
-<span class="kn">from</span> <span class="nn">ocrd.utils</span> <span class="k">import</span> <span class="n">getLogger</span><span class="p">,</span> <span class="n">safe_filename</span>
+<span class="kn">from</span> <span class="nn">ocrd_utils</span> <span class="k">import</span> <span class="n">getLogger</span><span class="p">,</span> <span class="n">safe_filename</span>
 <span class="kn">from</span> <span class="nn">ocrd.workspace</span> <span class="k">import</span> <span class="n">Workspace</span>
-<span class="kn">from</span> <span class="nn">ocrd.model</span> <span class="k">import</span> <span class="n">OcrdMets</span>
+<span class="kn">from</span> <span class="nn">ocrd_models</span> <span class="k">import</span> <span class="n">OcrdMets</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;ocrd.resolver&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Resolver"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver">[docs]</a><span class="k">class</span> <span class="nc">Resolver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Resolver"><a class="viewcode-back" href="../../api/ocrd/ocrd.resolver.html#ocrd.resolver.Resolver">[docs]</a><span class="k">class</span> <span class="nc">Resolver</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Handle Uploads, Downloads, Repository access and manage temporary directories</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Resolver.download_to_directory"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.download_to_directory">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">subdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">relbase</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Resolver.download_to_directory"><a class="viewcode-back" href="../../api/ocrd/ocrd.resolver.html#ocrd.resolver.Resolver.download_to_directory">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">subdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">src_dir</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Download a file to the workspace.</span>
 
@@ -66,13 +66,19 @@
 <span class="sd">            url (string): URL to download from</span>
 <span class="sd">            overwrite (boolean): Whether to overwrite existing files with that name</span>
 <span class="sd">            subdir (string, None): Subdirectory to create within the directory. Think fileGrp.</span>
-<span class="sd">            relbase (string, &#39;&#39;): Base directory for resolving relative file names</span>
+<span class="sd">            src_dir (string, &#39;&#39;): Directory for resolving relative file names</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Local filename</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">log</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;ocrd.resolver.download_to_directory&#39;</span><span class="p">)</span> <span class="c1"># pylint: disable=redefined-outer-name</span>
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;directory=|</span><span class="si">%s</span><span class="s2">| url=|</span><span class="si">%s</span><span class="s2">| basename=|</span><span class="si">%s</span><span class="s2">| overwrite=|</span><span class="si">%s</span><span class="s2">| subdir=|</span><span class="si">%s</span><span class="s2">|&quot;</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">,</span> <span class="n">subdir</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;&#39;url&#39; must be a string&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;&#39;directory&#39; must be a string&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">basename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">subdir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> \
                 <span class="p">(</span><span class="n">directory</span> <span class="ow">and</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;file://</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">directory</span><span class="p">)):</span> <span class="c1"># in case downloading a url &#39;file:///tmp/foo/bar&#39; to directory &#39;/tmp/foo&#39;</span>
@@ -94,11 +100,17 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">isdir</span><span class="p">(</span><span class="n">outfiledir</span><span class="p">):</span>
             <span class="n">makedirs</span><span class="p">(</span><span class="n">outfiledir</span><span class="p">)</span>
 
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Downloading &lt;</span><span class="si">%s</span><span class="s2">&gt; to &#39;</span><span class="si">%s</span><span class="s2">&#39; (relbase=</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">outfilename</span><span class="p">,</span> <span class="n">relbase</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Downloading &lt;</span><span class="si">%s</span><span class="s2">&gt; to &#39;</span><span class="si">%s</span><span class="s2">&#39; (src_dir=</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">outfilename</span><span class="p">,</span> <span class="n">src_dir</span><span class="p">)</span>
+
+        <span class="c1"># de-scheme file:// URL</span>
         <span class="k">if</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):</span>
             <span class="n">url</span> <span class="o">=</span> <span class="n">url</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):]</span>
-        <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">relbase</span><span class="p">,</span> <span class="n">url</span><span class="p">)):</span>
-            <span class="n">url</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">relbase</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+
+        <span class="c1"># Relativize against src_dir</span>
+        <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">src_dir</span><span class="p">,</span> <span class="n">url</span><span class="p">)):</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">src_dir</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+
+        <span class="c1"># Copy files or download remote assets</span>
         <span class="k">if</span> <span class="s1">&#39;://&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">url</span><span class="p">:</span>
             <span class="n">copyfile</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">outfilename</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -110,7 +122,7 @@
 
         <span class="k">return</span> <span class="n">outfilename</span></div>
 
-<div class="viewcode-block" id="Resolver.workspace_from_url"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.workspace_from_url">[docs]</a>    <span class="k">def</span> <span class="nf">workspace_from_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clobber_mets</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mets_basename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">download_local</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Resolver.workspace_from_url"><a class="viewcode-back" href="../../api/ocrd/ocrd.resolver.html#ocrd.resolver.Resolver.workspace_from_url">[docs]</a>    <span class="k">def</span> <span class="nf">workspace_from_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">src_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dst_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clobber_mets</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mets_basename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">download_local</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a workspace from a METS by URL.</span>
 
@@ -118,7 +130,8 @@
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            mets_url (string): Source mets URL</span>
-<span class="sd">            directory (string): Directory containing/to contain the mets.xml</span>
+<span class="sd">            src_dir (string, None): Source directory containing the mets.xml</span>
+<span class="sd">            dst_dir (string, None): Target directory for the workspace</span>
 <span class="sd">            clobber_mets (boolean, False): Whether to overwrite existing mets.xml. By default existing mets.xml will raise an exception.</span>
 <span class="sd">            download (boolean, False): Whether to download all the files</span>
 <span class="sd">            download_local (boolean, False): Whether to download the file://-URL to the new location</span>
@@ -126,28 +139,34 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Workspace</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">directory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">directory</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
-            <span class="n">directory</span> <span class="o">=</span> <span class="n">abspath</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">src_dir</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">src_dir</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+            <span class="n">src_dir</span> <span class="o">=</span> <span class="n">abspath</span><span class="p">(</span><span class="n">src_dir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dst_dir</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">dst_dir</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+            <span class="n">dst_dir</span> <span class="o">=</span> <span class="n">abspath</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;workspace_from_url</span><span class="se">\n</span><span class="s2">mets_url=&#39;</span><span class="si">%s</span><span class="s2">&#39;</span><span class="se">\n</span><span class="s2">src_dir=&#39;</span><span class="si">%s</span><span class="s2">&#39;</span><span class="se">\n</span><span class="s2">dst_dir=&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">src_dir</span><span class="p">,</span> <span class="n">dst_dir</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">mets_url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Must pass mets_url and/or directory to workspace_from_url&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">src_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Must pass mets_url and/or src_dir to workspace_from_url&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">mets_url</span> <span class="o">=</span> <span class="s1">&#39;file://</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">mets_basename</span><span class="p">)</span>
+                <span class="n">mets_url</span> <span class="o">=</span> <span class="s1">&#39;file://</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">src_dir</span><span class="p">,</span> <span class="n">mets_basename</span> <span class="k">if</span> <span class="n">mets_basename</span> <span class="k">else</span> <span class="s1">&#39;mets.xml&#39;</span><span class="p">)</span>
+
+        <span class="c1"># resolve to absolute</span>
         <span class="k">if</span> <span class="s1">&#39;://&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mets_url</span><span class="p">:</span>
-            <span class="c1"># resolve to absolute</span>
-            <span class="n">mets_url</span> <span class="o">=</span> <span class="n">abspath</span><span class="p">(</span><span class="n">mets_url</span><span class="p">)</span>
-            <span class="n">mets_url</span> <span class="o">=</span> <span class="s1">&#39;file://&#39;</span> <span class="o">+</span> <span class="n">mets_url</span>
-        <span class="k">if</span> <span class="n">directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># if mets_url is a file-url assume working directory to be  where</span>
-            <span class="c1"># the mets.xml resides</span>
+            <span class="n">mets_url</span> <span class="o">=</span> <span class="s1">&#39;file://</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">abspath</span><span class="p">(</span><span class="n">mets_url</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">dst_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># if mets_url is a file-url assume working directory is source directory</span>
             <span class="k">if</span> <span class="n">mets_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):</span>
-                <span class="c1"># if directory was not given and mets_url is a file assume that</span>
-                <span class="c1"># directory should be the directory where the mets.xml resides</span>
-                <span class="n">directory</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">mets_url</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):])</span>
+                <span class="c1"># if dst_dir was not given and mets_url is a file assume that</span>
+                <span class="c1"># dst_dir should be the directory where the mets.xml resides</span>
+                <span class="n">dst_dir</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">mets_url</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):])</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">directory</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">TMP_PREFIX</span><span class="p">)</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Creating workspace &#39;</span><span class="si">%s</span><span class="s2">&#39; for METS @ &lt;</span><span class="si">%s</span><span class="s2">&gt;&quot;</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">)</span>
+                <span class="n">dst_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">TMP_PREFIX</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Creating workspace &#39;</span><span class="si">%s</span><span class="s2">&#39; for METS @ &lt;</span><span class="si">%s</span><span class="s2">&gt;&quot;</span><span class="p">,</span> <span class="n">dst_dir</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">src_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">src_dir</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">mets_url</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):])</span>
 
         <span class="c1"># if mets_basename is not given, use the last URL segment of the mets_url</span>
         <span class="k">if</span> <span class="n">mets_basename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -156,17 +175,17 @@
                 <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;?&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> \
                 <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="n">mets_fpath</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">mets_basename</span><span class="p">)</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Copying mets url &#39;</span><span class="si">%s</span><span class="s2">&#39; to &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">mets_fpath</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s1">&#39;file://&#39;</span> <span class="o">+</span> <span class="n">mets_fpath</span> <span class="o">==</span> <span class="n">mets_url</span><span class="p">:</span>
+        <span class="n">dst_mets</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">,</span> <span class="n">mets_basename</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Copying mets url &#39;</span><span class="si">%s</span><span class="s2">&#39; to &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">dst_mets</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;file://&#39;</span> <span class="o">+</span> <span class="n">dst_mets</span> <span class="o">==</span> <span class="n">mets_url</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Target and source mets are identical&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">exists</span><span class="p">(</span><span class="n">mets_fpath</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">clobber_mets</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;File &#39;</span><span class="si">%s</span><span class="s2">&#39; already exists but clobber_mets is false&quot;</span> <span class="o">%</span> <span class="n">mets_fpath</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">exists</span><span class="p">(</span><span class="n">dst_mets</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">clobber_mets</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;File &#39;</span><span class="si">%s</span><span class="s2">&#39; already exists but clobber_mets is false&quot;</span> <span class="o">%</span> <span class="n">dst_mets</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">download_to_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="n">mets_basename</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">download_to_directory</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">,</span> <span class="n">mets_url</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="n">mets_basename</span><span class="p">)</span>
 
-        <span class="n">workspace</span> <span class="o">=</span> <span class="n">Workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">mets_basename</span><span class="o">=</span><span class="n">mets_basename</span><span class="p">)</span>
+        <span class="n">workspace</span> <span class="o">=</span> <span class="n">Workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dst_dir</span><span class="p">,</span> <span class="n">mets_basename</span><span class="o">=</span><span class="n">mets_basename</span><span class="p">,</span> <span class="n">src_dir</span><span class="o">=</span><span class="n">src_dir</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">download_local</span> <span class="ow">or</span> <span class="n">download</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">file_grp</span> <span class="ow">in</span> <span class="n">workspace</span><span class="o">.</span><span class="n">mets</span><span class="o">.</span><span class="n">file_groups</span><span class="p">:</span>
@@ -178,7 +197,7 @@
 
         <span class="k">return</span> <span class="n">workspace</span></div>
 
-<div class="viewcode-block" id="Resolver.workspace_from_nothing"><a class="viewcode-back" href="../../api/ocrd.html#ocrd.resolver.Resolver.workspace_from_nothing">[docs]</a>    <span class="k">def</span> <span class="nf">workspace_from_nothing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">mets_basename</span><span class="o">=</span><span class="s1">&#39;mets.xml&#39;</span><span class="p">,</span> <span class="n">clobber_mets</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Resolver.workspace_from_nothing"><a class="viewcode-back" href="../../api/ocrd/ocrd.resolver.html#ocrd.resolver.Resolver.workspace_from_nothing">[docs]</a>    <span class="k">def</span> <span class="nf">workspace_from_nothing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">mets_basename</span><span class="o">=</span><span class="s1">&#39;mets.xml&#39;</span><span class="p">,</span> <span class="n">clobber_mets</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create an empty workspace.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -235,7 +254,12 @@
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/ocrd/modules.html">ocrd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/ocrd_utils/modules.html">ocrd_utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/ocrd_models/modules.html">ocrd_models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/ocrd_validators/modules.html">ocrd_validators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/ocrd_modelfactory/modules.html">ocrd_modelfactory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/ocrd/ocrd.html">ocrd package</a></li>
 </ul>
 
 <div class="relations">

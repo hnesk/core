@@ -15,8 +15,6 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="ocrd.validator package" href="ocrd.validator.html" />
-    <link rel="prev" title="ocrd.model.yaml package" href="ocrd.model.yaml.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -42,35 +40,11 @@
 <span id="ocrd-processor-base-module"></span><h2>ocrd.processor.base module<a class="headerlink" href="#module-ocrd.processor.base" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="ocrd.processor.base.Processor">
-<em class="property">class </em><code class="descclassname">ocrd.processor.base.</code><code class="descname">Processor</code><span class="sig-paren">(</span><em>workspace</em>, <em>ocrd_tool=None</em>, <em>parameter=None</em>, <em>input_file_grp='INPUT'</em>, <em>output_file_grp='OUTPUT'</em>, <em>group_id=None</em>, <em>dump_json=False</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/processor/base.html#Processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.processor.base.Processor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ocrd.processor.base.</code><code class="descname">Processor</code><span class="sig-paren">(</span><em>workspace</em>, <em>ocrd_tool=None</em>, <em>parameter=None</em>, <em>input_file_grp='INPUT'</em>, <em>output_file_grp='OUTPUT'</em>, <em>page_id=None</em>, <em>dump_json=False</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/processor/base.html#Processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.processor.base.Processor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A processor runs an algorithm based on the workspace, the mets.xml in the
 workspace (and the input files defined therein) as well as optional
 parameter.</p>
-<dl class="method">
-<dt id="ocrd.processor.base.Processor.add_output_file">
-<code class="descname">add_output_file</code><span class="sig-paren">(</span><em>basename=None</em>, <em>file_grp=None</em>, <em>ID=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/processor/base.html#Processor.add_output_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.processor.base.Processor.add_output_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>DEPRECATED</p>
-<p>Add an output file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>basename</strong> (<em>string</em>) – basename of the file</li>
-<li><strong>file_grp</strong> (<em>string</em>) – fileGrp to add this file to. Default: self.output_file_grp</li>
-<li><strong>ID</strong> (<em>string</em>) – <a class="reference external" href="mailto:file&#37;&#52;&#48;ID">file<span>&#64;</span>ID</a></li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="deprecated">
-<p><span class="versionmodified">Deprecated since version 0.8.0: </span>Use self.workspace.add_file directly. See
-<a class="reference external" href="https://github.com/OCR-D/core/issues/166">https://github.com/OCR-D/core/issues/166</a>.</p>
-</div>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="ocrd.processor.base.Processor.input_files">
 <code class="descname">input_files</code><a class="headerlink" href="#ocrd.processor.base.Processor.input_files" title="Permalink to this definition">¶</a></dt>
@@ -93,13 +67,13 @@ parameter.</p>
 
 <dl class="function">
 <dt id="ocrd.processor.base.run_cli">
-<code class="descclassname">ocrd.processor.base.</code><code class="descname">run_cli</code><span class="sig-paren">(</span><em>executable</em>, <em>mets_url=None</em>, <em>resolver=None</em>, <em>workspace=None</em>, <em>group_id=None</em>, <em>log_level=None</em>, <em>input_file_grp=None</em>, <em>output_file_grp=None</em>, <em>parameter=None</em>, <em>working_dir=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/processor/base.html#run_cli"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.processor.base.run_cli" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ocrd.processor.base.</code><code class="descname">run_cli</code><span class="sig-paren">(</span><em>executable</em>, <em>mets_url=None</em>, <em>resolver=None</em>, <em>workspace=None</em>, <em>page_id=None</em>, <em>log_level=None</em>, <em>input_file_grp=None</em>, <em>output_file_grp=None</em>, <em>parameter=None</em>, <em>working_dir=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/processor/base.html#run_cli"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.processor.base.run_cli" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a workspace for mets_url and run MP CLI through it</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="ocrd.processor.base.run_processor">
-<code class="descclassname">ocrd.processor.base.</code><code class="descname">run_processor</code><span class="sig-paren">(</span><em>processorClass</em>, <em>ocrd_tool=None</em>, <em>mets_url=None</em>, <em>resolver=None</em>, <em>workspace=None</em>, <em>group_id=None</em>, <em>log_level=None</em>, <em>input_file_grp=None</em>, <em>output_file_grp=None</em>, <em>parameter=None</em>, <em>working_dir=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/processor/base.html#run_processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.processor.base.run_processor" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ocrd.processor.base.</code><code class="descname">run_processor</code><span class="sig-paren">(</span><em>processorClass</em>, <em>ocrd_tool=None</em>, <em>mets_url=None</em>, <em>resolver=None</em>, <em>workspace=None</em>, <em>page_id=None</em>, <em>log_level=None</em>, <em>input_file_grp=None</em>, <em>output_file_grp=None</em>, <em>parameter=None</em>, <em>working_dir=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocrd/processor/base.html#run_processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.processor.base.run_processor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a workspace for mets_url and run processor through it</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -154,23 +128,14 @@ parameter.</p>
 
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="ocrd.html">ocrd package</a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">API</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="modules.html">ocrd</a><ul>
-  <li><a href="ocrd.html">ocrd package</a><ul>
-      <li>Previous: <a href="ocrd.model.yaml.html" title="previous chapter">ocrd.model.yaml package</a></li>
-      <li>Next: <a href="ocrd.validator.html" title="next chapter">ocrd.validator package</a></li>
-  </ul></li>
-  </ul></li>
   </ul></li>
 </ul>
 </div>

@@ -7,10 +7,7 @@ Subpackages
 .. toctree::
 
     ocrd.cli
-    ocrd.model
     ocrd.processor
-    ocrd.validator
-    ocrd.webservice
 
 Submodules
 ----------
@@ -31,14 +28,6 @@ ocrd.decorators module
     :undoc-members:
     :show-inheritance:
 
-ocrd.logging module
--------------------
-
-.. automodule:: ocrd.logging
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 ocrd.resolver module
 --------------------
 
@@ -47,10 +36,10 @@ ocrd.resolver module
     :undoc-members:
     :show-inheritance:
 
-ocrd.utils module
------------------
+ocrd.task\_sequence module
+--------------------------
 
-.. automodule:: ocrd.utils
+.. automodule:: ocrd.task_sequence
     :members:
     :undoc-members:
     :show-inheritance:

@@ -38,11 +38,10 @@
 
 <span class="kn">import</span> <span class="nn">click</span>
 
-<span class="kn">from</span> <span class="nn">ocrd</span> <span class="k">import</span> <span class="n">OcrdToolValidator</span>
-<span class="kn">from</span> <span class="nn">ocrd.constants</span> <span class="k">import</span> <span class="n">VERSION</span> <span class="k">as</span> <span class="n">OCRD_VERSION</span>
-<span class="kn">from</span> <span class="nn">ocrd.validator</span> <span class="k">import</span> <span class="n">ParameterValidator</span>
+<span class="kn">from</span> <span class="nn">ocrd_utils</span> <span class="k">import</span> <span class="n">VERSION</span> <span class="k">as</span> <span class="n">OCRD_VERSION</span>
+<span class="kn">from</span> <span class="nn">ocrd_validators</span> <span class="k">import</span> <span class="n">ParameterValidator</span><span class="p">,</span> <span class="n">OcrdToolValidator</span>
 
-<div class="viewcode-block" id="OcrdToolCtx"><a class="viewcode-back" href="../../../api/ocrd.cli.html#ocrd.cli.ocrd_tool.OcrdToolCtx">[docs]</a><span class="k">class</span> <span class="nc">OcrdToolCtx</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="OcrdToolCtx"><a class="viewcode-back" href="../../../api/ocrd/ocrd.cli.ocrd_tool.html#ocrd.cli.ocrd_tool.OcrdToolCtx">[docs]</a><span class="k">class</span> <span class="nc">OcrdToolCtx</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
@@ -78,7 +77,7 @@
 <span class="nd">@ocrd_tool_cli</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s1">&#39;validate&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Validate an ocrd-tool.json&#39;</span><span class="p">)</span>
 <span class="nd">@pass_ocrd_tool</span>
 <span class="k">def</span> <span class="nf">ocrd_tool_validate</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
-    <span class="n">report</span> <span class="o">=</span> <span class="n">OcrdToolValidator</span><span class="o">.</span><span class="n">validate_json</span><span class="p">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">json</span><span class="p">)</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">OcrdToolValidator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">json</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">to_xml</span><span class="p">())</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">report</span><span class="o">.</span><span class="n">is_valid</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">128</span>
@@ -207,7 +206,12 @@
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/ocrd/modules.html">ocrd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/ocrd_utils/modules.html">ocrd_utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/ocrd_models/modules.html">ocrd_models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/ocrd_validators/modules.html">ocrd_validators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/ocrd_modelfactory/modules.html">ocrd_modelfactory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/ocrd/ocrd.html">ocrd package</a></li>
 </ul>
 
 <div class="relations">

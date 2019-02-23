@@ -1,0 +1,253 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ocrd.workspace module &#8212; ocrd  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ocrd.workspace_backup module" href="ocrd.workspace_backup.html" />
+    <link rel="prev" title="ocrd.task_sequence module" href="ocrd.task_sequence.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-ocrd.workspace">
+<span id="ocrd-workspace-module"></span><h1>ocrd.workspace module<a class="headerlink" href="#module-ocrd.workspace" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="ocrd.workspace.Workspace">
+<em class="property">class </em><code class="descclassname">ocrd.workspace.</code><code class="descname">Workspace</code><span class="sig-paren">(</span><em>resolver</em>, <em>directory</em>, <em>mets=None</em>, <em>mets_basename='mets.xml'</em>, <em>automatic_backup=False</em>, <em>src_dir=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A workspace is a temporary directory set up for a processor. It’s the
+interface to the METS/PAGE XML and delegates download and upload to the
+Resolver.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>directory</strong> (<em>string</em>) – Folder to work in</li>
+<li><strong>mets</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">OcrdMets</span></code>) – OcrdMets representing this workspace. Loaded from ‘mets.xml’ if <code class="docutils literal notranslate"><span class="pre">None</span></code>.</li>
+<li><strong>mets_basename</strong> (<em>string</em>) – Basename of the METS XML file. Default: Last URL segment of the mets_url.</li>
+<li><strong>src_dir</strong> (<em>string</em>) – Directory containing the source mets.xml, to resolve relative file URL.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.add_file">
+<code class="descname">add_file</code><span class="sig-paren">(</span><em>file_grp</em>, <em>content=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace.add_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.add_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an output file. Creates an <code class="xref py py-class docutils literal notranslate"><span class="pre">OcrdFile</span></code> to pass around and adds that to the
+OcrdMets OUTPUT section.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.download_file">
+<code class="descname">download_file</code><span class="sig-paren">(</span><em>f</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace.download_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.download_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download a <code class="xref py py-mod docutils literal notranslate"><span class="pre">ocrd.model.ocrd_file.OcrdFile</span></code> to the workspace.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.download_files_in_group">
+<code class="descname">download_files_in_group</code><span class="sig-paren">(</span><em>file_grp</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace.download_files_in_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.download_files_in_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download all  the <code class="xref py py-mod docutils literal notranslate"><span class="pre">ocrd.model.ocrd_file.OcrdFile</span></code> in the file group given.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.download_url">
+<code class="descname">download_url</code><span class="sig-paren">(</span><em>url</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace.download_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.download_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download a URL to the workspace.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> (<em>string</em>) – URL to download to directory</li>
+<li><strong>**kwargs</strong> – See <a class="reference internal" href="ocrd.resolver.html#ocrd.resolver.Resolver" title="ocrd.resolver.Resolver"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ocrd.resolver.Resolver</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The local filename of the downloaded file</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.reload_mets">
+<code class="descname">reload_mets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace.reload_mets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.reload_mets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload METS from disk.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.resolve_image_as_pil">
+<code class="descname">resolve_image_as_pil</code><span class="sig-paren">(</span><em>image_url</em>, <em>coords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace.resolve_image_as_pil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.resolve_image_as_pil" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resolve an image URL to a PIL image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>coords</strong> (<em>list</em>) – Coordinates of the bounding box to cut from the image</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Image or region in image as PIL.Image</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.resolve_image_exif">
+<code class="descname">resolve_image_exif</code><span class="sig-paren">(</span><em>image_url</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace.resolve_image_exif"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.resolve_image_exif" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the EXIF metadata about an image URL as <code class="xref py py-class docutils literal notranslate"><span class="pre">OcrdExif</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image_url</strong> (<em>string</em>) – URL of image</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Return</dt>
+<dd><code class="xref py py-class docutils literal notranslate"><span class="pre">OcrdExif</span></code></dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.save_mets">
+<code class="descname">save_mets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace.save_mets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.save_mets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write out the current state of the METS file.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">ocrd</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=OCR-D&repo=core&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/OCR-D/core">
+    <img
+        alt="https://secure.travis-ci.org/OCR-D/core.svg?branch=master"
+        src="https://secure.travis-ci.org/OCR-D/core.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="modules.html">ocrd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocrd_utils/modules.html">ocrd_utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocrd_models/modules.html">ocrd_models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocrd_validators/modules.html">ocrd_validators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocrd_modelfactory/modules.html">ocrd_modelfactory</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="ocrd.html">ocrd package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ocrd.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="ocrd.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ocrd.constants.html">ocrd.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ocrd.decorators.html">ocrd.decorators module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ocrd.resolver.html">ocrd.resolver module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ocrd.task_sequence.html">ocrd.task_sequence module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ocrd.workspace module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ocrd.workspace_backup.html">ocrd.workspace_backup module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ocrd.workspace_bagger.html">ocrd.workspace_bagger module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">ocrd</a><ul>
+  <li><a href="ocrd.html">ocrd package</a><ul>
+      <li>Previous: <a href="ocrd.task_sequence.html" title="previous chapter">ocrd.task_sequence module</a></li>
+      <li>Next: <a href="ocrd.workspace_backup.html" title="next chapter">ocrd.workspace_backup module</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Kay Wuerzner, Konstantin Baierer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="../../_sources/api/ocrd/ocrd.workspace.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
