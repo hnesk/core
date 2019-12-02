@@ -40,7 +40,20 @@
 <dt id="ocrd_models.ocrd_exif.OcrdExif">
 <em class="property">class </em><code class="descclassname">ocrd_models.ocrd_exif.</code><code class="descname">OcrdExif</code><span class="sig-paren">(</span><em>img</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd_models/ocrd_exif.html#OcrdExif"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd_models.ocrd_exif.OcrdExif" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Represents technical image metadata</p>
+<p>Represents technical image metadata.</p>
+<p>Members:</p>
+<ul class="simple">
+<li><cite>width</cite> / <cite>height</cite>: pixel dimensions</li>
+<li><cite>photometricInterpretation</cite>: pixel type/depth, e.g.
+‘1’ for b/w,
+‘L’ for 8-bit grayscale,
+‘RGB’ for 24-bit truecolor,
+‘I’ for 32-bit signed integer grayscale,
+‘F’ for floating-point grayscale
+(see PIL concept <cite>mode</cite>)</li>
+<li><cite>resolution</cite> / <cite>xResolution</cite> / <cite>yResolution</cite>: pixel density</li>
+<li><cite>resolutionUnits</cite>: unit of measurement (either <cite>inches</cite> or <cite>cm</cite>)</li>
+</ul>
 <dl class="method">
 <dt id="ocrd_models.ocrd_exif.OcrdExif.to_xml">
 <code class="descname">to_xml</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd_models/ocrd_exif.html#OcrdExif.to_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd_models.ocrd_exif.OcrdExif.to_xml" title="Permalink to this definition">¶</a></dt>

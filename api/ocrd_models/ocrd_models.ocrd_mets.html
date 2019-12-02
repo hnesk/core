@@ -38,7 +38,7 @@
 <p>API to METS</p>
 <dl class="class">
 <dt id="ocrd_models.ocrd_mets.OcrdMets">
-<em class="property">class </em><code class="descclassname">ocrd_models.ocrd_mets.</code><code class="descname">OcrdMets</code><span class="sig-paren">(</span><em>file_by_id=None</em>, <em>baseurl=''</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd_models/ocrd_mets.html#OcrdMets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd_models.ocrd_mets.OcrdMets" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ocrd_models.ocrd_mets.</code><code class="descname">OcrdMets</code><span class="sig-paren">(</span><em>file_by_id=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd_models/ocrd_mets.html#OcrdMets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd_models.ocrd_mets.OcrdMets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="ocrd_models.ocrd_xml_base.html#ocrd_models.ocrd_xml_base.OcrdXmlDocument" title="ocrd_models.ocrd_xml_base.OcrdXmlDocument"><code class="xref py py-class docutils literal notranslate"><span class="pre">ocrd_models.ocrd_xml_base.OcrdXmlDocument</span></code></a></p>
 <p>API to a single METS file</p>
 <dl class="method">
@@ -49,7 +49,7 @@
 
 <dl class="method">
 <dt id="ocrd_models.ocrd_mets.OcrdMets.add_file">
-<code class="descname">add_file</code><span class="sig-paren">(</span><em>fileGrp</em>, <em>mimetype=None</em>, <em>url=None</em>, <em>ID=None</em>, <em>pageId=None</em>, <em>force=False</em>, <em>local_filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd_models/ocrd_mets.html#OcrdMets.add_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd_models.ocrd_mets.OcrdMets.add_file" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_file</code><span class="sig-paren">(</span><em>fileGrp</em>, <em>mimetype=None</em>, <em>url=None</em>, <em>ID=None</em>, <em>pageId=None</em>, <em>force=False</em>, <em>local_filename=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd_models/ocrd_mets.html#OcrdMets.add_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd_models.ocrd_mets.OcrdMets.add_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a <a class="reference external" href="/../../ocrd_models/ocrd_models.ocrd_file.html">OcrdFile</a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -93,7 +93,7 @@
 
 <dl class="staticmethod">
 <dt id="ocrd_models.ocrd_mets.OcrdMets.empty_mets">
-<em class="property">static </em><code class="descname">empty_mets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd_models/ocrd_mets.html#OcrdMets.empty_mets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd_models.ocrd_mets.OcrdMets.empty_mets" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">empty_mets</code><span class="sig-paren">(</span><em>now=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd_models/ocrd_mets.html#OcrdMets.empty_mets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd_models.ocrd_mets.OcrdMets.empty_mets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an empty METS file from bundled template.</p>
 </dd></dl>
 
@@ -105,23 +105,25 @@
 
 <dl class="method">
 <dt id="ocrd_models.ocrd_mets.OcrdMets.find_files">
-<code class="descname">find_files</code><span class="sig-paren">(</span><em>ID=None</em>, <em>fileGrp=None</em>, <em>pageId=None</em>, <em>mimetype=None</em>, <em>local_only=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd_models/ocrd_mets.html#OcrdMets.find_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd_models.ocrd_mets.OcrdMets.find_files" title="Permalink to this definition">¶</a></dt>
-<dd><p>Search <code class="docutils literal notranslate"><span class="pre">mets:file</span></code> in this METS document.</p>
+<code class="descname">find_files</code><span class="sig-paren">(</span><em>ID=None</em>, <em>fileGrp=None</em>, <em>pageId=None</em>, <em>mimetype=None</em>, <em>url=None</em>, <em>local_only=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd_models/ocrd_mets.html#OcrdMets.find_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd_models.ocrd_mets.OcrdMets.find_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search <code class="docutils literal notranslate"><span class="pre">mets:file</span></code> in this METS document.
+:param ID: ID of the file
+:type ID: string
+:param fileGrp: USE of the fileGrp to list files of
+:type fileGrp: string
+:param pageId: ID of physical page manifested by matching files
+:type pageId: string
+:param url: &#64;xlink:href of mets:Flocat of mets:file
+:type url: string
+:param mimetype: MIMETYPE of matching files
+:type mimetype: string
+:param local: Whether to restrict results to local files
+:type local: boolean</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ID</strong> (<em>string</em>) – ID of the file</li>
-<li><strong>fileGrp</strong> (<em>string</em>) – USE of the fileGrp to list files of</li>
-<li><strong>pageId</strong> (<em>string</em>) – ID of physical page manifested by matching files</li>
-<li><strong>mimetype</strong> (<em>string</em>) – MIMETYPE of matching files</li>
-<li><strong>local</strong> (<em>boolean</em>) – Whether to restrict results to local files, i.e. <a class="reference external" href="file://-URL">file://-URL</a></li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of files.</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of files.</td>
 </tr>
 </tbody>
 </table>
@@ -137,6 +139,30 @@
 <dt id="ocrd_models.ocrd_mets.OcrdMets.physical_pages">
 <code class="descname">physical_pages</code><a class="headerlink" href="#ocrd_models.ocrd_mets.OcrdMets.physical_pages" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all page IDs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd_models.ocrd_mets.OcrdMets.remove_file">
+<code class="descname">remove_file</code><span class="sig-paren">(</span><em>ID</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd_models/ocrd_mets.html#OcrdMets.remove_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd_models.ocrd_mets.OcrdMets.remove_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a <a class="reference external" href="/../../ocrd_models/ocrd_models.ocrd_file.html">OcrdFile</a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd_models.ocrd_mets.OcrdMets.remove_file_group">
+<code class="descname">remove_file_group</code><span class="sig-paren">(</span><em>USE</em>, <em>recursive=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd_models/ocrd_mets.html#OcrdMets.remove_file_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd_models.ocrd_mets.OcrdMets.remove_file_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a fileGrp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>USE</strong> (<em>string</em>) – USE attribute of the fileGrp to delete</li>
+<li><strong>recursive</strong> (<em>boolean</em>) – Whether to recursively delete all files in the group</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">

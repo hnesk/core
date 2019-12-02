@@ -42,9 +42,9 @@
 <p>Handle Uploads, Downloads, Repository access and manage temporary directories</p>
 <dl class="method">
 <dt id="ocrd.resolver.Resolver.download_to_directory">
-<code class="descname">download_to_directory</code><span class="sig-paren">(</span><em>directory</em>, <em>url</em>, <em>basename=None</em>, <em>overwrite=False</em>, <em>subdir=None</em>, <em>src_dir=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/resolver.html#Resolver.download_to_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.download_to_directory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Download a file to the workspace.</p>
-<p>Early Shortcut: If url is a <a class="reference external" href="file://-URL">file://-URL</a> and that file is already in the directory, keep it there.</p>
+<code class="descname">download_to_directory</code><span class="sig-paren">(</span><em>directory</em>, <em>url</em>, <em>basename=None</em>, <em>if_exists='skip'</em>, <em>subdir=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/resolver.html#Resolver.download_to_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.download_to_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download a file to a directory.</p>
+<p>Early Shortcut: If url is a local file and that file is already in the directory, keep it there.</p>
 <p>If basename is not given but subdir is, assume user knows what she’s doing and use last URL segment as the basename.
 If basename is not given and no subdir is given, use the alnum characters in the URL as the basename.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -55,13 +55,12 @@ If basename is not given and no subdir is given, use the alnum characters in the
 <li><strong>directory</strong> (<em>string</em>) – Directory to download files to</li>
 <li><strong>basename</strong> (<em>string</em><em>, </em><em>None</em>) – basename part of the filename on disk.</li>
 <li><strong>url</strong> (<em>string</em>) – URL to download from</li>
-<li><strong>overwrite</strong> (<em>boolean</em>) – Whether to overwrite existing files with that name</li>
+<li><strong>if_exists</strong> (<em>string</em><em>, </em><em>&quot;skip&quot;</em>) – What to do if target file already exists. One of <code class="docutils literal notranslate"><span class="pre">skip</span></code> (default), <code class="docutils literal notranslate"><span class="pre">overwrite</span></code> or <code class="docutils literal notranslate"><span class="pre">raise</span></code></li>
 <li><strong>subdir</strong> (<em>string</em><em>, </em><em>None</em>) – Subdirectory to create within the directory. Think fileGrp.</li>
-<li><strong>src_dir</strong> (<em>string</em><em>, </em><em>''</em>) – Directory for resolving relative file names</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Local filename</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Local filename, __relative__ to directory</p>
 </td>
 </tr>
 </tbody>
@@ -76,8 +75,8 @@ If basename is not given and no subdir is given, use the alnum characters in the
 
 <dl class="method">
 <dt id="ocrd.resolver.Resolver.workspace_from_url">
-<code class="descname">workspace_from_url</code><span class="sig-paren">(</span><em>mets_url</em>, <em>src_dir=None</em>, <em>dst_dir=None</em>, <em>clobber_mets=False</em>, <em>mets_basename=None</em>, <em>download=False</em>, <em>download_local=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/resolver.html#Resolver.workspace_from_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.workspace_from_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a workspace from a METS by URL.</p>
+<code class="descname">workspace_from_url</code><span class="sig-paren">(</span><em>mets_url</em>, <em>dst_dir=None</em>, <em>clobber_mets=False</em>, <em>mets_basename=None</em>, <em>download=False</em>, <em>src_baseurl=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/resolver.html#Resolver.workspace_from_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.resolver.Resolver.workspace_from_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a workspace from a METS by URL (i.e. clone it).</p>
 <p>Sets the mets.xml file</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -85,11 +84,10 @@ If basename is not given and no subdir is given, use the alnum characters in the
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>mets_url</strong> (<em>string</em>) – Source mets URL</li>
-<li><strong>src_dir</strong> (<em>string</em><em>, </em><em>None</em>) – Source directory containing the mets.xml</li>
 <li><strong>dst_dir</strong> (<em>string</em><em>, </em><em>None</em>) – Target directory for the workspace</li>
 <li><strong>clobber_mets</strong> (<em>boolean</em><em>, </em><em>False</em>) – Whether to overwrite existing mets.xml. By default existing mets.xml will raise an exception.</li>
 <li><strong>download</strong> (<em>boolean</em><em>, </em><em>False</em>) – Whether to download all the files</li>
-<li><strong>download_local</strong> (<em>boolean</em><em>, </em><em>False</em>) – Whether to download the <a class="reference external" href="file://-URL">file://-URL</a> to the new location</li>
+<li><strong>src_baseurl</strong> (<em>string</em><em>, </em><em>None</em>) – Base URL for resolving relative file locations</li>
 </ul>
 </td>
 </tr>
@@ -142,7 +140,14 @@ If basename is not given and no subdir is given, use the alnum characters in the
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="modules.html">ocrd</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">ocrd</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="ocrd.html">ocrd package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ocrd.html#subpackages">Subpackages</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="ocrd.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../ocrd_utils/modules.html">ocrd_utils</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../ocrd_models/modules.html">ocrd_models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../ocrd_validators/modules.html">ocrd_validators</a></li>

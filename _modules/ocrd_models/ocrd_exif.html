@@ -36,9 +36,24 @@
 <span class="sd">Technical image metadata</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sqrt</span>
+
 <div class="viewcode-block" id="OcrdExif"><a class="viewcode-back" href="../../api/ocrd_models/ocrd_models.ocrd_exif.html#ocrd_models.ocrd_exif.OcrdExif">[docs]</a><span class="k">class</span> <span class="nc">OcrdExif</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represents technical image metadata</span>
+    <span class="sd">&quot;&quot;&quot;Represents technical image metadata.</span>
+
+<span class="sd">    Members:</span>
+
+<span class="sd">    - `width` / `height`: pixel dimensions</span>
+<span class="sd">    - `photometricInterpretation`: pixel type/depth, e.g.</span>
+<span class="sd">      &#39;1&#39; for b/w,</span>
+<span class="sd">      &#39;L&#39; for 8-bit grayscale,</span>
+<span class="sd">      &#39;RGB&#39; for 24-bit truecolor,</span>
+<span class="sd">      &#39;I&#39; for 32-bit signed integer grayscale,</span>
+<span class="sd">      &#39;F&#39; for floating-point grayscale</span>
+<span class="sd">      (see PIL concept `mode`)</span>
+<span class="sd">    - `resolution` / `xResolution` / `yResolution`: pixel density</span>
+<span class="sd">    - `resolutionUnits`: unit of measurement (either `inches` or `cm`)</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
@@ -55,13 +70,13 @@
         <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;compression&#39;</span><span class="p">,</span> <span class="s1">&#39;photometric_interpretation&#39;</span><span class="p">]:</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="n">prop</span><span class="p">]</span> <span class="k">if</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">format</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;TIFF&#39;</span><span class="p">,</span> <span class="s1">&#39;PNG&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;dpi&#39;</span> <span class="ow">in</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">xResolution</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;dpi&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">yResolution</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;dpi&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">resolutionUnit</span> <span class="o">=</span> <span class="s1">&#39;cm&#39;</span> <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">tag</span><span class="p">[</span><span class="mi">296</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="s1">&#39;inches&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xResolution</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;dpi&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">yResolution</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;dpi&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resolutionUnit</span> <span class="o">=</span> <span class="s1">&#39;cm&#39;</span> <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">296</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="s1">&#39;inches&#39;</span>
         <span class="k">elif</span> <span class="n">img</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">&#39;JPEG&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">xResolution</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;jfif_density&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">yResolution</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;jfif_density&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">resolutionUnit</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;jfif_unit&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resolutionUnit</span> <span class="o">=</span> <span class="s1">&#39;cm&#39;</span> <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;jfif_unit&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="s1">&#39;inches&#39;</span>
         <span class="k">elif</span> <span class="n">img</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">&#39;PNG&#39;</span> <span class="ow">and</span> <span class="s1">&#39;aspect&#39;</span> <span class="ow">in</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">xResolution</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;aspect&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">yResolution</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;aspect&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
@@ -72,6 +87,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">xResolution</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">yResolution</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">resolutionUnit</span> <span class="o">=</span> <span class="s1">&#39;inches&#39;</span>
+        <span class="c1">#  print(&#39;format=%s type=%s&#39; % (img.format, type(self.xResolution))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resolution</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xResolution</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">yResolution</span><span class="p">))</span>
 
 <div class="viewcode-block" id="OcrdExif.to_xml"><a class="viewcode-back" href="../../api/ocrd_models/ocrd_models.ocrd_exif.html#ocrd_models.ocrd_exif.OcrdExif.to_xml">[docs]</a>    <span class="k">def</span> <span class="nf">to_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

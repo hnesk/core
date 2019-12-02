@@ -44,15 +44,19 @@
     <span class="s1">&#39;AlternativeImageType&#39;</span><span class="p">,</span>
     <span class="s1">&#39;CoordsType&#39;</span><span class="p">,</span>
     <span class="s1">&#39;GlyphType&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ImageRegionType&#39;</span><span class="p">,</span>
     <span class="s1">&#39;LabelType&#39;</span><span class="p">,</span>
     <span class="s1">&#39;LabelsType&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;MathsRegionType&#39;</span><span class="p">,</span>
     <span class="s1">&#39;MetadataType&#39;</span><span class="p">,</span>
     <span class="s1">&#39;MetadataItemType&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;NoiseRegionType&#39;</span><span class="p">,</span>
     <span class="s1">&#39;OrderedGroupType&#39;</span><span class="p">,</span>
     <span class="s1">&#39;PageType&#39;</span><span class="p">,</span>
     <span class="s1">&#39;PcGtsType&#39;</span><span class="p">,</span>
     <span class="s1">&#39;ReadingOrderType&#39;</span><span class="p">,</span>
     <span class="s1">&#39;RegionRefIndexedType&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;SeparatorRegionType&#39;</span><span class="p">,</span>
     <span class="s1">&#39;TextEquivType&#39;</span><span class="p">,</span>
     <span class="s1">&#39;TextLineType&#39;</span><span class="p">,</span>
     <span class="s1">&#39;TextStyleType&#39;</span><span class="p">,</span>
@@ -69,15 +73,19 @@
     <span class="n">AlternativeImageType</span><span class="p">,</span>
     <span class="n">CoordsType</span><span class="p">,</span>
     <span class="n">GlyphType</span><span class="p">,</span>
+    <span class="n">ImageRegionType</span><span class="p">,</span>
     <span class="n">LabelType</span><span class="p">,</span>
     <span class="n">LabelsType</span><span class="p">,</span>
+    <span class="n">MathsRegionType</span><span class="p">,</span>
     <span class="n">MetadataType</span><span class="p">,</span>
     <span class="n">MetadataItemType</span><span class="p">,</span>
+    <span class="n">NoiseRegionType</span><span class="p">,</span>
     <span class="n">OrderedGroupType</span><span class="p">,</span>
     <span class="n">PageType</span><span class="p">,</span>
     <span class="n">PcGtsType</span><span class="p">,</span>
     <span class="n">ReadingOrderType</span><span class="p">,</span>
     <span class="n">RegionRefIndexedType</span><span class="p">,</span>
+    <span class="n">SeparatorRegionType</span><span class="p">,</span>
     <span class="n">TextEquivType</span><span class="p">,</span>
     <span class="n">TextLineType</span><span class="p">,</span>
     <span class="n">TextRegionType</span><span class="p">,</span>
@@ -92,7 +100,12 @@
 <span class="sd">    Serialize ``pc:PcGts`` document</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sio</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
-    <span class="n">el</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">sio</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">name_</span><span class="o">=</span><span class="s1">&#39;PcGts&#39;</span><span class="p">,</span> <span class="n">namespacedef_</span><span class="o">=</span><span class="s1">&#39;xmlns:pc=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">NAMESPACES</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">])</span>
+    <span class="n">el</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">sio</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">name_</span><span class="o">=</span><span class="s1">&#39;PcGts&#39;</span><span class="p">,</span>
+            <span class="n">namespacedef_</span><span class="o">=</span><span class="s1">&#39;xmlns:pc=&quot;</span><span class="si">%s</span><span class="s1">&quot;  xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;</span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">/pagecontent.xsd&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="n">NAMESPACES</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">],</span>
+                <span class="n">NAMESPACES</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">],</span>
+                <span class="n">NAMESPACES</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">]</span>
+            <span class="p">))</span>
     <span class="k">return</span> <span class="s1">&#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">sio</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span></div>
 </pre></div>
 

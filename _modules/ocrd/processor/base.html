@@ -35,7 +35,7 @@
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">from</span> <span class="nn">ocrd_utils</span> <span class="k">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span> <span class="nn">ocrd_utils</span> <span class="k">import</span> <span class="n">getLogger</span><span class="p">,</span> <span class="n">is_local_filename</span><span class="p">,</span> <span class="n">get_local_filename</span>
 <span class="kn">from</span> <span class="nn">ocrd_validators</span> <span class="k">import</span> <span class="n">ParameterValidator</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;ocrd.processor&#39;</span><span class="p">)</span>
@@ -74,15 +74,6 @@
         <span class="n">mets_url</span><span class="p">,</span>
         <span class="n">working_dir</span>
     <span class="p">)</span>
-    <span class="k">if</span> <span class="n">parameter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="s1">&#39;://&#39;</span> <span class="ow">in</span> <span class="n">parameter</span><span class="p">:</span>
-            <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">fname</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">download_url</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">param_json_file</span><span class="p">:</span>
-            <span class="n">parameter</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">param_json_file</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">parameter</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running processor </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">processorClass</span><span class="p">)</span>
     <span class="n">processor</span> <span class="o">=</span> <span class="n">processorClass</span><span class="p">(</span>
         <span class="n">workspace</span><span class="p">,</span>
@@ -164,11 +155,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ocrd_tool</span> <span class="o">=</span> <span class="n">ocrd_tool</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span> <span class="o">=</span> <span class="n">workspace</span>
+        <span class="c1"># FIXME HACK would be better to use pushd_popd(self.workspace.directory)</span>
+        <span class="c1"># but there is no way to do that in process here since it&#39;s an</span>
+        <span class="c1"># overridden method. chdir is almost always an anti-pattern.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">input_file_grp</span> <span class="o">=</span> <span class="n">input_file_grp</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_file_grp</span> <span class="o">=</span> <span class="n">output_file_grp</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">page_id</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">page_id</span> <span class="o">==</span> <span class="p">[]</span> <span class="ow">or</span> <span class="n">page_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">page_id</span>
         <span class="n">parameterValidator</span> <span class="o">=</span> <span class="n">ParameterValidator</span><span class="p">(</span><span class="n">ocrd_tool</span><span class="p">)</span>
-        <span class="n">parameterValidator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="n">parameterValidator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">report</span><span class="o">.</span><span class="n">is_valid</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Invalid parameters </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">report</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">parameter</span>
 
 <div class="viewcode-block" id="Processor.verify"><a class="viewcode-back" href="../../../api/ocrd/ocrd.processor.base.html#ocrd.processor.base.Processor.verify">[docs]</a>    <span class="k">def</span> <span class="nf">verify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

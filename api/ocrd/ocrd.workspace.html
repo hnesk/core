@@ -37,7 +37,7 @@
 <span id="ocrd-workspace-module"></span><h1>ocrd.workspace module<a class="headerlink" href="#module-ocrd.workspace" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="ocrd.workspace.Workspace">
-<em class="property">class </em><code class="descclassname">ocrd.workspace.</code><code class="descname">Workspace</code><span class="sig-paren">(</span><em>resolver</em>, <em>directory</em>, <em>mets=None</em>, <em>mets_basename='mets.xml'</em>, <em>automatic_backup=False</em>, <em>src_dir=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ocrd.workspace.</code><code class="descname">Workspace</code><span class="sig-paren">(</span><em>resolver</em>, <em>directory</em>, <em>mets=None</em>, <em>mets_basename='mets.xml'</em>, <em>automatic_backup=False</em>, <em>baseurl=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A workspace is a temporary directory set up for a processor. It’s the
 interface to the METS/PAGE XML and delegates download and upload to the
@@ -50,7 +50,7 @@ Resolver.</p>
 <li><strong>directory</strong> (<em>string</em>) – Folder to work in</li>
 <li><strong>mets</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">OcrdMets</span></code>) – OcrdMets representing this workspace. Loaded from ‘mets.xml’ if <code class="docutils literal notranslate"><span class="pre">None</span></code>.</li>
 <li><strong>mets_basename</strong> (<em>string</em>) – Basename of the METS XML file. Default: Last URL segment of the mets_url.</li>
-<li><strong>src_dir</strong> (<em>string</em>) – Directory containing the source mets.xml, to resolve relative file URL.</li>
+<li><strong>baseurl</strong> (<em>string</em>) – Base URL to prefix to relative URL.</li>
 </ul>
 </td>
 </tr>
@@ -65,14 +65,8 @@ OcrdMets OUTPUT section.</p>
 
 <dl class="method">
 <dt id="ocrd.workspace.Workspace.download_file">
-<code class="descname">download_file</code><span class="sig-paren">(</span><em>f</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace.download_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.download_file" title="Permalink to this definition">¶</a></dt>
+<code class="descname">download_file</code><span class="sig-paren">(</span><em>f</em>, <em>_recursion_count=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace.download_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.download_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download a <code class="xref py py-mod docutils literal notranslate"><span class="pre">ocrd.model.ocrd_file.OcrdFile</span></code> to the workspace.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="ocrd.workspace.Workspace.download_files_in_group">
-<code class="descname">download_files_in_group</code><span class="sig-paren">(</span><em>file_grp</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace.download_files_in_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.download_files_in_group" title="Permalink to this definition">¶</a></dt>
-<dd><p>Download all  the <code class="xref py py-mod docutils literal notranslate"><span class="pre">ocrd.model.ocrd_file.OcrdFile</span></code> in the file group given.</p>
 </dd></dl>
 
 <dl class="method">
@@ -85,7 +79,7 @@ OcrdMets OUTPUT section.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>url</strong> (<em>string</em>) – URL to download to directory</li>
-<li><strong>**kwargs</strong> – See <a class="reference internal" href="ocrd.resolver.html#ocrd.resolver.Resolver" title="ocrd.resolver.Resolver"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ocrd.resolver.Resolver</span></code></a></li>
+<li><strong>**kwargs</strong> – See <a class="reference internal" href="../ocrd_models/ocrd_models.ocrd_file.html#ocrd_models.ocrd_file.OcrdFile" title="ocrd_models.ocrd_file.OcrdFile"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ocrd_models.ocrd_file.OcrdFile</span></code></a></li>
 </ul>
 </td>
 </tr>
@@ -94,6 +88,177 @@ OcrdMets OUTPUT section.</p>
 </tr>
 </tbody>
 </table>
+<div class="deprecated">
+<p><span class="versionmodified">Deprecated since version 1.0.0: </span>Use workspace.download_file</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.image_from_page">
+<code class="descname">image_from_page</code><span class="sig-paren">(</span><em>page</em>, <em>page_id</em>, <em>fill='background'</em>, <em>transparency=False</em>, <em>feature_selector=''</em>, <em>feature_filter=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace.image_from_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.image_from_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract an image for a PAGE-XML page from the workspace.</p>
+<p>Given <code class="docutils literal notranslate"><span class="pre">page</span></code>, a PAGE PageType object, extract its PIL.Image,
+either from its AlternativeImage (if it exists), or from its
+&#64;imageFilename (otherwise). Also crop it, if a Border exists,
+and rotate it, if any &#64;orientation angle is annotated.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">feature_selector</span></code> and/or <code class="docutils literal notranslate"><span class="pre">feature_filter</span></code> is given, then
+select/filter among the &#64;imageFilename image and the available
+AlternativeImages the last one which contains all of the selected,
+but none of the filtered features (i.e. &#64;comments classes), or
+raise an error.</p>
+<p>(Required and produced features need not be in the same order, so
+<code class="docutils literal notranslate"><span class="pre">feature_selector</span></code> is merely a mask specifying Boolean AND, and
+<code class="docutils literal notranslate"><span class="pre">feature_filter</span></code> is merely a mask specifying Boolean OR.)</p>
+<p>If the chosen image does not have the feature “cropped” yet, but
+a Border exists, and unless “cropped” is being filtered, then crop it.
+Likewise, if the chosen image does not have the feature “deskewed” yet,
+but an &#64;orientation angle is annotated, and unless “deskewed” is being
+filtered, then rotate it. (However, if &#64;orientation is above the
+[-45°,45°] interval, then apply as much transposition as possible first,
+unless “rotated-90” / “rotated-180” / “rotated-270” is being filtered.)</p>
+<p>Cropping uses a polygon mask (not just the bounding box rectangle).
+Areas outside the polygon will be filled according to <code class="docutils literal notranslate"><span class="pre">fill</span></code>:</p>
+<ul class="simple">
+<li>if <code class="docutils literal notranslate"><span class="pre">background</span></code> (the default),
+then fill with the median color of the image;</li>
+<li>otherwise, use the given color, e.g. <code class="docutils literal notranslate"><span class="pre">white</span></code> or (255,255,255).</li>
+</ul>
+<p>Moreover, if <code class="docutils literal notranslate"><span class="pre">transparency</span></code> is true, and unless the image already
+has an alpha channel, then add an alpha channel which is fully opaque
+before cropping and rotating. (Thus, only the exposed areas will be
+transparent afterwards, for those that can interpret alpha channels).</p>
+<p>Return a tuple:</p>
+<blockquote>
+<div><ul class="simple">
+<li>the extracted image,</li>
+<li>a dictionary with information about the extracted image:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">transform</span></code>: a Numpy array with an affine transform which
+converts from absolute coordinates to those relative to the image,
+i.e. after cropping to the page’s border / bounding box (if any)
+and deskewing with the page’s orientation angle (if any)</li>
+<li><code class="docutils literal notranslate"><span class="pre">angle</span></code>: the rotation/reflection angle applied to the image so far,</li>
+<li><code class="docutils literal notranslate"><span class="pre">features</span></code>: the AlternativeImage &#64;comments for the image, i.e.
+names of all operations that lead up to this result,</li>
+</ul>
+</li>
+<li>an OcrdExif instance associated with the original image.</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>(The first two can be used to annotate a new AlternativeImage,</dt>
+<dd>or be passed down with <code class="docutils literal notranslate"><span class="pre">image_from_segment</span></code>.)</dd>
+</dl>
+<p class="rubric">Example</p>
+<ul>
+<li><p class="first">get a raw (colored) but already deskewed and cropped image:</p>
+<p>``
+page_image, page_coords, page_image_info = workspace.image_from_page(</p>
+<blockquote>
+<div><p>page, page_id,
+feature_selector=’deskewed,cropped’,
+feature_filter=’binarized,grayscale_normalized’)</p>
+</div></blockquote>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a></p>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.image_from_segment">
+<code class="descname">image_from_segment</code><span class="sig-paren">(</span><em>segment</em>, <em>parent_image</em>, <em>parent_coords</em>, <em>fill='background'</em>, <em>transparency=False</em>, <em>feature_selector=''</em>, <em>feature_filter=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace.image_from_segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.image_from_segment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract an image for a PAGE-XML hierarchy segment from its parent’s image.</p>
+<p>Given…</p>
+<blockquote>
+<div><ul>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">parent_image</span></code>, a PIL.Image of the parent, with</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">parent_coords</span></code>, a dict with information about <code class="docutils literal notranslate"><span class="pre">parent_image</span></code>:
+- <code class="docutils literal notranslate"><span class="pre">transform</span></code>: a Numpy array with an affine transform which</p>
+<blockquote>
+<div><p>converts from absolute coordinates to those relative to the image,
+i.e. after applying all operations (starting with the original image)</p>
+</div></blockquote>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">angle</span></code>: the rotation/reflection angle applied to the image so far,</li>
+<li><code class="docutils literal notranslate"><span class="pre">features</span></code>: the AlternativeImage &#64;comments for the image, i.e.
+names of all operations that lead up to this result, and</li>
+</ul>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">segment</span></code>, a PAGE segment object logically contained in it
+(i.e. TextRegionType / TextLineType / WordType / GlyphType),</p>
+</li>
+</ul>
+</div></blockquote>
+<p>…extract the segment’s corresponding PIL.Image, either from
+AlternativeImage (if it exists), or producing a new image via
+cropping from <code class="docutils literal notranslate"><span class="pre">parent_image</span></code> (otherwise).</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">feature_selector</span></code> and/or <code class="docutils literal notranslate"><span class="pre">feature_filter</span></code> is given, then
+select/filter among the cropped <code class="docutils literal notranslate"><span class="pre">parent_image</span></code> and the available
+AlternativeImages the last one which contains all of the selected,
+but none of the filtered features (i.e. &#64;comments classes), or
+raise an error.</p>
+<p>(Required and produced features need not be in the same order, so
+<code class="docutils literal notranslate"><span class="pre">feature_selector</span></code> is merely a mask specifying Boolean AND, and
+<code class="docutils literal notranslate"><span class="pre">feature_filter</span></code> is merely a mask specifying Boolean OR.)</p>
+<p>Cropping uses a polygon mask (not just the bounding box rectangle).
+Areas outside the polygon will be filled according to <code class="docutils literal notranslate"><span class="pre">fill</span></code>:</p>
+<ul class="simple">
+<li>if <code class="docutils literal notranslate"><span class="pre">background</span></code> (the default),
+then fill with the median color of the image;</li>
+<li>otherwise, use the given color, e.g. <code class="docutils literal notranslate"><span class="pre">white</span></code> or (255,255,255).</li>
+</ul>
+<p>Moreover, if <code class="docutils literal notranslate"><span class="pre">transparency</span></code> is true, and unless the image already
+has an alpha channel, then add an alpha channel which is fully opaque
+before cropping and rotating. (Thus, only the exposed areas will be
+transparent afterwards, for those that can interpret alpha channels).</p>
+<p>When cropping, compensate any &#64;orientation angle annotated for the
+parent (from parent-level deskewing) by rotating the segment coordinates
+in an inverse transformation (i.e. translation to center, then passive
+rotation, and translation back).</p>
+<p>Regardless, if any &#64;orientation angle is annotated for the segment
+(from segment-level deskewing), and the chosen image does not have
+the feature “deskewed” yet, and unless “deskewed” is being filtered,
+then rotate it - compensating for any previous <code class="docutils literal notranslate"><span class="pre">angle</span></code>. (However,
+if &#64;orientation is above the [-45°,45°] interval, then apply as much
+transposition as possible first, unless “rotated-90” / “rotated-180” /
+“rotated-270” is being filtered.)</p>
+<p>Return a tuple:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">the extracted image,</p>
+</li>
+<li><p class="first">a dictionary with information about the extracted image:
+- <code class="docutils literal notranslate"><span class="pre">transform</span></code>: a Numpy array with an affine transform which</p>
+<blockquote>
+<div><p>converts from absolute coordinates to those relative to the image,
+i.e. after applying all parent operations, and then cropping to
+the segment’s bounding box, and deskewing with the segment’s
+orientation angle (if any)</p>
+</div></blockquote>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">angle</span></code>: the rotation/reflection angle applied to the image so far,</li>
+<li><code class="docutils literal notranslate"><span class="pre">features</span></code>: the AlternativeImage &#64;comments for the image, i.e.
+names of all operations that lead up to this result.</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>(These can be used to create a new AlternativeImage, or passed down</dt>
+<dd>for calls on lower hierarchy levels.)</dd>
+</dl>
+<p class="rubric">Example</p>
+<ul>
+<li><p class="first">get a raw (colored) but already deskewed and cropped image:</p>
+<dl class="docutils">
+<dt><a href="#id3"><span class="problematic" id="id4">``</span></a>image, xywh = workspace.image_from_segment(region,</dt>
+<dd><p class="first last">page_image, page_xywh,
+feature_selector=’deskewed,cropped’,
+feature_filter=’binarized,grayscale_normalized’)``</p>
+</dd>
+</dl>
+</li>
+</ul>
 </dd></dl>
 
 <dl class="method">
@@ -103,19 +268,49 @@ OcrdMets OUTPUT section.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ocrd.workspace.Workspace.resolve_image_as_pil">
-<code class="descname">resolve_image_as_pil</code><span class="sig-paren">(</span><em>image_url</em>, <em>coords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace.resolve_image_as_pil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.resolve_image_as_pil" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resolve an image URL to a PIL image.</p>
+<dt id="ocrd.workspace.Workspace.remove_file">
+<code class="descname">remove_file</code><span class="sig-paren">(</span><em>ID</em>, <em>force=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace.remove_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.remove_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a file from the workspace.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>coords</strong> (<em>list</em>) – Coordinates of the bounding box to cut from the image</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Image or region in image as PIL.Image</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ID</strong> (<em>string|OcrdFile</em>) – ID of the file to delete or the file itself</li>
+<li><strong>force</strong> (<em>boolean</em>) – Whether to delete from disk as well</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.remove_file_group">
+<code class="descname">remove_file_group</code><span class="sig-paren">(</span><em>USE</em>, <em>recursive=False</em>, <em>force=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace.remove_file_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.remove_file_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a fileGrp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>USE</strong> (<em>string</em>) – USE attribute of the fileGrp to delete</li>
+<li><strong>recursive</strong> (<em>boolean</em>) – Whether to recursively delete all files in the group</li>
+<li><strong>force</strong> (<em>boolean</em>) – When deleting recursively whether to delete files from HDD</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.resolve_image_as_pil">
+<code class="descname">resolve_image_as_pil</code><span class="sig-paren">(</span><em>image_url</em>, <em>coords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace.resolve_image_as_pil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.resolve_image_as_pil" title="Permalink to this definition">¶</a></dt>
+<dd><div class="deprecated">
+<p><span class="versionmodified">Deprecated since version 1.0.0.</span></p>
+</div>
+<p>Use workspace.image_from_page and workspace.image_from_segment</p>
 </dd></dl>
 
 <dl class="method">
@@ -134,6 +329,17 @@ OcrdMets OUTPUT section.</p>
 <dt>Return</dt>
 <dd><code class="xref py py-class docutils literal notranslate"><span class="pre">OcrdExif</span></code></dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ocrd.workspace.Workspace.save_image_file">
+<code class="descname">save_image_file</code><span class="sig-paren">(</span><em>image</em>, <em>file_id</em>, <em>file_grp</em>, <em>page_id=None</em>, <em>format='PNG'</em>, <em>force=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocrd/workspace.html#Workspace.save_image_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ocrd.workspace.Workspace.save_image_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Store and reference an image as file into the workspace.</p>
+<p>Given a PIL.Image <cite>image</cite>, and an ID <cite>file_id</cite> to use in METS,
+store the image under the fileGrp <cite>file_grp</cite> and physical page
+<cite>page_id</cite> into the workspace (in a file name based on
+the <cite>file_grp</cite>, <cite>file_id</cite> and <cite>format</cite> extension).</p>
+<p>Return the (absolute) path of the created file.</p>
 </dd></dl>
 
 <dl class="method">
@@ -184,7 +390,14 @@ OcrdMets OUTPUT section.</p>
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="modules.html">ocrd</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">ocrd</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="ocrd.html">ocrd package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ocrd.html#subpackages">Subpackages</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="ocrd.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../ocrd_utils/modules.html">ocrd_utils</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../ocrd_models/modules.html">ocrd_models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../ocrd_validators/modules.html">ocrd_validators</a></li>

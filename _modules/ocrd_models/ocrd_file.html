@@ -35,7 +35,9 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">API to ``mets:file``</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">splitext</span><span class="p">,</span> <span class="n">basename</span>
+
+<span class="kn">from</span> <span class="nn">ocrd_utils</span> <span class="k">import</span> <span class="n">is_local_filename</span><span class="p">,</span> <span class="n">get_local_filename</span>
 
 <span class="kn">from</span> <span class="nn">.ocrd_xml_base</span> <span class="k">import</span> <span class="n">ET</span>
 <span class="kn">from</span> <span class="nn">.constants</span> <span class="k">import</span> <span class="n">NAMESPACES</span> <span class="k">as</span> <span class="n">NS</span><span class="p">,</span> <span class="n">TAG_METS_FLOCAT</span><span class="p">,</span> <span class="n">TAG_METS_FILE</span>
@@ -49,14 +51,13 @@
     <span class="c1">#  def create(mimetype, ID, url, local_filename):</span>
     <span class="c1">#      el_fileGrp.SubElement(&#39;file&#39;)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">local_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">baseurl</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">mets</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">loctype</span><span class="o">=</span><span class="s1">&#39;OTHER&#39;</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">local_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            el (LxmlElement):</span>
 <span class="sd">            mimetype (string):</span>
 <span class="sd">            instance (OcrdFile):</span>
 <span class="sd">            local_filename (string):</span>
-<span class="sd">            baseurl (string):</span>
 <span class="sd">            mets (OcrdMets):</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">el</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -66,9 +67,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">local_filename</span> <span class="o">=</span> <span class="n">local_filename</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="n">instance</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mets</span> <span class="o">=</span> <span class="n">mets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loctype</span> <span class="o">=</span> <span class="n">loctype</span>
 
-        <span class="k">if</span> <span class="n">baseurl</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">local_filename</span> <span class="ow">and</span> <span class="s1">&#39;://&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">local_filename</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">baseurl</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">url</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
+
+        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">local_filename</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="ow">and</span> <span class="n">is_local_filename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">local_filename</span> <span class="o">=</span> <span class="n">get_local_filename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -90,7 +96,14 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the ``os.path.basename`` of the local file, if any.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_filename</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_filename</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_filename</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">extension</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">_basename</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_basename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.tar&#39;</span><span class="p">):</span>
+            <span class="n">ext</span> <span class="o">=</span> <span class="s2">&quot;.tar&quot;</span> <span class="o">+</span> <span class="n">ext</span>
+        <span class="k">return</span> <span class="n">ext</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">basename_without_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -105,14 +118,14 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ID</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the ``ID`` atribute.</span>
+<span class="sd">        Get the ``ID`` attribute.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_el</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ID&#39;</span><span class="p">)</span>
 
     <span class="nd">@ID</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">ID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ID</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the ``ID`` atribute.</span>
+<span class="sd">        Set the ``ID`` attribute.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">ID</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
@@ -140,6 +153,48 @@
 
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">loctype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the ``LOCTYPE``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">el_FLocat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;mets:FLocat&#39;</span><span class="p">,</span> <span class="n">NS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">el_FLocat</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">el_FLocat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;LOCTYPE&#39;</span><span class="p">)</span>
+
+    <span class="nd">@loctype</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">loctype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loctype</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the ``LOCTYPE``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">loctype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">loctype</span> <span class="o">=</span> <span class="n">loctype</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="n">el_FLocat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;mets:FLocat&#39;</span><span class="p">,</span> <span class="n">NS</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">el_FLocat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">el_FLocat</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_el</span><span class="p">,</span> <span class="n">TAG_METS_FLOCAT</span><span class="p">)</span>
+        <span class="n">el_FLocat</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;LOCTYPE&#39;</span><span class="p">,</span> <span class="n">loctype</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">loctype</span> <span class="o">==</span> <span class="s1">&#39;OTHER&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">otherloctype</span> <span class="o">=</span> <span class="s1">&#39;FILE&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">otherloctype</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">otherloctype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">el_FLocat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;mets:FLocat&#39;</span><span class="p">,</span> <span class="n">NS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">el_FLocat</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">el_FLocat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;OTHERLOCTYPE&#39;</span><span class="p">)</span>
+
+    <span class="nd">@otherloctype</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">otherloctype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">otherloctype</span><span class="p">):</span>
+        <span class="n">el_FLocat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;mets:FLocat&#39;</span><span class="p">,</span> <span class="n">NS</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">el_FLocat</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">el_FLocat</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_el</span><span class="p">,</span> <span class="n">TAG_METS_FLOCAT</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">otherloctype</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;OTHERLOCTYPE&#39;</span> <span class="ow">in</span> <span class="n">el_FLocat</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">el_FLocat</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;OTHERLOCTYPE&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">el_FLocat</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;LOCTYPE&#39;</span><span class="p">,</span> <span class="s1">&#39;OTHER&#39;</span><span class="p">)</span>
+            <span class="n">el_FLocat</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;OTHERLOCTYPE&#39;</span><span class="p">,</span> <span class="n">otherloctype</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">mimetype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the ``MIMETYPE``.</span>
@@ -160,7 +215,10 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The ``USE`` attribute of the containing ``mets:fileGrp``</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_el</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;USE&#39;</span><span class="p">)</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_el</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_el</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;USE&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;TEMP&#39;</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
