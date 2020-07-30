@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Thu Jul 30 12:33:49 2020 by generateDS.py version 2.35.24.
+# Generated Thu Jul 30 13:44:35 2020 by generateDS.py version 2.35.24.
 # Python 3.6.9 (default, Jul 17 2020, 12:50:27)  [GCC 8.4.0]
 #
 # Command line options:
@@ -124,7 +124,7 @@ except ImportError:
 # clues about the possible content of that class.
 #
 try:
-    from generatedscollector import GdsCollector as GdsCollector_
+    from .generatedscollector import GdsCollector as GdsCollector_
 except ImportError:
 
     class GdsCollector_(object):

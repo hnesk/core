@@ -290,5 +290,12 @@ class TestOcrdPage(TestCase):
             # TODO: Test with word/glyph-level AlternativeImages
             # self.assertEqual(len(pcgts.get_AllAlternativeImagePaths(word=False)), 37)
 
+    def test_gdscollector_override(self):
+        from ocrd_models.generatedscollector import OcrdGdsCollector
+        with open(assets.path_to('gutachten/data/TEMP1/PAGE_TEMP1.xml'), 'r') as f:
+            pcgts = parseString(f.read().encode('utf8'), silence=True)
+            gdc = pcgts.gds_collector_
+            self.assertTrue(isinstance(gdc, OcrdGdsCollector))
+
 if __name__ == '__main__':
     main(__file__)
