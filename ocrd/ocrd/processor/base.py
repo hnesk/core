@@ -132,11 +132,7 @@ class Processor():
                     with open(cache_fpath, 'wb') as f:
                         copyfileobj(r.raw, f)
             return cache_fpath
-        ret = next([cand
-                     for cand
-                     in list_resource_candidates(executable, param, val)
-                     if exists(cand)
-                    ])
+        ret = next([cand for cand in list_resource_candidates(executable, val) if exists(cand)])
         if ret:
             return ret
         bundled_fpath = resource_filename(__name__, val)
