@@ -191,7 +191,7 @@ print('''%s''')
             with pushd_popd(tempdir):
                 # def run_tasks(mets, log_level, page_id, task_strs, overwrite=False):
                 ws = resolver.workspace_from_nothing(tempdir)
-                ws.add_file('GRP0', content='', local_filename='GRP0/foo', ID='file0', mimetype=MIMETYPE_PAGE)
+                ws.add_file('GRP0', content='', local_filename='GRP0/foo', ID='file0', mimetype=MIMETYPE_PAGE, pageId=None)
                 ws.save_mets()
                 run_tasks('mets.xml', 'DEBUG', None, [
                     "dummy -I GRP0 -O GRP1",
