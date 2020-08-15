@@ -1,83 +1,22 @@
-import os
 import json
-from tempfile import mkdtemp, TemporaryDirectory
-from shutil import rmtree
-
+from tempfile import TemporaryDirectory
 from pathlib import Path
-from os.path import join
 
-from tests.base import TestCase, main, assets
+from tests.base import main, assets
+from tests.data.wf_testcase import (
+    TestCase,
+
+    SAMPLE_NAME_REQUIRED_PARAM,
+    PARAM_JSON,
+)
 
 from ocrd_utils import pushd_popd, MIMETYPE_PAGE
 from ocrd.resolver import Resolver
-from ocrd_validators import OcrdWfValidator
 from ocrd.task_sequence import run_tasks
-from ocrd_models import OcrdWf
-import ocrd_models
+from ocrd_validators import OcrdWfValidator
+from ocrd_models import OcrdWf, OcrdWfStep
 
-class OcrdWfStep(ocrd_models.OcrdWfStep):
-
-    def validate(self):
-        wf_val = OcrdWfValidator()
-        report = wf_val.step_is_resolveable(self)
-        if not report.is_valid:
-            raise Exception(report.errors)
-
-SAMPLE_NAME = 'ocrd-sample-processor'
-SAMPLE_OCRD_TOOL_JSON = '''{
-    "executable": "ocrd-sample-processor",
-    "description": "Do stuff and things",
-    "categories": ["Image foobaring"],
-    "steps": ["preprocessing/optimization/foobarization"],
-    "input_file_grp": ["OCR-D-IMG"],
-    "output_file_grp": ["OCR-D-IMG-BIN", "SECOND_OUT"],
-    "parameters": {
-        "param1": {
-            "type": "boolean",
-            "default": false,
-            "description": "param1 description"
-        }
-    }
-}'''
-
-SAMPLE_NAME_REQUIRED_PARAM = 'sample-processor-required-param'
-SAMPLE_OCRD_TOOL_JSON_REQUIRED_PARAM = json.loads(SAMPLE_OCRD_TOOL_JSON)
-del SAMPLE_OCRD_TOOL_JSON_REQUIRED_PARAM['parameters']['param1']['default']
-SAMPLE_OCRD_TOOL_JSON_REQUIRED_PARAM['executable'] = 'ocrd-' + SAMPLE_NAME_REQUIRED_PARAM
-SAMPLE_OCRD_TOOL_JSON_REQUIRED_PARAM['parameters']['param1']['required'] = True
-SAMPLE_OCRD_TOOL_JSON_REQUIRED_PARAM['input_file_grp'] += ['SECOND_IN']
-SAMPLE_OCRD_TOOL_JSON_REQUIRED_PARAM = json.dumps(SAMPLE_OCRD_TOOL_JSON_REQUIRED_PARAM)
-
-PARAM_JSON = '{"foo": 42}'
-
-class TestTaskSequence(TestCase):
-
-    def tearDown(self):
-        rmtree(self.tempdir)
-
-    def setUp(self):
-        self.tempdir = mkdtemp(prefix='ocrd-task-sequence-')
-        self.param_fname = join(self.tempdir, 'params.json')
-        with open(self.param_fname, 'w') as f:
-            f.write(PARAM_JSON)
-
-        p = Path(self.tempdir, SAMPLE_NAME)
-        p.write_text("""\
-#!/usr/bin/env python
-print('''%s''')
-        """ % SAMPLE_OCRD_TOOL_JSON)
-        p.chmod(0o777)
-
-        p = Path(self.tempdir, 'ocrd-' + SAMPLE_NAME_REQUIRED_PARAM)
-        p.write_text("""\
-#!/usr/bin/env python
-print('''%s''')
-        """ % SAMPLE_OCRD_TOOL_JSON_REQUIRED_PARAM)
-        p.chmod(0o777)
-
-        os.environ['PATH'] = os.pathsep.join([self.tempdir, os.environ['PATH']])
-        #  from distutils.spawn import find_executable as which # pylint: disable=import-error,no-name-in-module
-        #  self.assertTrue(which('ocrd-sample-processor'))
+class TestOcrdWfStep(TestCase):
 
     def test_parse_no_in(self):
         task = OcrdWfStep.parse('sample-processor')

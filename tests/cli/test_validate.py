@@ -4,13 +4,13 @@ from tempfile import TemporaryDirectory
 
 from click.testing import CliRunner
 
-# pylint: disable=import-error, no-name-in-module, unused-import
-from tests.base import TestCase, main, assets, copy_of_directory
+# pylint: disable=import-error, no-name-in-module
+from tests.base import main, assets
+from tests.data.wf_testcase import TestCase
 
 from ocrd_utils import pushd_popd
 
 from ocrd.cli.validate import validate_cli
-from tests.test_task_sequence import TestTaskSequence
 
 OCRD_TOOL = '''
 {
@@ -48,10 +48,10 @@ OCRD_TOOL = '''
 '''
 
 # inherit from TestTaskSequence for the setUp/tearDown methods
-class TestCli(TestTaskSequence):
+class TestCli(TestCase):
 
     def __init__(self, *args, **kwargs):
-        super(TestTaskSequence, self).__init__(*args, **kwargs)
+        super(TestCli, self).__init__(*args, **kwargs)
         self.runner = CliRunner()
 
     def test_validate_ocrd_tool(self):
