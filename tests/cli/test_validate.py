@@ -4,11 +4,10 @@ from tempfile import TemporaryDirectory
 
 from click.testing import CliRunner
 
-# pylint: disable=import-error, no-name-in-module
+# pylint: disable=import-error, no-name-in-module, unused-import
 from tests.base import TestCase, main, assets, copy_of_directory
 
 from ocrd_utils import pushd_popd
-from ocrd.resolver import Resolver
 
 from ocrd.cli.validate import validate_cli
 from tests.test_task_sequence import TestTaskSequence
